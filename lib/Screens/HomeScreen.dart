@@ -47,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
   TextEditingController ClassOfMsgController = TextEditingController();
   TextEditingController TeacherIDController = TextEditingController();
   TextEditingController StudentIDController = TextEditingController();
+  TextEditingController StudentNameController = TextEditingController();
 
   static const _chars =
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
@@ -77,7 +78,10 @@ class _HomeScreenState extends State<HomeScreen> {
           "StudentID": "3435",
           "PhoneNo": "43543465",
           "InstitutionName": "Msjdf",
-          "FatherPhoneNo": "454546"
+          "FatherPhoneNo": "454546",
+          "DueAmount":"600",
+          "PaymentStatus":"Due"
+
         }
       ];
     });
@@ -1350,52 +1354,68 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(16),
                     child: DataTable2(
-                        headingTextStyle: TextStyle(
+                        headingTextStyle: const TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.white),
                         columnSpacing: 12,
-                        headingRowColor: WidgetStatePropertyAll(Colors.pink),
+                        headingRowColor: const WidgetStatePropertyAll(Colors.pink),
                         horizontalMargin: 12,
                         minWidth: 600,
                         dividerThickness: 3,
-                        columns: [
+                        isHorizontalScrollBarVisible: true,
+                        columns: const [
                           DataColumn2(
                             label: Text('SL'),
-                            size: ColumnSize.L,
+                            
                           ),
-                          DataColumn(
+                          DataColumn2(
                             label: Text('Student ID'),
+                            
                           ),
+
+                          DataColumn2(
+                            label: Text('Payment Status'),
+                            
+                          ),
+
+                          DataColumn2(
+                            label: Text('Due Amount'),
+                            
+                          ),
+
                           DataColumn(
                             label: Text('Student Name'),
                           ),
                           DataColumn(
                             label: Text('Phone No'),
                           ),
-                          DataColumn(
+                          DataColumn2(
                             label: Text('Institution Name'),
+                            size: ColumnSize.L,
+                            
                           ),
-                          DataColumn(
+                          DataColumn2(
                             label: Text('Father Phone No'),
+                            fixedWidth: 170
                           ),
                           DataColumn(
                             label: Text('Pay'),
-                            numeric: true,
+                            // numeric: true,
                           ),
                           DataColumn(
                             label: Text('Send SMS'),
-                            numeric: true,
+                            // numeric: true,
                           ),
                           DataColumn(
                             label: Text('Send Exam Marks'),
-                            numeric: true,
+                            // numeric: true,
                           ),
                           DataColumn(
                             label: Text('Edit'),
-                            numeric: true,
+                            // numeric: true,
                           ),
                           DataColumn(
                             label: Text('Details'),
-                            numeric: true,
+                            // numeric: true,
                           ),
                         ],
                         rows: List<DataRow>.generate(
@@ -1407,6 +1427,29 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ["StudentID"]
                                       .toString()
                                       .toUpperCase())),
+
+                                  DataCell(AllStudentInfo[index]
+                                          ["PaymentStatus"]
+                                      .toString()
+                                      .toUpperCase()=="DUE"?Text(AllStudentInfo[index]
+                                          ["PaymentStatus"]
+                                      .toString()
+                                      .toUpperCase(), style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),):Text(AllStudentInfo[index]
+                                          ["PaymentStatus"]
+                                      .toString()
+                                      .toUpperCase(),style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),)),
+                                  
+                                  DataCell(AllStudentInfo[index]
+                                          ["PaymentStatus"]
+                                      .toString()
+                                      .toUpperCase()=="DUE"?Text("${AllStudentInfo[index]
+                                          ["DueAmount"]
+                                      .toString()
+                                      .toUpperCase()}৳", style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 22),):Text("${AllStudentInfo[index]
+                                          ["DueAmount"]
+                                      .toString()
+                                      .toUpperCase()}৳",style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold, fontSize: 22),)),
+
                                   DataCell(Text(AllStudentInfo[index]
                                           ["StudentName"]
                                       .toString()
@@ -1422,7 +1465,438 @@ class _HomeScreenState extends State<HomeScreen> {
                                       "${AllStudentInfo[index]["FatherPhoneNo"].toString().toUpperCase()}")),
 
                                   DataCell(ElevatedButton(
-                                      onPressed: () {}, child: Text("Pay"))),
+                                      onPressed: () {
+
+
+                              
+
+                                    showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            String Title =
+                                                "Payment যুক্ত করুন";
+
+                                            bool loading = false;
+                                            bool DiscountAvailable = false;
+
+                                            // String LabelText ="আয়ের খাত লিখবেন";
+
+                                            return StatefulBuilder(
+                                              builder: (context, setState) {
+                                                return AlertDialog(
+                                                  title: Column(
+                                                    children: [
+                                                      Center(
+                                                        child: Text(
+                                                          Title,
+                                                          style: const TextStyle(
+                                                              fontFamily:
+                                                                  "Josefin Sans",
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  content: loading
+                                                      ? const Center(
+                                                          child:
+                                                              CircularProgressIndicator(),
+                                                        )
+                                                      : SingleChildScrollView(
+                                                          child: Column(
+                                                            children: <Widget>[
+
+
+                                                              
+                                                              const SizedBox(
+                                                                  height: 10),
+
+
+                                                              SizedBox(
+                                                                width: 300,
+                                                                child:
+                                                                    TextField(
+                                                                  readOnly: true,
+                                                                  
+                                                                  onChanged:
+                                                                      (value) {},
+                                                                  keyboardType:
+                                                                      TextInputType
+                                                                          .text,
+                                                                  decoration:
+                                                                      InputDecoration(
+                                                                    border:
+                                                                        OutlineInputBorder(),
+                                                                    labelText:
+                                                                        'SID: ${AllStudentInfo[index]["StudentID"].toString().toUpperCase()}',
+
+                                                                    hintText:
+                                                                        'SID: ${AllStudentInfo[index]["StudentID"].toString().toUpperCase()}',
+
+                                                                    //  enabledBorder: OutlineInputBorder(
+                                                                    //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                                    //     ),
+                                                                    focusedBorder:
+                                                                        OutlineInputBorder(
+                                                                      borderSide: BorderSide(
+                                                                          width:
+                                                                              3,
+                                                                          color:
+                                                                              Theme.of(context).primaryColor),
+                                                                    ),
+                                                                    errorBorder:
+                                                                        const OutlineInputBorder(
+                                                                      borderSide: BorderSide(
+                                                                          width:
+                                                                              3,
+                                                                          color: Color.fromARGB(
+                                                                              255,
+                                                                              66,
+                                                                              125,
+                                                                              145)),
+                                                                    ),
+                                                                  ),
+                                                                  controller:
+                                                                      StudentIDController,
+                                                                ),
+                                                              ),
+
+
+
+                                                              const SizedBox(
+                                                                height: 20,
+                                                              ),
+
+
+
+
+                                                              SizedBox(
+                                                                width: 300,
+                                                                child:
+                                                                    
+                                                                    
+                                                                    TextField(
+                                                                  readOnly: true,
+                                                                  
+                                                                  onChanged:
+                                                                      (value) {},
+                                                                  keyboardType:
+                                                                      TextInputType
+                                                                          .text,
+                                                                  decoration:
+                                                                      InputDecoration(
+                                                                    border:
+                                                                        OutlineInputBorder(),
+                                                                    labelText:
+                                                                        'Name: ${AllStudentInfo[index]["StudentName"].toString().toUpperCase()}',
+
+                                                                    hintText:
+                                                                        'Name: ${AllStudentInfo[index]["StudentName"].toString().toUpperCase()}',
+
+                                                                    //  enabledBorder: OutlineInputBorder(
+                                                                    //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                                    //     ),
+                                                                    focusedBorder:
+                                                                        OutlineInputBorder(
+                                                                      borderSide: BorderSide(
+                                                                          width:
+                                                                              3,
+                                                                          color:
+                                                                              Theme.of(context).primaryColor),
+                                                                    ),
+                                                                    errorBorder:
+                                                                        const OutlineInputBorder(
+                                                                      borderSide: BorderSide(
+                                                                          width:
+                                                                              3,
+                                                                          color: Color.fromARGB(
+                                                                              255,
+                                                                              66,
+                                                                              125,
+                                                                              145)),
+                                                                    ),
+                                                                  ),
+                                                                  controller:
+                                                                      StudentNameController,
+                                                                ),
+                                                              ),
+
+                                                          
+
+                                                          const SizedBox(
+                                                                height: 20,
+                                                              ),
+
+
+                                                      
+                                                      SizedBox(
+                                                                width: 300,
+                                                                child:
+                                                                    
+                                                                    
+                                                                    TextField(
+                                                                  readOnly: true,
+                                                                  
+                                                                  onChanged:
+                                                                      (value) {},
+                                                                  keyboardType:
+                                                                      TextInputType
+                                                                          .text,
+                                                                  decoration:
+                                                                      InputDecoration(
+                                                                    border:
+                                                                        OutlineInputBorder(),
+                                                                    labelText:
+                                                                        'Due: ${AllStudentInfo[index]["DueAmount"].toString().toUpperCase()}৳',
+
+                                                                    hintText:
+                                                                        'Due: ${AllStudentInfo[index]["DueAmount"].toString().toUpperCase()}৳',
+
+                                                                    //  enabledBorder: OutlineInputBorder(
+                                                                    //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                                    //     ),
+                                                                    focusedBorder:
+                                                                        OutlineInputBorder(
+                                                                      borderSide: BorderSide(
+                                                                          width:
+                                                                              3,
+                                                                          color:
+                                                                              Theme.of(context).primaryColor),
+                                                                    ),
+                                                                    errorBorder:
+                                                                        const OutlineInputBorder(
+                                                                      borderSide: BorderSide(
+                                                                          width:
+                                                                              3,
+                                                                          color: Color.fromARGB(
+                                                                              255,
+                                                                              66,
+                                                                              125,
+                                                                              145)),
+                                                                    ),
+                                                                  ),
+                                                                  controller:
+                                                                      StudentNameController,
+                                                                ),
+                                                              ),
+
+                                                          
+
+                                                          const SizedBox(
+                                                                height: 20,
+                                                              ),
+
+                                                      
+                                                      CheckboxListTile(
+                                                                title: const Text(
+                                                                    "Discount Available?",
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            17,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        fontFamily:
+                                                                            "Josefin Sans")),
+                                                                value:
+                                                                    DiscountAvailable,
+                                                                onChanged:
+                                                                    (newValue) {
+                                                                  setState(() {
+                                                                    DiscountAvailable =
+                                                                        newValue!;
+                                                                  });
+                                                                },
+                                                                controlAffinity:
+                                                                    ListTileControlAffinity
+                                                                        .leading, //  <-- leading Checkbox
+                                                              ),
+
+                                                              const SizedBox(
+                                                                height: 20,
+                                                              ),
+
+
+
+
+
+
+
+                                                            ],
+                                                          ),
+                                                        ),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              context),
+                                                      child: Text("Cancel"),
+                                                    ),
+                                                    ElevatedButton(
+                                                      onPressed: () async {
+                                                        setState(() {
+                                                          loading = true;
+                                                        });
+
+                                                        var MsgData = {
+                                                          "year":
+                                                              "${DateTime.now().year}",
+                                                          "month":
+                                                              "${DateTime.now().month}/${DateTime.now().year}",
+                                                          "Date":
+                                                              "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
+                                                          "DateTime": DateTime
+                                                                  .now()
+                                                              .toIso8601String(),
+                                                          "msg":
+                                                              ClassOfMsgController
+                                                                  .text
+                                                                  .trim()
+                                                        };
+
+                                                        final ClassOffSMS =
+                                                            FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'ClassOffSMS')
+                                                                .doc(
+                                                                    ProductUniqueID);
+
+                                                        ClassOffSMS.set(MsgData)
+                                                            .then((value) =>
+                                                                setState(
+                                                                    () async {
+                                                                  Navigator.pop(
+                                                                      context);
+
+                                                                  try {
+                                                                    var AdminMsg =
+                                                                        ClassOfMsgController
+                                                                            .text
+                                                                            .trim();
+
+                                                                    final response =
+                                                                        await http
+                                                                            .get(Uri.parse('https://api.greenweb.com.bd/api.php?token=1024519252916991043295858a1b3ac3cb09ae52385b1489dff95&to=${AllStudentInfo[index]["PhoneNo"].trim()}&message=$AdminMsg'));
+
+                                                                    if (response
+                                                                            .statusCode ==
+                                                                        200) {
+                                                                      // If the server did return a 200 OK response,
+                                                                      // then parse the JSON.
+                                                                      print(jsonDecode(
+                                                                          response
+                                                                              .body));
+                                                                    } else {
+                                                                      // If the server did not return a 200 OK response,
+                                                                      // then throw an exception.
+                                                                      throw Exception(
+                                                                          'Failed to load album');
+                                                                    }
+                                                                  } catch (e) {}
+
+                                                                  // Navigator.pop(context);
+
+                                                                  // getProductInfo();
+
+                                                                  final snackBar =
+                                                                      SnackBar(
+                                                                    elevation:
+                                                                        0,
+                                                                    behavior:
+                                                                        SnackBarBehavior
+                                                                            .floating,
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    content:
+                                                                        AwesomeSnackbarContent(
+                                                                      titleFontSize:
+                                                                          12,
+                                                                      title:
+                                                                          'successfull',
+                                                                      message:
+                                                                          'Hey Thank You. Good Job',
+
+                                                                      /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                      contentType:
+                                                                          ContentType
+                                                                              .success,
+                                                                    ),
+                                                                  );
+
+                                                                  ScaffoldMessenger
+                                                                      .of(
+                                                                          context)
+                                                                    ..hideCurrentSnackBar()
+                                                                    ..showSnackBar(
+                                                                        snackBar);
+
+                                                                  setState(() {
+                                                                    loading =
+                                                                        false;
+                                                                  });
+                                                                }))
+                                                            .onError((error,
+                                                                    stackTrace) =>
+                                                                setState(() {
+                                                                  final snackBar =
+                                                                      SnackBar(
+                                                                    /// need to set following properties for best effect of awesome_snackbar_content
+                                                                    elevation:
+                                                                        0,
+
+                                                                    behavior:
+                                                                        SnackBarBehavior
+                                                                            .floating,
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    content:
+                                                                        AwesomeSnackbarContent(
+                                                                      title:
+                                                                          'Something Wrong!!!!',
+                                                                      message:
+                                                                          'Try again later...',
+
+                                                                      /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                      contentType:
+                                                                          ContentType
+                                                                              .failure,
+                                                                    ),
+                                                                  );
+
+                                                                  ScaffoldMessenger
+                                                                      .of(
+                                                                          context)
+                                                                    ..hideCurrentSnackBar()
+                                                                    ..showSnackBar(
+                                                                        snackBar);
+
+                                                                  setState(() {
+                                                                    loading =
+                                                                        false;
+                                                                  });
+                                                                }));
+                                                      },
+                                                      child: const Text("Send"),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          },
+                                        );
+
+
+
+
+
+
+
+                                      }, child: Text("Pay"))),
 
                                   DataCell(ElevatedButton(
                                       onPressed: () {
@@ -1571,7 +2045,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                                                     final response =
                                                                         await http
-                                                                            .get(Uri.parse('https://api.greenweb.com.bd/api.php?token=1024519252916991043295858a1b3ac3cb09ae52385b1489dff95&to=${AllStudentInfo[index]["PhoneNo"].trim()}&message=${AdminMsg}'));
+                                                                            .get(Uri.parse('https://api.greenweb.com.bd/api.php?token=1024519252916991043295858a1b3ac3cb09ae52385b1489dff95&to=${AllStudentInfo[index]["PhoneNo"].trim()}&message=$AdminMsg'));
 
                                                                     if (response
                                                                             .statusCode ==
@@ -1684,7 +2158,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                         // End
                                       },
-                                      child: Text("Class Off SMS"))),
+                                      child: Text("Send"))),
 
                                   // DataCell(ElevatedButton(onPressed: (){
 
@@ -1789,7 +2263,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                               Theme.of(context).primaryColor),
                                                                     ),
                                                                     errorBorder:
-                                                                        OutlineInputBorder(
+                                                                        const OutlineInputBorder(
                                                                       borderSide: BorderSide(
                                                                           width:
                                                                               3,
@@ -1805,7 +2279,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 ),
                                                               ),
 
-                                                              SizedBox(
+                                                              const SizedBox(
                                                                 height: 20,
                                                               ),
 
@@ -1842,7 +2316,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                               Theme.of(context).primaryColor),
                                                                     ),
                                                                     errorBorder:
-                                                                        OutlineInputBorder(
+                                                                        const OutlineInputBorder(
                                                                       borderSide: BorderSide(
                                                                           width:
                                                                               3,
@@ -2264,7 +2738,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                         .leading, //  <-- leading Checkbox
                                                               ),
 
-                                                              SizedBox(
+                                                              const SizedBox(
                                                                 height: 20,
                                                               ),
 
@@ -2381,7 +2855,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                     )
                                                                   : Text(""),
 
-                                                              SizedBox(
+                                                              const SizedBox(
                                                                 height: 10,
                                                               ),
 

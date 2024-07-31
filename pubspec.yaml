@@ -77,6 +77,8 @@ dependencies:
   animated_text_kit: ^4.2.2
   upgrader: ^10.3.0
   dropdown_button2: ^2.3.9
+  file_picker: ^8.0.6
+  firebase_storage: ^12.1.2
 
 dev_dependencies:
   flutter_test:

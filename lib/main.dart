@@ -1,8 +1,43 @@
 import 'package:confidence/Screens/HomeScreen.dart';
+import 'package:confidence/Screens/Students/StudentsRegistration.dart';
 import 'package:confidence/Screens/Teachers/TeacherRegistration.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+void main() async{
+
+
+
+    
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+
+    options: FirebaseOptions(apiKey: "AIzaSyBh41WO1Jh3qnP_PMzqx3lVSMv6DY0mQr4", appId: "1:81202476667:android:908327d3874b75745714de", messagingSenderId: "81202476667", projectId: "newconfidence")
+    
+  );
+
+
+  // NotificationService().initNotification();
+  // tz.initializeTimeZones();
+
+
+  // await Future.delayed(const Duration(seconds: 3));
+
+  // FlutterNativeSplash.remove();
+
+
+  await Hive.initFlutter();
+  var box = await Hive.openBox('ConfidenceBox');
+
+
+
+
+
+
+
+
   runApp(const MyApp());
 }
 
