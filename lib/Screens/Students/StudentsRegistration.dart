@@ -50,6 +50,8 @@ class _StudentRegistrationState extends State<StudentRegistration> {
   TextEditingController SSCInstitutionNameController = TextEditingController();
   TextEditingController HSCInstitutionNameController = TextEditingController();
   TextEditingController FutureAimController = TextEditingController();
+  TextEditingController SSCBatchYearController = TextEditingController();
+  TextEditingController HSCBatchYearController = TextEditingController();
 
   String errorTxt = "";
 
@@ -905,6 +907,95 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                       ],
                     ),
 
+
+
+                   const SizedBox(
+                      height: 15,
+                    ),
+
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: width / 2,
+                          child: TextField(
+                        onChanged: (value) {
+                        checkAddressTextField();
+                        checkNameTextField();
+                        checkPhoneNumberTextField();
+                        checkFatherPhoneNoTextField();
+
+                      },
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'SSC Batch Year(2024)',
+                              labelStyle: TextStyle(
+                                  color: myFocusNode.hasFocus
+                                      ? Theme.of(context).primaryColor
+                                      : Colors.black),
+                              hintText: 'SSC Batch Year(2024)',
+                              //  enabledBorder: OutlineInputBorder(
+                              //     borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                              //   ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 3,
+                                    color: Theme.of(context).primaryColor),
+                              ),
+                              errorBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 3,
+                                    color: Color.fromARGB(255, 66, 125, 145)),
+                              ),
+                            ),
+                            controller: SSCBatchYearController,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        SizedBox(
+                          width: width / 2,
+                          child: TextField(
+                            onChanged: (value) {
+                        checkAddressTextField();
+                        checkNameTextField();
+                        checkPhoneNumberTextField();
+                        checkFatherPhoneNoTextField();
+
+                      },
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              
+                              labelText: 'HSC Batch Year(2026)',
+                              labelStyle: TextStyle(
+                                  color: myFocusNode.hasFocus
+                                      ? Theme.of(context).primaryColor
+                                      : Colors.black),
+                              hintText: 'HSC Batch Year(2026)',
+                              //  enabledBorder: OutlineInputBorder(
+                              //     borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                              //   ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 3,
+                                    color: Theme.of(context).primaryColor),
+                              ),
+                              errorBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 3,
+                                    color: Color.fromARGB(255, 66, 125, 145)),
+                              ),
+                            ),
+                            controller: HSCBatchYearController,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                     
+                      ],
+                    ),
+
        
 
                     SizedBox(
@@ -1082,6 +1173,8 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                                         "FutureAim":FutureAimController.text.trim(),
                                         "FatherPhoneNo":
                                             FatherPhoneNoController.text.trim(),
+                                        "SSCBatchYear":SSCBatchYearController.text.trim(),
+                                        "HSCBatchYear":HSCBatchYearController.text.trim(),
                                         "Department": SelectedValue.toString()
                                             .toLowerCase(),
 
@@ -1097,8 +1190,9 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                                         "StudentStatus": "new",
                                         "AccountStatus": "open",
                                         "TeacherList":[],
-                                        "OtpCode": code.toString(),
-                                        "PhoneVerify": "false",
+                                        "FatherPhoneOtpCode": code.toString(),
+                                        "StudentPhoneOtpCode": code.toString(),
+                                        "StudentPhoneVerify": "false",
                                         "FatherPhoneVerify": "false",
                                         "StudentImageUrl":
                                             "https://t4.ftcdn.net/jpg/00/65/77/27/360_F_65772719_A1UV5kLi5nCEWI0BNLLiFaBPEkUbv5Fv.jpg"
