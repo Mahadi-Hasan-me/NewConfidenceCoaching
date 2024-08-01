@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:confidence/Screens/Students/ImageUpload.dart';
-import 'package:confidence/Screens/Students/OTPPage.dart';
+// import 'package:confidence/Screens/Students/OTPPage.dart';
 import 'package:confidence/Screens/important.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';

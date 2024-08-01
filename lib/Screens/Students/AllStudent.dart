@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'package:confidence/Screens/Students/FatherOTPPage.dart';
+import 'package:confidence/Screens/Students/StudentOTPPage.dart';
 import 'package:confidence/Screens/important.dart';
 import 'package:http/http.dart' as http;
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
@@ -276,14 +278,35 @@ class _AllStudentInfoState extends State<AllStudentInfo> {
                                       '${AllStudentInfo[index]["StudentPermanentAddress"]}')),
                                   DataCell(Text(
                                       '${AllStudentInfo[index]["AdmissionDateTime"]}')),
-                                  DataCell(ElevatedButton(
-                                    onPressed: () {},
+                                  
+                                  AllStudentInfo[index]["StudentPhoneVerify"]=="false"?DataCell(ElevatedButton(
+                                    onPressed: () {
+                                       Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(builder: (context) => StudentOTPPage(StudentPhoneNumber: AllStudentInfo[index]["StudentPhoneNumber"], SIDNo: AllStudentInfo[index]["SIDNo"])),
+                                                  );
+                                    },
                                     child: Text("Verify"),
-                                  )),
-                                  DataCell(ElevatedButton(
-                                    onPressed: () {},
+                                  )):const DataCell(Text("Verified", style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),)),
+
+
+                                AllStudentInfo[index]["FatherPhoneVerify"]=="false"?DataCell(ElevatedButton(
+                                    onPressed: () {
+
+                                      Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(builder: (context) => FatherOTPPage(FatherPhoneNumber: AllStudentInfo[index]["FatherPhoneNo"], SIDNo: AllStudentInfo[index]["SIDNo"])),
+                                                  );
+                                    },
                                     child: Text("Verify"),
-                                  )),
+                                  )):const DataCell(Text("Verified", style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),)),
+
+
+
+                                  
+                            AllStudentInfo[index]["AccountStatus"]=="open"?
+
+
                                   DataCell(ElevatedButton(
                                     onPressed: () {
                                       showDialog(
@@ -460,7 +483,7 @@ class _AllStudentInfoState extends State<AllStudentInfo> {
                                                                 });
                                                               }));
                                                     },
-                                                    child: const Text("Send"),
+                                                    child: const Text("Change"),
                                                   ),
                                                 ],
                                               );
@@ -470,6 +493,192 @@ class _AllStudentInfoState extends State<AllStudentInfo> {
                                       );
                                     },
                                     child: Text("Close"),
+                                  )):DataCell(ElevatedButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          String Title =
+                                              "Are you sure!! Do You want to change this status?";
+
+                                          bool loading = false;
+
+                                          // String LabelText ="আয়ের খাত লিখবেন";
+
+                                          return StatefulBuilder(
+                                            builder: (context, setState) {
+                                              return AlertDialog(
+                                                title: Column(
+                                                  children: [
+                                                    Center(
+                                                      child: Text(
+                                                        Title,
+                                                        style: const TextStyle(
+                                                            fontFamily:
+                                                                "Josefin Sans",
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                content: loading
+                                                    ? const Center(
+                                                        child:
+                                                            CircularProgressIndicator(),
+                                                      )
+                                                    : const SingleChildScrollView(
+                                                        child: Column(
+                                                          children: [
+                                                            SizedBox(
+                                                                height: 10),
+                                                            const Center(
+                                                              child: Text(
+                                                                "আপনি Student Status Change করতে নিচে থাকা Button Click করেন। যদি Cancel করতে চান তবে Cancel Button এ Click করুন ",
+                                                                style: TextStyle(
+                                                                    fontFamily:
+                                                                        "Josefin Sans",
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 20,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.pop(context),
+                                                    child: Text("Cancel"),
+                                                  ),
+                                                  ElevatedButton(
+                                                    onPressed: () async {
+                                                      setState(() {
+                                                        loading = true;
+                                                      });
+
+                                                      var StudentStatus = {
+                                                        "AccountStatus": "open"
+                                                      };
+
+                                                      final ClassOffSMS =
+                                                          FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'StudentInfo')
+                                                              .doc(
+                                                                  AllStudentInfo[
+                                                                          index]
+                                                                      [
+                                                                      "SIDNo"]);
+
+                                                      ClassOffSMS.update(
+                                                              StudentStatus)
+                                                          .then((value) =>
+                                                              setState(
+                                                                  () async {
+                                                                
+
+                                                                // Navigator.pop(context);
+
+                                                                // getProductInfo();
+
+                                                                getStudentInfo();
+
+                                                                Navigator.pop(
+                                                                    context);
+
+                                                                final snackBar =
+                                                                    SnackBar(
+                                                                  elevation: 0,
+                                                                  behavior:
+                                                                      SnackBarBehavior
+                                                                          .floating,
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .transparent,
+                                                                  content:
+                                                                      AwesomeSnackbarContent(
+                                                                    titleFontSize:
+                                                                        12,
+                                                                    title:
+                                                                        'successfull',
+                                                                    message:
+                                                                        'Hey Thank You. Good Job',
+
+                                                                    /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                    contentType:
+                                                                        ContentType
+                                                                            .success,
+                                                                  ),
+                                                                );
+
+                                                                ScaffoldMessenger
+                                                                    .of(context)
+                                                                  ..hideCurrentSnackBar()
+                                                                  ..showSnackBar(
+                                                                      snackBar);
+
+                                                                setState(() {
+                                                                  loading =
+                                                                      false;
+                                                                });
+                                                              }))
+                                                          .onError((error,
+                                                                  stackTrace) =>
+                                                              setState(() {
+                                                                final snackBar =
+                                                                    SnackBar(
+                                                                  /// need to set following properties for best effect of awesome_snackbar_content
+                                                                  elevation: 0,
+
+                                                                  behavior:
+                                                                      SnackBarBehavior
+                                                                          .floating,
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .transparent,
+                                                                  content:
+                                                                      AwesomeSnackbarContent(
+                                                                    title:
+                                                                        'Something Wrong!!!!',
+                                                                    message:
+                                                                        'Try again later...',
+
+                                                                    /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                    contentType:
+                                                                        ContentType
+                                                                            .failure,
+                                                                  ),
+                                                                );
+
+                                                                ScaffoldMessenger
+                                                                    .of(context)
+                                                                  ..hideCurrentSnackBar()
+                                                                  ..showSnackBar(
+                                                                      snackBar);
+
+                                                                setState(() {
+                                                                  loading =
+                                                                      false;
+                                                                });
+                                                              }));
+                                                    },
+                                                    child: const Text("Change"),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: Text("Open"),
                                   )),
                                   DataCell(ElevatedButton(
                                     onPressed: () {},
