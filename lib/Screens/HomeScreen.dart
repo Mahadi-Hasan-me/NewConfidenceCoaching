@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:confidence/Screens/AllBatchInfo.dart';
 import 'package:confidence/Screens/ExamMarks/ExamMarks.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/cupertino.dart';
@@ -79,9 +80,8 @@ class _HomeScreenState extends State<HomeScreen> {
           "PhoneNo": "43543465",
           "InstitutionName": "Msjdf",
           "FatherPhoneNo": "454546",
-          "DueAmount":"600",
-          "PaymentStatus":"Due"
-
+          "DueAmount": "600",
+          "PaymentStatus": "Due"
         }
       ];
     });
@@ -176,6 +176,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   // Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen()));
                 },
               ),
+                            Divider(
+                height: 1,
+                thickness: 1,
+              ),
+              ListTile(
+                leading: Icon(Icons.favorite),
+                title: Text('All Batch Info'),
+                selected: _selectedDestination == 0,
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllBatchInfo()));
+                },
+              ),
               ListTile(
                 leading: Icon(Icons.delete),
                 title: Text('All Teachers'),
@@ -192,13 +204,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   // Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllCustomers()));
                 },
               ),
-
               ListTile(
                 leading: Icon(Icons.label),
                 title: Text('Add Exam Marks'),
                 selected: _selectedDestination == 3,
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ExamMarks()));
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => ExamMarks()));
                 },
               ),
             ],
@@ -659,7 +671,29 @@ class _HomeScreenState extends State<HomeScreen> {
                                 String ClassEndHour = "";
                                 String ClassEndMinute = "";
 
-                                // String LabelText ="আয়ের খাত লিখবেন";
+                                final List<String> TeachersAcademy = [
+                                  'Rezuan Math Care',
+                                  'Sazzad ICT',
+                                  'MediCrack',
+                                  'Protick Physics',
+                                ];
+                                String? selectedTeachersAcademyValue;
+
+
+                                  final List<String> HSCBatchYear = [
+                                                                '2024',
+                                                                '2025',
+                                                                '2026',
+                                                                '2027',
+                                                                '2028',
+                                                                '2029',
+                                                                '2030',
+                                                                '2031',
+                                                                '2032',
+                                                                '2033',
+                                                              ];
+                                            String? HSCBatchYearValue;
+
 
                                 return StatefulBuilder(
                                   builder: (context, setState) {
@@ -669,7 +703,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           Center(
                                             child: Text(
                                               "${Title}",
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   fontFamily: "Josefin Sans",
                                                   fontWeight: FontWeight.bold),
                                             ),
@@ -677,56 +711,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ],
                                       ),
                                       content: loading
-                                          ? Center(
+                                          ? const Center(
                                               child:
                                                   CircularProgressIndicator(),
                                             )
                                           : SingleChildScrollView(
                                               child: Column(
                                                 children: [
-                                                  Container(
-                                                    width: 300,
-                                                    child: TextField(
-                                                      onChanged: (value) {},
-                                                      keyboardType:
-                                                          TextInputType.name,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        border:
-                                                            OutlineInputBorder(),
-                                                        labelText: 'Teacher ID',
-
-                                                        hintText: 'Teacher ID',
-
-                                                        //  enabledBorder: OutlineInputBorder(
-                                                        //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                        //     ),
-                                                        focusedBorder:
-                                                            OutlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              width: 3,
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .primaryColor),
-                                                        ),
-                                                        errorBorder:
-                                                            OutlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                                  width: 3,
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          66,
-                                                                          125,
-                                                                          145)),
-                                                        ),
-                                                      ),
-                                                      controller:
-                                                          TeacherIDController,
-                                                    ),
-                                                  ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     height: 20,
                                                   ),
                                                   Container(
@@ -740,10 +732,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         border:
                                                             OutlineInputBorder(),
                                                         labelText:
-                                                            'New Batch Name',
+                                                            'New Batch Name(HSC241)',
 
                                                         hintText:
-                                                            'New Batch Name',
+                                                            'New Batch Name(HSC241)',
 
                                                         //  enabledBorder: OutlineInputBorder(
                                                         //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
@@ -757,7 +749,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   .primaryColor),
                                                         ),
                                                         errorBorder:
-                                                            OutlineInputBorder(
+                                                            const OutlineInputBorder(
                                                           borderSide:
                                                               BorderSide(
                                                                   width: 3,
@@ -773,7 +765,114 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           BatchNameController,
                                                     ),
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Card(
+                                                    elevation: 20,
+                                                    child: Container(
+                                                      width: 200,
+                                                      child:
+                                                          DropdownButtonHideUnderline(
+                                                        child: DropdownButton2<
+                                                            String>(
+                                                          isExpanded: true,
+                                                          hint: Text(
+                                                            'Select Academy Name',
+                                                            style: TextStyle(
+                                                              fontSize: 14,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .hintColor,
+                                                            ),
+                                                          ),
+                                                          items: TeachersAcademy
+                                                              .map((String
+                                                                      item) =>
+                                                                  DropdownMenuItem<
+                                                                      String>(
+                                                                    value: item,
+                                                                    child: Text(
+                                                                      item,
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        fontSize:
+                                                                            14,
+                                                                      ),
+                                                                    ),
+                                                                  )).toList(),
+                                                          value:
+                                                              selectedTeachersAcademyValue,
+                                                          onChanged:
+                                                              (String? value) {
+                                                            setState(() {
+                                                              selectedTeachersAcademyValue =
+                                                                  value;
+                                                            });
+                                                          },
+                                                          buttonStyleData:
+                                                              const ButtonStyleData(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        16),
+                                                            height: 40,
+                                                            width: 140,
+                                                          ),
+                                                          menuItemStyleData:
+                                                              const MenuItemStyleData(
+                                                            height: 40,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+
+                                                                Card(
+                                                              elevation: 20,
+                                                              child: Container(
+                                                                width: 200,
+                                                                child: DropdownButtonHideUnderline(
+                                                                  child: DropdownButton2<String>(
+                                                                    isExpanded: true,
+                                                                    hint: Text(
+                                                                      'Select HSC Batch Year',
+                                                                      style: TextStyle(
+                                                                        fontSize: 14,
+                                                                        color: Theme.of(context).hintColor,
+                                                                      ),
+                                                                    ),
+                                                                    items: HSCBatchYear.map(
+                                                                        (String item) => DropdownMenuItem<String>(
+                                                                              value: item,
+                                                                              child: Text(
+                                                                                item,
+                                                                                style: const TextStyle(
+                                                                                  fontSize: 14,
+                                                                                ),
+                                                                              ),
+                                                                            )).toList(),
+                                                                    value: HSCBatchYearValue,
+                                                                    onChanged: (String? value) {
+                                                                      setState(() {
+                                                                        HSCBatchYearValue = value;
+
+                                                                    
+                                                                      });
+                                                                    },
+                                                                    buttonStyleData: const ButtonStyleData(
+                                                                      padding: EdgeInsets.symmetric(horizontal: 16),
+                                                                      height: 40,
+                                                                      width: 140,
+                                                                    ),
+                                                                    menuItemStyleData: const MenuItemStyleData(
+                                                                      height: 40,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                  const SizedBox(
                                                     height: 20,
                                                   ),
                                                   Container(
@@ -787,10 +886,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         border:
                                                             OutlineInputBorder(),
                                                         labelText:
-                                                            'Batch Description',
+                                                            'Batch Running Topics',
 
                                                         hintText:
-                                                            'Batch Description',
+                                                            'Batch Running Topics',
 
                                                         //  enabledBorder: OutlineInputBorder(
                                                         //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
@@ -820,7 +919,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           BatchDescriptionController,
                                                     ),
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     height: 20,
                                                   ),
                                                   Container(
@@ -851,7 +950,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   .primaryColor),
                                                         ),
                                                         errorBorder:
-                                                            OutlineInputBorder(
+                                                            const OutlineInputBorder(
                                                           borderSide:
                                                               BorderSide(
                                                                   width: 3,
@@ -894,19 +993,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                       states) {
                                                                     if (states.contains(
                                                                         WidgetState
-                                                                            .hovered))
+                                                                            .hovered)) {
                                                                       return Colors
                                                                           .blue
                                                                           .withOpacity(
                                                                               0.04);
+                                                                    }
                                                                     if (states.contains(WidgetState
                                                                             .focused) ||
                                                                         states.contains(
-                                                                            WidgetState.pressed))
+                                                                            WidgetState.pressed)) {
                                                                       return Colors
                                                                           .blue
                                                                           .withOpacity(
                                                                               0.12);
+                                                                    }
                                                                     return null; // Defer to the widget's default.
                                                                   },
                                                                 ),
@@ -919,7 +1020,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   context:
                                                                       context,
                                                                   initialTime:
-                                                                      TimeOfDay(
+                                                                      const TimeOfDay(
                                                                           hour:
                                                                               7,
                                                                           minute:
@@ -931,19 +1032,23 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                                                 setState(() {
                                                                   ClassStartHour =
-                                                                      newTime
-                                                                          !.hour.toString();
+                                                                      newTime!
+                                                                          .hour
+                                                                          .toString();
                                                                   ClassStartMinute =
-                                                                      newTime.minute.toString();
+                                                                      newTime
+                                                                          .minute
+                                                                          .toString();
                                                                 });
                                                               },
-                                                              child: Text(
+                                                              child: const Text(
                                                                   'Start Time'))
                                                         ],
                                                       ),
                                                       Row(
                                                         children: [
-                                                          Text("Class End: "),
+                                                          const Text(
+                                                              "Class End: "),
                                                           TextButton(
                                                               style:
                                                                   ButtonStyle(
@@ -960,34 +1065,34 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                       states) {
                                                                     if (states.contains(
                                                                         WidgetState
-                                                                            .hovered))
+                                                                            .hovered)) {
                                                                       return Colors
                                                                           .blue
                                                                           .withOpacity(
                                                                               0.04);
+                                                                    }
                                                                     if (states.contains(WidgetState
                                                                             .focused) ||
                                                                         states.contains(
-                                                                            WidgetState.pressed))
+                                                                            WidgetState.pressed)) {
                                                                       return Colors
                                                                           .blue
                                                                           .withOpacity(
                                                                               0.12);
+                                                                    }
                                                                     return null; // Defer to the widget's default.
                                                                   },
                                                                 ),
                                                               ),
-                                                              onPressed: () async{
-
-
-
+                                                              onPressed:
+                                                                  () async {
                                                                 final TimeOfDay?
                                                                     newTime =
                                                                     await showTimePicker(
                                                                   context:
                                                                       context,
                                                                   initialTime:
-                                                                      TimeOfDay(
+                                                                      const TimeOfDay(
                                                                           hour:
                                                                               7,
                                                                           minute:
@@ -999,17 +1104,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                                                 setState(() {
                                                                   ClassEndHour =
-                                                                      newTime
-                                                                          !.hour.toString();
+                                                                      newTime!
+                                                                          .hour
+                                                                          .toString();
                                                                   ClassEndMinute =
-                                                                      newTime.minute.toString();
+                                                                      newTime
+                                                                          .minute
+                                                                          .toString();
                                                                 });
-
-
-
-
                                                               },
-                                                              child: Text(
+                                                              child: const Text(
                                                                   'Start End'))
                                                         ],
                                                       ),
@@ -1033,29 +1137,31 @@ class _HomeScreenState extends State<HomeScreen> {
                                               loading = true;
                                             });
 
-                                            var id = getRandomString(7);
+                                            
 
                                             var updateData = {
                                               "BatchName": BatchNameController
                                                   .text
                                                   .trim()
                                                   .toString(),
-                                              "BatchDescription":
+                                              "BatchRunningTopics":
                                                   BatchDescriptionController
                                                       .text
                                                       .trim()
                                                       .toString(),
+                                              "HSCBatchYear":HSCBatchYearValue,
                                               "PerStudentFee":
                                                   PerStudentFeeController.text
                                                       .trim()
                                                       .toString(),
-                                              "TeacherID": TeacherIDController
-                                                  .text
-                                                  .trim(),
-                                              "ClassStartHour":ClassStartHour,
-                                              "ClassStartMinute":ClassStartMinute,
-                                              "ClassEndHour":ClassEndHour,
-                                              "ClassEndMinute":ClassEndMinute,
+                                              "TeacherAcademyName":
+                                                  selectedTeachersAcademyValue,
+                                              "BatchOldTopics": [],
+                                              "ClassStartHour": ClassStartHour,
+                                              "ClassStartMinute":
+                                                  ClassStartMinute,
+                                              "ClassEndHour": ClassEndHour,
+                                              "ClassEndMinute": ClassEndMinute,
                                               "year": "${DateTime.now().year}",
                                               "month":
                                                   "${DateTime.now().month}/${DateTime.now().year}",
@@ -1067,10 +1173,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                             final StudentInfo =
                                                 FirebaseFirestore.instance
-                                                    .collection('AllBatchInfo')
-                                                    .doc(ProductUniqueID);
+                                                    .collection('AllBatchInfo');
 
-                                            StudentInfo.set(updateData)
+                                            StudentInfo.add(updateData)
                                                 .then((value) => setState(() {
                                                       // Navigator.pop(context);
 
@@ -1357,7 +1462,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         headingTextStyle: const TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.white),
                         columnSpacing: 12,
-                        headingRowColor: const WidgetStatePropertyAll(Colors.pink),
+                        headingRowColor:
+                            const WidgetStatePropertyAll(Colors.pink),
                         horizontalMargin: 12,
                         minWidth: 600,
                         dividerThickness: 3,
@@ -1365,23 +1471,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         columns: const [
                           DataColumn2(
                             label: Text('SL'),
-                            
                           ),
                           DataColumn2(
                             label: Text('Student ID'),
-                            
                           ),
-
                           DataColumn2(
                             label: Text('Payment Status'),
-                            
                           ),
-
                           DataColumn2(
                             label: Text('Due Amount'),
-                            
                           ),
-
                           DataColumn(
                             label: Text('Student Name'),
                           ),
@@ -1391,12 +1490,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           DataColumn2(
                             label: Text('Institution Name'),
                             size: ColumnSize.L,
-                            
                           ),
                           DataColumn2(
-                            label: Text('Father Phone No'),
-                            fixedWidth: 170
-                          ),
+                              label: Text('Father Phone No'), fixedWidth: 170),
                           DataColumn(
                             label: Text('Pay'),
                             // numeric: true,
@@ -1429,26 +1525,46 @@ class _HomeScreenState extends State<HomeScreen> {
                                       .toUpperCase())),
 
                                   DataCell(AllStudentInfo[index]
-                                          ["PaymentStatus"]
-                                      .toString()
-                                      .toUpperCase()=="DUE"?Text(AllStudentInfo[index]
-                                          ["PaymentStatus"]
-                                      .toString()
-                                      .toUpperCase(), style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),):Text(AllStudentInfo[index]
-                                          ["PaymentStatus"]
-                                      .toString()
-                                      .toUpperCase(),style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),)),
-                                  
+                                                  ["PaymentStatus"]
+                                              .toString()
+                                              .toUpperCase() ==
+                                          "DUE"
+                                      ? Text(
+                                          AllStudentInfo[index]["PaymentStatus"]
+                                              .toString()
+                                              .toUpperCase(),
+                                          style: const TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      : Text(
+                                          AllStudentInfo[index]["PaymentStatus"]
+                                              .toString()
+                                              .toUpperCase(),
+                                          style: const TextStyle(
+                                              color: Colors.green,
+                                              fontWeight: FontWeight.bold),
+                                        )),
+
                                   DataCell(AllStudentInfo[index]
-                                          ["PaymentStatus"]
-                                      .toString()
-                                      .toUpperCase()=="DUE"?Text("${AllStudentInfo[index]
-                                          ["DueAmount"]
-                                      .toString()
-                                      .toUpperCase()}৳", style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 22),):Text("${AllStudentInfo[index]
-                                          ["DueAmount"]
-                                      .toString()
-                                      .toUpperCase()}৳",style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold, fontSize: 22),)),
+                                                  ["PaymentStatus"]
+                                              .toString()
+                                              .toUpperCase() ==
+                                          "DUE"
+                                      ? Text(
+                                          "${AllStudentInfo[index]["DueAmount"].toString().toUpperCase()}৳",
+                                          style: const TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 22),
+                                        )
+                                      : Text(
+                                          "${AllStudentInfo[index]["DueAmount"].toString().toUpperCase()}৳",
+                                          style: const TextStyle(
+                                              color: Colors.green,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 22),
+                                        )),
 
                                   DataCell(Text(AllStudentInfo[index]
                                           ["StudentName"]
@@ -1466,15 +1582,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                   DataCell(ElevatedButton(
                                       onPressed: () {
-
-
-                              
-
-                                    showDialog(
+                                        showDialog(
                                           context: context,
                                           builder: (context) {
-                                            String Title =
-                                                "Payment যুক্ত করুন";
+                                            String Title = "Payment যুক্ত করুন";
 
                                             bool loading = false;
                                             bool DiscountAvailable = false;
@@ -1507,19 +1618,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       : SingleChildScrollView(
                                                           child: Column(
                                                             children: <Widget>[
-
-
-                                                              
                                                               const SizedBox(
                                                                   height: 10),
-
-
                                                               SizedBox(
                                                                 width: 300,
                                                                 child:
                                                                     TextField(
-                                                                  readOnly: true,
-                                                                  
+                                                                  readOnly:
+                                                                      true,
                                                                   onChanged:
                                                                       (value) {},
                                                                   keyboardType:
@@ -1562,24 +1668,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                       StudentIDController,
                                                                 ),
                                                               ),
-
-
-
                                                               const SizedBox(
                                                                 height: 20,
                                                               ),
-
-
-
-
                                                               SizedBox(
                                                                 width: 300,
                                                                 child:
-                                                                    
-                                                                    
                                                                     TextField(
-                                                                  readOnly: true,
-                                                                  
+                                                                  readOnly:
+                                                                      true,
                                                                   onChanged:
                                                                       (value) {},
                                                                   keyboardType:
@@ -1622,23 +1719,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                       StudentNameController,
                                                                 ),
                                                               ),
-
-                                                          
-
-                                                          const SizedBox(
+                                                              const SizedBox(
                                                                 height: 20,
                                                               ),
-
-
-                                                      
-                                                      SizedBox(
+                                                              SizedBox(
                                                                 width: 300,
                                                                 child:
-                                                                    
-                                                                    
                                                                     TextField(
-                                                                  readOnly: true,
-                                                                  
+                                                                  readOnly:
+                                                                      true,
                                                                   onChanged:
                                                                       (value) {},
                                                                   keyboardType:
@@ -1681,15 +1770,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                       StudentNameController,
                                                                 ),
                                                               ),
-
-                                                          
-
-                                                          const SizedBox(
+                                                              const SizedBox(
                                                                 height: 20,
                                                               ),
-
-                                                      
-                                                      CheckboxListTile(
+                                                              CheckboxListTile(
                                                                 title: const Text(
                                                                     "Discount Available?",
                                                                     style: TextStyle(
@@ -1713,17 +1797,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                     ListTileControlAffinity
                                                                         .leading, //  <-- leading Checkbox
                                                               ),
-
                                                               const SizedBox(
                                                                 height: 20,
                                                               ),
-
-
-
-
-
-
-
                                                             ],
                                                           ),
                                                         ),
@@ -1889,14 +1965,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             );
                                           },
                                         );
-
-
-
-
-
-
-
-                                      }, child: Text("Pay"))),
+                                      },
+                                      child: Text("Pay"))),
 
                                   DataCell(ElevatedButton(
                                       onPressed: () {

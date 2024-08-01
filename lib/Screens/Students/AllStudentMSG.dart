@@ -104,79 +104,109 @@ class _AllStudentMSGState extends State<AllStudentMSG> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                                color: Color.fromARGB(255, 245, 201, 42),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "আপনার সকল স্টুডেন্টের প্রতি SMS পাঠান",
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                )),
+                            Center(
+                              child: Container(
+                                  color: Color.fromARGB(255, 245, 201, 42),
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "আপনার সকল স্টুডেন্টের প্রতি SMS পাঠান",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  )),
+                            ),
                             const SizedBox(
                               height: 15,
                             ),
                             SizedBox(
                               height: 5,
                             ),
-                            TextField(
-                              minLines: 2,
-                              expands: true,
-                              keyboardType: TextInputType.multiline,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Enter SMS',
 
-                                hintText: 'Enter SMS',
 
-                                //  enabledBorder: OutlineInputBorder(
-                                //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                //     ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 3,
-                                      color: Theme.of(context).primaryColor),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 3,
-                                      color: Color.fromARGB(255, 66, 125, 145)),
-                                ),
+                            Center(
+                              child: SizedBox(
+                                width: 500,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: [
+                              
+                              
+                                      SizedBox(
+                                        width: 400,
+                                        child: TextField(
+                                        
+                                          maxLines: 10,
+                                        
+                                                           
+                                          decoration: InputDecoration(
+                                            border: OutlineInputBorder(),
+                                            labelText: 'Enter SMS',
+                                        
+                                            hintText: 'Enter SMS',
+                                        
+                                            //  enabledBorder: OutlineInputBorder(
+                                            //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                            //     ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  width: 3,
+                                                  color: Theme.of(context).primaryColor),
+                                            ),
+                                            errorBorder: const OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  width: 3,
+                                                  color: Color.fromARGB(255, 66, 125, 145)),
+                                            ),
+                                          ),
+                                          controller: SMSController,
+                                        ),
+                                      ),
+                              
+                              
+                              
+                            const SizedBox(
+                                height: 15,
                               ),
-                              controller: SMSController,
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 150,
-                                  child: TextButton(
-                                    onPressed: () async {
-                                      setState(() {
-                                        loading = true;
-                                      });
-
-                                      sendSMS(SMSController.text.trim());
-                                    },
-                                    child: Text(
-                                      "Send",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStatePropertyAll<Color>(
-                                              Theme.of(context).primaryColor),
+                              Row(
+                              
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Container(
+                                    width: 150,
+                                    child: TextButton(
+                                      onPressed: () async {
+                                        setState(() {
+                                          loading = true;
+                                        });
+                              
+                                        sendSMS(SMSController.text.trim());
+                                      },
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStatePropertyAll<Color>(
+                                                Theme.of(context).primaryColor),
+                                      ),
+                                      child: const Text(
+                                        "Send",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
                                     ),
                                   ),
+                                ],
+                              )
+                              
+                              
+                              
+                                    ],
+                                  ),
                                 ),
-                              ],
-                            )
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+
                           ],
                         ),
                       ),

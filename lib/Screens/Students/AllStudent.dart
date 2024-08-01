@@ -114,7 +114,7 @@ class _AllStudentInfoState extends State<AllStudentInfo> {
         FirebaseFirestore.instance.collection('StudentInfo');
 
     Query StudentInfoquery = _collectionStudentInfoRef.where("HSCBatchYear",
-        isEqualTo: HSCBatchYear);
+        isEqualTo: HSCBatchYear).where("AccountStatus", isEqualTo: "Open");
 
     QuerySnapshot StudentInfoquerySnapshot = await StudentInfoquery.get();
 
@@ -148,7 +148,7 @@ class _AllStudentInfoState extends State<AllStudentInfo> {
         FirebaseFirestore.instance.collection('StudentInfo');
 
     Query StudentInfoquery = _collectionStudentInfoRef.where("SSCBatchYear",
-        isEqualTo: SSCBatchYear);
+        isEqualTo: SSCBatchYear).where("AccountStatus", isEqualTo: "Open");
 
     QuerySnapshot StudentInfoquerySnapshot = await StudentInfoquery.get();
 
