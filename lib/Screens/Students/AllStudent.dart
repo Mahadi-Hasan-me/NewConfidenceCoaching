@@ -1,7 +1,9 @@
 import 'dart:math';
+import 'package:confidence/Screens/Students/AllStudentMSG.dart';
 import 'package:confidence/Screens/Students/FatherOTPPage.dart';
 import 'package:confidence/Screens/Students/StudentOTPPage.dart';
 import 'package:confidence/Screens/important.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:http/http.dart' as http;
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -27,6 +29,37 @@ class _AllStudentInfoState extends State<AllStudentInfo> {
   // TextEditingController StudentOTPController = TextEditingController();
 
   bool loading = false;
+
+  final List<String> HSCBatchYear = [
+    '2024',
+    '2025',
+    '2026',
+    '2027',
+    '2028',
+    '2029',
+    '2030',
+    '2031',
+    '2032',
+    '2033',
+  ];
+  String? HSCBatchYearValue;
+
+  final List<String> SSCBatchYear = [
+    '2021',
+    '2022',
+    '2023',
+    '2024',
+    '2025',
+    '2026',
+    '2027',
+    '2028',
+    '2029',
+    '2030',
+    '2031',
+    '2032',
+    '2033',
+  ];
+  String? SSCBatchYearValue;
 
 // bool resend = false;
 
@@ -71,6 +104,74 @@ class _AllStudentInfoState extends State<AllStudentInfo> {
     // print(AllData);
   }
 
+// HSC Student Information
+  Future<void> getHSCStudentInfo(String HSCBatchYear) async {
+    setState(() {
+      loading = true;
+    });
+
+    CollectionReference _collectionStudentInfoRef =
+        FirebaseFirestore.instance.collection('StudentInfo');
+
+    Query StudentInfoquery = _collectionStudentInfoRef.where("HSCBatchYear",
+        isEqualTo: HSCBatchYear);
+
+    QuerySnapshot StudentInfoquerySnapshot = await StudentInfoquery.get();
+
+    // Get data from docs and convert map to List
+    setState(() {
+      AllStudentInfo = [];
+    });
+    AllStudentInfo =
+        StudentInfoquerySnapshot.docs.map((doc) => doc.data()).toList();
+
+    setState(() {
+      AllStudentInfo =
+          StudentInfoquerySnapshot.docs.map((doc) => doc.data()).toList();
+      // SearchByStudentIDController.clear();
+    });
+
+    setState(() {
+      loading = false;
+    });
+
+    // print(AllData);
+  }
+
+  // HSC Student Information
+  Future<void> getSSCStudentInfo(String SSCBatchYear) async {
+    setState(() {
+      loading = true;
+    });
+
+    CollectionReference _collectionStudentInfoRef =
+        FirebaseFirestore.instance.collection('StudentInfo');
+
+    Query StudentInfoquery = _collectionStudentInfoRef.where("SSCBatchYear",
+        isEqualTo: SSCBatchYear);
+
+    QuerySnapshot StudentInfoquerySnapshot = await StudentInfoquery.get();
+
+    // Get data from docs and convert map to List
+    setState(() {
+      AllStudentInfo = [];
+    });
+    AllStudentInfo =
+        StudentInfoquerySnapshot.docs.map((doc) => doc.data()).toList();
+
+    setState(() {
+      AllStudentInfo =
+          StudentInfoquerySnapshot.docs.map((doc) => doc.data()).toList();
+      // SearchByStudentIDController.clear();
+    });
+
+    setState(() {
+      loading = false;
+    });
+
+    // print(AllData);
+  }
+
   @override
   void initState() {
     getStudentInfo();
@@ -91,10 +192,135 @@ class _AllStudentInfoState extends State<AllStudentInfo> {
           leading: IconButton(
               onPressed: () => Navigator.of(context).pop(),
               icon: Icon(Icons.chevron_left)),
-          title: const Text(
-            "All Student Information",
-            style: TextStyle(
-                color: Colors.black, fontWeight: FontWeight.bold, fontSize: 17),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+
+
+              Row(
+                children: [
+
+                  ElevatedButton(onPressed: (){
+
+
+                                   Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) => AllStudentMSG(AllStudentInfo: AllStudentInfo)),
+                                            );
+
+
+
+                  }, child: Text("Send SMS"))
+
+                ],
+              ),
+     
+     
+     
+    
+    
+     Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+                 const Text(
+                "All Student Information",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17),
+              ),
+              Card(
+                elevation: 20,
+                child: Container(
+                  width: 200,
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton2<String>(
+                      isExpanded: true,
+                      hint: Text(
+                        'Select HSC Batch Year',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Theme.of(context).hintColor,
+                        ),
+                      ),
+                      items: HSCBatchYear.map(
+                          (String item) => DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              )).toList(),
+                      value: HSCBatchYearValue,
+                      onChanged: (String? value) {
+                        setState(() {
+                          HSCBatchYearValue = value;
+
+                          getHSCStudentInfo(HSCBatchYearValue!);
+                        });
+                      },
+                      buttonStyleData: const ButtonStyleData(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        height: 40,
+                        width: 140,
+                      ),
+                      menuItemStyleData: const MenuItemStyleData(
+                        height: 40,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Card(
+                elevation: 20,
+                child: Container(
+                  width: 200,
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton2<String>(
+                      isExpanded: true,
+                      hint: Text(
+                        'Select SSC Batch Year',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Theme.of(context).hintColor,
+                        ),
+                      ),
+                      items: SSCBatchYear.map(
+                          (String item) => DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              )).toList(),
+                      value: SSCBatchYearValue,
+                      onChanged: (String? value) {
+                        setState(() {
+                          SSCBatchYearValue = value;
+
+                          getSSCStudentInfo(SSCBatchYearValue!);
+                        });
+                      },
+                      buttonStyleData: const ButtonStyleData(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        height: 40,
+                        width: 140,
+                      ),
+                      menuItemStyleData: const MenuItemStyleData(
+                        height: 40,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+      ],
+     )
+            ],
           ),
           backgroundColor: Colors.transparent,
           bottomOpacity: 0.0,
@@ -278,408 +504,432 @@ class _AllStudentInfoState extends State<AllStudentInfo> {
                                       '${AllStudentInfo[index]["StudentPermanentAddress"]}')),
                                   DataCell(Text(
                                       '${AllStudentInfo[index]["AdmissionDateTime"]}')),
-                                  
-                                  AllStudentInfo[index]["StudentPhoneVerify"]=="false"?DataCell(ElevatedButton(
-                                    onPressed: () {
-                                       Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(builder: (context) => StudentOTPPage(StudentPhoneNumber: AllStudentInfo[index]["StudentPhoneNumber"], SIDNo: AllStudentInfo[index]["SIDNo"])),
-                                                  );
-                                    },
-                                    child: Text("Verify"),
-                                  )):const DataCell(Text("Verified", style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),)),
+                                  AllStudentInfo[index]["StudentPhoneVerify"] ==
+                                          "false"
+                                      ? DataCell(ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      StudentOTPPage(
+                                                          StudentPhoneNumber:
+                                                              AllStudentInfo[
+                                                                      index][
+                                                                  "StudentPhoneNumber"],
+                                                          SIDNo: AllStudentInfo[
+                                                              index]["SIDNo"])),
+                                            );
+                                          },
+                                          child: const Text("Verify"),
+                                        ))
+                                      : const DataCell(Text(
+                                          "Verified",
+                                          style: TextStyle(
+                                              color: Colors.green,
+                                              fontWeight: FontWeight.bold),
+                                        )),
+                                  AllStudentInfo[index]["FatherPhoneVerify"] ==
+                                          "false"
+                                      ? DataCell(ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      FatherOTPPage(
+                                                          FatherPhoneNumber:
+                                                              AllStudentInfo[
+                                                                      index][
+                                                                  "FatherPhoneNo"],
+                                                          SIDNo: AllStudentInfo[
+                                                              index]["SIDNo"])),
+                                            );
+                                          },
+                                          child: Text("Verify"),
+                                        ))
+                                      : const DataCell(Text(
+                                          "Verified",
+                                          style: TextStyle(
+                                              color: Colors.green,
+                                              fontWeight: FontWeight.bold),
+                                        )),
+                                  AllStudentInfo[index]["AccountStatus"] ==
+                                          "open"
+                                      ? DataCell(ElevatedButton(
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                String Title =
+                                                    "Are you sure!! Do You want to change this status?";
 
+                                                bool loading = false;
 
-                                AllStudentInfo[index]["FatherPhoneVerify"]=="false"?DataCell(ElevatedButton(
-                                    onPressed: () {
+                                                // String LabelText ="আয়ের খাত লিখবেন";
 
-                                      Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(builder: (context) => FatherOTPPage(FatherPhoneNumber: AllStudentInfo[index]["FatherPhoneNo"], SIDNo: AllStudentInfo[index]["SIDNo"])),
-                                                  );
-                                    },
-                                    child: Text("Verify"),
-                                  )):const DataCell(Text("Verified", style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),)),
-
-
-
-                                  
-                            AllStudentInfo[index]["AccountStatus"]=="open"?
-
-
-                                  DataCell(ElevatedButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          String Title =
-                                              "Are you sure!! Do You want to change this status?";
-
-                                          bool loading = false;
-
-                                          // String LabelText ="আয়ের খাত লিখবেন";
-
-                                          return StatefulBuilder(
-                                            builder: (context, setState) {
-                                              return AlertDialog(
-                                                title: Column(
-                                                  children: [
-                                                    Center(
-                                                      child: Text(
-                                                        Title,
-                                                        style: const TextStyle(
-                                                            fontFamily:
-                                                                "Josefin Sans",
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
+                                                return StatefulBuilder(
+                                                  builder: (context, setState) {
+                                                    return AlertDialog(
+                                                      title: Column(
+                                                        children: [
+                                                          Center(
+                                                            child: Text(
+                                                              Title,
+                                                              style: const TextStyle(
+                                                                  fontFamily:
+                                                                      "Josefin Sans",
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                content: loading
-                                                    ? const Center(
-                                                        child:
-                                                            CircularProgressIndicator(),
-                                                      )
-                                                    : const SingleChildScrollView(
-                                                        child: Column(
-                                                          children: [
-                                                            SizedBox(
-                                                                height: 10),
-                                                            const Center(
-                                                              child: Text(
-                                                                "আপনি Student Status Change করতে নিচে থাকা Button Click করেন। যদি Cancel করতে চান তবে Cancel Button এ Click করুন ",
-                                                                style: TextStyle(
-                                                                    fontFamily:
-                                                                        "Josefin Sans",
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
+                                                      content: loading
+                                                          ? const Center(
+                                                              child:
+                                                                  CircularProgressIndicator(),
+                                                            )
+                                                          : const SingleChildScrollView(
+                                                              child: Column(
+                                                                children: [
+                                                                  SizedBox(
+                                                                      height:
+                                                                          10),
+                                                                  const Center(
+                                                                    child: Text(
+                                                                      "আপনি Student Status Change করতে নিচে থাকা Button Click করেন। যদি Cancel করতে চান তবে Cancel Button এ Click করুন ",
+                                                                      style: TextStyle(
+                                                                          fontFamily:
+                                                                              "Josefin Sans",
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    ),
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 20,
+                                                                  ),
+                                                                ],
                                                               ),
                                                             ),
-                                                            SizedBox(
-                                                              height: 20,
-                                                            ),
-                                                          ],
+                                                      actions: <Widget>[
+                                                        TextButton(
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  context),
+                                                          child: Text("Cancel"),
                                                         ),
+                                                        ElevatedButton(
+                                                          onPressed: () async {
+                                                            setState(() {
+                                                              loading = true;
+                                                            });
+
+                                                            var StudentStatus =
+                                                                {
+                                                              "AccountStatus":
+                                                                  "close"
+                                                            };
+
+                                                            final ClassOffSMS =
+                                                                FirebaseFirestore
+                                                                    .instance
+                                                                    .collection(
+                                                                        'StudentInfo')
+                                                                    .doc(AllStudentInfo[
+                                                                            index]
+                                                                        [
+                                                                        "SIDNo"]);
+
+                                                            ClassOffSMS.update(
+                                                                    StudentStatus)
+                                                                .then((value) =>
+                                                                    setState(
+                                                                        () async {
+                                                                      // Navigator.pop(context);
+
+                                                                      // getProductInfo();
+
+                                                                      getStudentInfo();
+
+                                                                      Navigator.pop(
+                                                                          context);
+
+                                                                      final snackBar =
+                                                                          SnackBar(
+                                                                        elevation:
+                                                                            0,
+                                                                        behavior:
+                                                                            SnackBarBehavior.floating,
+                                                                        backgroundColor:
+                                                                            Colors.transparent,
+                                                                        content:
+                                                                            AwesomeSnackbarContent(
+                                                                          titleFontSize:
+                                                                              12,
+                                                                          title:
+                                                                              'successfull',
+                                                                          message:
+                                                                              'Hey Thank You. Good Job',
+
+                                                                          /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                          contentType:
+                                                                              ContentType.success,
+                                                                        ),
+                                                                      );
+
+                                                                      ScaffoldMessenger.of(
+                                                                          context)
+                                                                        ..hideCurrentSnackBar()
+                                                                        ..showSnackBar(
+                                                                            snackBar);
+
+                                                                      setState(
+                                                                          () {
+                                                                        loading =
+                                                                            false;
+                                                                      });
+                                                                    }))
+                                                                .onError((error,
+                                                                        stackTrace) =>
+                                                                    setState(
+                                                                        () {
+                                                                      final snackBar =
+                                                                          SnackBar(
+                                                                        /// need to set following properties for best effect of awesome_snackbar_content
+                                                                        elevation:
+                                                                            0,
+
+                                                                        behavior:
+                                                                            SnackBarBehavior.floating,
+                                                                        backgroundColor:
+                                                                            Colors.transparent,
+                                                                        content:
+                                                                            AwesomeSnackbarContent(
+                                                                          title:
+                                                                              'Something Wrong!!!!',
+                                                                          message:
+                                                                              'Try again later...',
+
+                                                                          /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                          contentType:
+                                                                              ContentType.failure,
+                                                                        ),
+                                                                      );
+
+                                                                      ScaffoldMessenger.of(
+                                                                          context)
+                                                                        ..hideCurrentSnackBar()
+                                                                        ..showSnackBar(
+                                                                            snackBar);
+
+                                                                      setState(
+                                                                          () {
+                                                                        loading =
+                                                                            false;
+                                                                      });
+                                                                    }));
+                                                          },
+                                                          child: const Text(
+                                                              "Change"),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                            );
+                                          },
+                                          child: Text("Close"),
+                                        ))
+                                      : DataCell(ElevatedButton(
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                String Title =
+                                                    "Are you sure!! Do You want to change this status?";
+
+                                                bool loading = false;
+
+                                                // String LabelText ="আয়ের খাত লিখবেন";
+
+                                                return StatefulBuilder(
+                                                  builder: (context, setState) {
+                                                    return AlertDialog(
+                                                      title: Column(
+                                                        children: [
+                                                          Center(
+                                                            child: Text(
+                                                              Title,
+                                                              style: const TextStyle(
+                                                                  fontFamily:
+                                                                      "Josefin Sans",
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
-                                                actions: <Widget>[
-                                                  TextButton(
-                                                    onPressed: () =>
-                                                        Navigator.pop(context),
-                                                    child: Text("Cancel"),
-                                                  ),
-                                                  ElevatedButton(
-                                                    onPressed: () async {
-                                                      setState(() {
-                                                        loading = true;
-                                                      });
-
-                                                      var StudentStatus = {
-                                                        "AccountStatus": "close"
-                                                      };
-
-                                                      final ClassOffSMS =
-                                                          FirebaseFirestore
-                                                              .instance
-                                                              .collection(
-                                                                  'StudentInfo')
-                                                              .doc(
-                                                                  AllStudentInfo[
-                                                                          index]
-                                                                      [
-                                                                      "SIDNo"]);
-
-                                                      ClassOffSMS.update(
-                                                              StudentStatus)
-                                                          .then((value) =>
-                                                              setState(
-                                                                  () async {
-                                                                
-
-                                                                // Navigator.pop(context);
-
-                                                                // getProductInfo();
-
-                                                                getStudentInfo();
-
-                                                                Navigator.pop(
-                                                                    context);
-
-                                                                final snackBar =
-                                                                    SnackBar(
-                                                                  elevation: 0,
-                                                                  behavior:
-                                                                      SnackBarBehavior
-                                                                          .floating,
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .transparent,
-                                                                  content:
-                                                                      AwesomeSnackbarContent(
-                                                                    titleFontSize:
-                                                                        12,
-                                                                    title:
-                                                                        'successfull',
-                                                                    message:
-                                                                        'Hey Thank You. Good Job',
-
-                                                                    /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                                    contentType:
-                                                                        ContentType
-                                                                            .success,
+                                                      content: loading
+                                                          ? const Center(
+                                                              child:
+                                                                  CircularProgressIndicator(),
+                                                            )
+                                                          : const SingleChildScrollView(
+                                                              child: Column(
+                                                                children: [
+                                                                  SizedBox(
+                                                                      height:
+                                                                          10),
+                                                                  const Center(
+                                                                    child: Text(
+                                                                      "আপনি Student Status Change করতে নিচে থাকা Button Click করেন। যদি Cancel করতে চান তবে Cancel Button এ Click করুন ",
+                                                                      style: TextStyle(
+                                                                          fontFamily:
+                                                                              "Josefin Sans",
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    ),
                                                                   ),
-                                                                );
-
-                                                                ScaffoldMessenger
-                                                                    .of(context)
-                                                                  ..hideCurrentSnackBar()
-                                                                  ..showSnackBar(
-                                                                      snackBar);
-
-                                                                setState(() {
-                                                                  loading =
-                                                                      false;
-                                                                });
-                                                              }))
-                                                          .onError((error,
-                                                                  stackTrace) =>
-                                                              setState(() {
-                                                                final snackBar =
-                                                                    SnackBar(
-                                                                  /// need to set following properties for best effect of awesome_snackbar_content
-                                                                  elevation: 0,
-
-                                                                  behavior:
-                                                                      SnackBarBehavior
-                                                                          .floating,
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .transparent,
-                                                                  content:
-                                                                      AwesomeSnackbarContent(
-                                                                    title:
-                                                                        'Something Wrong!!!!',
-                                                                    message:
-                                                                        'Try again later...',
-
-                                                                    /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                                    contentType:
-                                                                        ContentType
-                                                                            .failure,
+                                                                  SizedBox(
+                                                                    height: 20,
                                                                   ),
-                                                                );
-
-                                                                ScaffoldMessenger
-                                                                    .of(context)
-                                                                  ..hideCurrentSnackBar()
-                                                                  ..showSnackBar(
-                                                                      snackBar);
-
-                                                                setState(() {
-                                                                  loading =
-                                                                      false;
-                                                                });
-                                                              }));
-                                                    },
-                                                    child: const Text("Change"),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        },
-                                      );
-                                    },
-                                    child: Text("Close"),
-                                  )):DataCell(ElevatedButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          String Title =
-                                              "Are you sure!! Do You want to change this status?";
-
-                                          bool loading = false;
-
-                                          // String LabelText ="আয়ের খাত লিখবেন";
-
-                                          return StatefulBuilder(
-                                            builder: (context, setState) {
-                                              return AlertDialog(
-                                                title: Column(
-                                                  children: [
-                                                    Center(
-                                                      child: Text(
-                                                        Title,
-                                                        style: const TextStyle(
-                                                            fontFamily:
-                                                                "Josefin Sans",
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                content: loading
-                                                    ? const Center(
-                                                        child:
-                                                            CircularProgressIndicator(),
-                                                      )
-                                                    : const SingleChildScrollView(
-                                                        child: Column(
-                                                          children: [
-                                                            SizedBox(
-                                                                height: 10),
-                                                            const Center(
-                                                              child: Text(
-                                                                "আপনি Student Status Change করতে নিচে থাকা Button Click করেন। যদি Cancel করতে চান তবে Cancel Button এ Click করুন ",
-                                                                style: TextStyle(
-                                                                    fontFamily:
-                                                                        "Josefin Sans",
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
+                                                                ],
                                                               ),
                                                             ),
-                                                            SizedBox(
-                                                              height: 20,
-                                                            ),
-                                                          ],
+                                                      actions: <Widget>[
+                                                        TextButton(
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  context),
+                                                          child: Text("Cancel"),
                                                         ),
-                                                      ),
-                                                actions: <Widget>[
-                                                  TextButton(
-                                                    onPressed: () =>
-                                                        Navigator.pop(context),
-                                                    child: Text("Cancel"),
-                                                  ),
-                                                  ElevatedButton(
-                                                    onPressed: () async {
-                                                      setState(() {
-                                                        loading = true;
-                                                      });
+                                                        ElevatedButton(
+                                                          onPressed: () async {
+                                                            setState(() {
+                                                              loading = true;
+                                                            });
 
-                                                      var StudentStatus = {
-                                                        "AccountStatus": "open"
-                                                      };
+                                                            var StudentStatus =
+                                                                {
+                                                              "AccountStatus":
+                                                                  "open"
+                                                            };
 
-                                                      final ClassOffSMS =
-                                                          FirebaseFirestore
-                                                              .instance
-                                                              .collection(
-                                                                  'StudentInfo')
-                                                              .doc(
-                                                                  AllStudentInfo[
-                                                                          index]
-                                                                      [
-                                                                      "SIDNo"]);
+                                                            final ClassOffSMS =
+                                                                FirebaseFirestore
+                                                                    .instance
+                                                                    .collection(
+                                                                        'StudentInfo')
+                                                                    .doc(AllStudentInfo[
+                                                                            index]
+                                                                        [
+                                                                        "SIDNo"]);
 
-                                                      ClassOffSMS.update(
-                                                              StudentStatus)
-                                                          .then((value) =>
-                                                              setState(
-                                                                  () async {
-                                                                
+                                                            ClassOffSMS.update(
+                                                                    StudentStatus)
+                                                                .then((value) =>
+                                                                    setState(
+                                                                        () async {
+                                                                      // Navigator.pop(context);
 
-                                                                // Navigator.pop(context);
+                                                                      // getProductInfo();
 
-                                                                // getProductInfo();
+                                                                      getStudentInfo();
 
-                                                                getStudentInfo();
+                                                                      Navigator.pop(
+                                                                          context);
 
-                                                                Navigator.pop(
-                                                                    context);
+                                                                      final snackBar =
+                                                                          SnackBar(
+                                                                        elevation:
+                                                                            0,
+                                                                        behavior:
+                                                                            SnackBarBehavior.floating,
+                                                                        backgroundColor:
+                                                                            Colors.transparent,
+                                                                        content:
+                                                                            AwesomeSnackbarContent(
+                                                                          titleFontSize:
+                                                                              12,
+                                                                          title:
+                                                                              'successfull',
+                                                                          message:
+                                                                              'Hey Thank You. Good Job',
 
-                                                                final snackBar =
-                                                                    SnackBar(
-                                                                  elevation: 0,
-                                                                  behavior:
-                                                                      SnackBarBehavior
-                                                                          .floating,
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .transparent,
-                                                                  content:
-                                                                      AwesomeSnackbarContent(
-                                                                    titleFontSize:
-                                                                        12,
-                                                                    title:
-                                                                        'successfull',
-                                                                    message:
-                                                                        'Hey Thank You. Good Job',
+                                                                          /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                          contentType:
+                                                                              ContentType.success,
+                                                                        ),
+                                                                      );
 
-                                                                    /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                                    contentType:
-                                                                        ContentType
-                                                                            .success,
-                                                                  ),
-                                                                );
+                                                                      ScaffoldMessenger.of(
+                                                                          context)
+                                                                        ..hideCurrentSnackBar()
+                                                                        ..showSnackBar(
+                                                                            snackBar);
 
-                                                                ScaffoldMessenger
-                                                                    .of(context)
-                                                                  ..hideCurrentSnackBar()
-                                                                  ..showSnackBar(
-                                                                      snackBar);
+                                                                      setState(
+                                                                          () {
+                                                                        loading =
+                                                                            false;
+                                                                      });
+                                                                    }))
+                                                                .onError((error,
+                                                                        stackTrace) =>
+                                                                    setState(
+                                                                        () {
+                                                                      final snackBar =
+                                                                          SnackBar(
+                                                                        /// need to set following properties for best effect of awesome_snackbar_content
+                                                                        elevation:
+                                                                            0,
 
-                                                                setState(() {
-                                                                  loading =
-                                                                      false;
-                                                                });
-                                                              }))
-                                                          .onError((error,
-                                                                  stackTrace) =>
-                                                              setState(() {
-                                                                final snackBar =
-                                                                    SnackBar(
-                                                                  /// need to set following properties for best effect of awesome_snackbar_content
-                                                                  elevation: 0,
+                                                                        behavior:
+                                                                            SnackBarBehavior.floating,
+                                                                        backgroundColor:
+                                                                            Colors.transparent,
+                                                                        content:
+                                                                            AwesomeSnackbarContent(
+                                                                          title:
+                                                                              'Something Wrong!!!!',
+                                                                          message:
+                                                                              'Try again later...',
 
-                                                                  behavior:
-                                                                      SnackBarBehavior
-                                                                          .floating,
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .transparent,
-                                                                  content:
-                                                                      AwesomeSnackbarContent(
-                                                                    title:
-                                                                        'Something Wrong!!!!',
-                                                                    message:
-                                                                        'Try again later...',
+                                                                          /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                          contentType:
+                                                                              ContentType.failure,
+                                                                        ),
+                                                                      );
 
-                                                                    /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                                    contentType:
-                                                                        ContentType
-                                                                            .failure,
-                                                                  ),
-                                                                );
+                                                                      ScaffoldMessenger.of(
+                                                                          context)
+                                                                        ..hideCurrentSnackBar()
+                                                                        ..showSnackBar(
+                                                                            snackBar);
 
-                                                                ScaffoldMessenger
-                                                                    .of(context)
-                                                                  ..hideCurrentSnackBar()
-                                                                  ..showSnackBar(
-                                                                      snackBar);
-
-                                                                setState(() {
-                                                                  loading =
-                                                                      false;
-                                                                });
-                                                              }));
-                                                    },
-                                                    child: const Text("Change"),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        },
-                                      );
-                                    },
-                                    child: Text("Open"),
-                                  )),
+                                                                      setState(
+                                                                          () {
+                                                                        loading =
+                                                                            false;
+                                                                      });
+                                                                    }));
+                                                          },
+                                                          child: const Text(
+                                                              "Change"),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                            );
+                                          },
+                                          child: Text("Open"),
+                                        )),
                                   DataCell(ElevatedButton(
                                     onPressed: () {},
                                     child: Text("Edit"),
