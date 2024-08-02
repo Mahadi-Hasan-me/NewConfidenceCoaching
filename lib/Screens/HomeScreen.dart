@@ -49,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
   TextEditingController TeacherIDController = TextEditingController();
   TextEditingController StudentIDController = TextEditingController();
   TextEditingController StudentNameController = TextEditingController();
+  TextEditingController DayController = TextEditingController();
 
   static const _chars =
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
@@ -268,7 +269,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           Center(
                                             child: Text(
                                               "${Title}",
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   fontFamily: "Josefin Sans",
                                                   fontWeight: FontWeight.bold),
                                             ),
@@ -276,7 +277,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ],
                                       ),
                                       content: loading
-                                          ? Center(
+                                          ? const Center(
                                               child:
                                                   CircularProgressIndicator(),
                                             )
@@ -339,7 +340,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       ),
                                                     ),
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     height: 20,
                                                   ),
                                                   Container(
@@ -398,7 +399,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       ),
                                                     ),
                                                   ),
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     height: 20,
                                                   ),
                                                   Container(
@@ -969,6 +970,60 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   const SizedBox(
                                                     height: 20,
                                                   ),
+
+
+                                                 Container(
+                                                    width: 300,
+                                                    child: TextField(
+                                                      onChanged: (value) {},
+                                                      keyboardType:
+                                                          TextInputType.number,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        border:
+                                                            OutlineInputBorder(),
+                                                        labelText:
+                                                            'Day(শনি, সোম, বুধ)',
+
+                                                        hintText:
+                                                            'Day(শনি, সোম, বুধ)',
+
+                                                        //  enabledBorder: OutlineInputBorder(
+                                                        //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                        //     ),
+                                                        focusedBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              width: 3,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .primaryColor),
+                                                        ),
+                                                        errorBorder:
+                                                            const OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  width: 3,
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          66,
+                                                                          125,
+                                                                          145)),
+                                                        ),
+                                                      ),
+                                                      controller:
+                                                          DayController,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 20,
+                                                  ),
+
+
+
+
+
                                                   Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -1144,11 +1199,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   .text
                                                   .trim()
                                                   .toString(),
+                                              "TotalStudent":"0",
                                               "BatchRunningTopics":
                                                   BatchDescriptionController
                                                       .text
                                                       .trim()
                                                       .toString(),
+                                              "PrivateDay":DayController.text.trim(),
                                               "HSCBatchYear":HSCBatchYearValue,
                                               "PerStudentFee":
                                                   PerStudentFeeController.text

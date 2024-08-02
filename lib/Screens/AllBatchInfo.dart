@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:confidence/Screens/Students/AllStudent.dart';
 import 'package:confidence/Screens/important.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -23,7 +24,7 @@ class AllBatchInfo extends StatefulWidget {
 }
 
 class _AllBatchInfoState extends State<AllBatchInfo> {
-  TextEditingController StudentOTPController = TextEditingController();
+  TextEditingController StudentIDController = TextEditingController();
 
   bool loading = false;
 
@@ -257,11 +258,453 @@ class _AllBatchInfoState extends State<AllBatchInfo> {
                 size: 100,
               ),
             )
-          : 
-             SingleChildScrollView(
-                      child: Text(""),
+          : GridView.count(
+              crossAxisCount: 4,
+              crossAxisSpacing: 20,
+              mainAxisSpacing: 20,
+              padding: EdgeInsets.all(20),
+              childAspectRatio: 3 / 2,
+              children: [
+                  for (int i = 0; i < AllData.length; i++)
+                    Card(
+                      clipBehavior: Clip.antiAlias,
+                      child: Column(
+                        children: [
+                          Text(
+                            "${AllData[i]["TeacherAcademyName"]}",
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25,
+                                color: Colors.black),
+                          ),
+                          ListTile(
+                            leading: const Text(""),
+                            title: Text(
+                                'Batch Name: ${AllData[i]["BatchName"]}   Fee: ${AllData[i]["PerStudentFee"]}৳',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                    color: Colors.black)),
+                            subtitle: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Day: ${AllData[i]["PrivateDay"]}  Time: ${AllData[i]["ClassStartHour"]}:${AllData[i]["ClassStartMinute"]}-${AllData[i]["ClassEndHour"]}:${AllData[i]["ClassEndMinute"]}',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      color: Colors.black),
+                                ),
+                              ],
+                            ),
+                          ),
+                          ListTile(
+                            leading: Text(""),
+                            subtitle: Row(
+                              children: [
+                                Text(
+                                    'Total Student: ${AllData[i]["TotalStudent"]} জন',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                        color: Colors.black))
+                              ],
+                            ),
+                            title: Text(
+                                'Batch Running Topics: ${AllData[i]["BatchRunningTopics"]} ',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: Colors.black)),
+                          ),
+                          for (int a = 0;
+                              a < AllData[i]["BatchOldTopics"].length;
+                              a++)
+                            Text(
+                              'Batch Old Topics: ${AllData[i]["BatchOldTopics"][a]}',
+                              style: TextStyle(
+                                  color: Colors.black.withOpacity(0.6)),
+                            ),
+                          ButtonBar(
+                            alignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ElevatedButton(
+                                  onPressed: () {}, child: Text("Edit Topic")),
+
+                              // Add New Student In Batch
+                              ElevatedButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        String SelectedStudentStatus = "";
+                                        String Title =
+                                            "নিচে নতুন রেজিস্ট্রেশন করা স্টুডেন্ট যুক্ত করুন";
+
+                                        bool loading = false;
+
+                                        final List<String> TeachersBatch = [
+                                          'Rezuan Math Care',
+                                          'Sazzad ICT',
+                                          'MediCrack',
+                                          'Protick Physics',
+                                        ];
+                                        String? selectedTeachersBatchValue;
+
+                                        // String LabelText ="আয়ের খাত লিখবেন";
+
+                                        return StatefulBuilder(
+                                          builder: (context, setState) {
+                                            return AlertDialog(
+                                              title: Column(
+                                                children: [
+                                                  Center(
+                                                    child: Text(
+                                                      "${Title}",
+                                                      style: const TextStyle(
+                                                          fontFamily:
+                                                              "Josefin Sans",
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              content: loading
+                                                  ? const Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    )
+                                                  : SingleChildScrollView(
+                                                      child: Column(
+                                                        children: [
+                                                          const SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          Container(
+                                                            width: 300,
+                                                            child: TextField(
+                                                              onChanged:
+                                                                  (value) {},
+                                                              keyboardType:
+                                                                  TextInputType
+                                                                      .number,
+                                                              decoration:
+                                                                  InputDecoration(
+                                                                border:
+                                                                    OutlineInputBorder(),
+                                                                labelText:
+                                                                    'Enter Student ID',
+
+                                                                hintText:
+                                                                    'Enter Student ID',
+
+                                                                //  enabledBorder: OutlineInputBorder(
+                                                                //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                                //     ),
+                                                                focusedBorder:
+                                                                    OutlineInputBorder(
+                                                                  borderSide: BorderSide(
+                                                                      width: 3,
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .primaryColor),
+                                                                ),
+                                                                errorBorder:
+                                                                    const OutlineInputBorder(
+                                                                  borderSide: BorderSide(
+                                                                      width: 3,
+                                                                      color: Color.fromARGB(
+                                                                          255,
+                                                                          66,
+                                                                          125,
+                                                                          145)),
+                                                                ),
+                                                              ),
+                                                              controller:
+                                                                  StudentIDController,
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(context),
+                                                  child: Text("Cancel"),
+                                                ),
+                                                ElevatedButton(
+                                                  onPressed: () async {
+                                                    setState(() {
+                                                      loading = true;
+                                                    });
+
+                                                    List AllStudentInfo = [];
+
+                                                    CollectionReference
+                                                        _collectionSingleStudentInfoRef =
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                'StudentInfo');
+
+                                                    Query
+                                                        SingleStudentInfoquery =
+                                                        _collectionSingleStudentInfoRef
+                                                            .where("SIDNo",
+                                                                isEqualTo:
+                                                                    StudentIDController
+                                                                        .text
+                                                                        .trim());
+
+                                                    QuerySnapshot
+                                                        SingleStudentInfoquerySnapshot =
+                                                        await SingleStudentInfoquery
+                                                            .get();
+
+                                                    // Get data from docs and convert map to List
+                                                    setState(() {
+                                                      AllStudentInfo = [];
+                                                      AllStudentInfo =
+                                                        SingleStudentInfoquerySnapshot
+                                                            .docs
+                                                            .map((doc) =>
+                                                                doc.data())
+                                                            .toList();
+                                                    });
+
+                                                    if (AllStudentInfo.isEmpty) {
+
+                                                              // Navigator.pop(context);
+
+                                                                  AwesomeDialog(
+                                                                    width: 500,
+                                                                    // ignore: use_build_context_synchronously
+                                                                    context:
+                                                                        context,
+                                                                    animType:
+                                                                        AnimType
+                                                                            .scale,
+                                                                    dialogType:
+                                                                        DialogType
+                                                                            .error,
+                                                                    body: const Center(
+                                                                        child: Text(
+                                                                      "দুঃখিত ID টি সঠিক নয়",
+                                                                      style: TextStyle(
+                                                                          fontFamily:
+                                                                              "Josefin Sans",
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    )),
+                                                                    title:
+                                                                        'দুঃখিত ID টি সঠিক নয়',
+                                                                    desc:
+                                                                        'দুঃখিত ID টি সঠিক নয়',
+                                                                    btnOkOnPress:
+                                                                        () {
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                    },
+                                                                  ).show();
+
+
+                                                      
+                                                    } else {
+
+                                                    
+                                                 var updateData = {
+                                                      "StudentName":AllStudentInfo[0]["StudentName"],
+                                                      "StudentPhoneNumber":AllStudentInfo[0]["StudentPhoneNumber"],
+                                                      "FatherPhoneNo":AllStudentInfo[0]["FatherPhoneNo"],
+                                                      "Department":AllStudentInfo[0]["Department"],
+                                                      "LastAttendanceDate":"",
+                                                      "HSCBatchYear":AllStudentInfo[0]["HSCBatchYear"],
+                                                      "TeachersAcademyName":
+                                                          "${AllData[i]["TeacherAcademyName"]}",
+                                                      "BatchName":
+                                                          "${AllData[i]["BatchName"]}",
+                                                      "SIDNo":
+                                                          StudentIDController
+                                                              .text
+                                                              .trim(),
+                                                      "PerStudentFee":
+                                                          "${AllData[i]["PerStudentFee"]}",
+                                                      "Due":
+                                                          "${AllData[i]["PerStudentFee"]}",
+                                                      "Totalpay":"",
+                                                      "PrivateDay":
+                                                          "${AllData[i]["PrivateDay"]}",
+                                                      "ClassStartHour":
+                                                          "${AllData[i]["ClassStartHour"]}",
+                                                      "ClassStartMinute":
+                                                          "${AllData[i]["ClassStartMinute"]}",
+                                                      "ClassEndHour":
+                                                          "${AllData[i]["ClassEndHour"]}",
+                                                      "ClassEndMinute":
+                                                          "${AllData[i]["ClassEndMinute"]}",
+                                                      "Status": "open",
+                                                      "year":
+                                                          "${DateTime.now().year}",
+                                                      "month":
+                                                          "${DateTime.now().month}/${DateTime.now().year}",
+                                                      "Date":
+                                                          "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
+                                                      "DateTime": DateTime.now()
+                                                          .toIso8601String(),
+                                                    };
+
+                                                    final StudentInfo =
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                'PerTeacherStudentInfo');
+
+                                                    StudentInfo.add(updateData)
+                                                        .then(
+                                                            (value) =>
+                                                                setState(() {
+                                                                  // Navigator.pop(context);
+
+                                                                  AwesomeDialog(
+                                                                    width: 500,
+                                                                    context:
+                                                                        context,
+                                                                    animType:
+                                                                        AnimType
+                                                                            .scale,
+                                                                    dialogType:
+                                                                        DialogType
+                                                                            .success,
+                                                                    body: const Center(
+                                                                        child: Text(
+                                                                      "ব্যাচের স্টুডেন্ট সফলভাবে যুক্ত হয়েছে",
+                                                                      style: TextStyle(
+                                                                          fontFamily:
+                                                                              "Josefin Sans",
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    )),
+                                                                    title:
+                                                                        'ব্যাচের স্টুডেন্ট সফলভাবে যুক্ত হয়েছে',
+                                                                    desc:
+                                                                        'ব্যাচের স্টুডেন্ট সফলভাবে যুক্ত হয়েছে',
+                                                                    btnOkOnPress:
+                                                                        () {
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                    },
+                                                                  ).show();
+
+                                                                  final snackBar =
+                                                                      SnackBar(
+                                                                    elevation:
+                                                                        0,
+                                                                    behavior:
+                                                                        SnackBarBehavior
+                                                                            .floating,
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    content:
+                                                                        AwesomeSnackbarContent(
+                                                                      titleFontSize:
+                                                                          12,
+                                                                      title:
+                                                                          'successfull',
+                                                                      message:
+                                                                          'Hey Thank You. Good Job',
+
+                                                                      /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                      contentType:
+                                                                          ContentType
+                                                                              .success,
+                                                                    ),
+                                                                  );
+
+                                                                  ScaffoldMessenger
+                                                                      .of(
+                                                                          context)
+                                                                    ..hideCurrentSnackBar()
+                                                                    ..showSnackBar(
+                                                                        snackBar);
+
+                                                                  setState(() {
+                                                                    loading =
+                                                                        false;
+                                                                  });
+                                                                }))
+                                                        .onError((error,
+                                                                stackTrace) =>
+                                                            setState(() {
+                                                              final snackBar =
+                                                                  SnackBar(
+                                                                /// need to set following properties for best effect of awesome_snackbar_content
+                                                                elevation: 0,
+
+                                                                behavior:
+                                                                    SnackBarBehavior
+                                                                        .floating,
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .transparent,
+                                                                content:
+                                                                    AwesomeSnackbarContent(
+                                                                  title:
+                                                                      'Something Wrong!!!!',
+                                                                  message:
+                                                                      'Try again later...',
+
+                                                                  /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                  contentType:
+                                                                      ContentType
+                                                                          .failure,
+                                                                ),
+                                                              );
+
+                                                              ScaffoldMessenger
+                                                                  .of(context)
+                                                                ..hideCurrentSnackBar()
+                                                                ..showSnackBar(
+                                                                    snackBar);
+
+                                                              setState(() {
+                                                                loading = false;
+                                                              });
+                                                            }));
+
+
+                                                      
+                                                    }
+
+
+                                                  },
+                                                  child: const Text("Save"),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Text("Add Student")),
+
+                              ElevatedButton(
+                                  onPressed: () {}, child: Text("Edit")),
+                            ],
+                          )
+                        ],
+                      ),
                     ),
-          
+                ]),
     );
   }
 }
