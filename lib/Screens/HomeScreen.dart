@@ -514,6 +514,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             var id = getRandomString(7);
 
                                             var updateData = {
+                                              
                                               "TeachersAcademyName":
                                                   selectedTeachersAcademyValue
                                                       .toString(),
@@ -663,7 +664,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             showDialog(
                               context: context,
                               builder: (context) {
-                                String SelectedStudentStatus = "";
+                                
                                 String Title = "নিচে নতুন ব্যাচের নাম লিখুন";
 
                                 bool loading = false;
@@ -1192,9 +1193,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                               loading = true;
                                             });
 
-                                            
+                                          var id = getRandomString(9);
 
                                             var updateData = {
+                                              "BatchID":id,
                                               "BatchName": BatchNameController
                                                   .text
                                                   .trim()
@@ -1230,9 +1232,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                             final StudentInfo =
                                                 FirebaseFirestore.instance
-                                                    .collection('AllBatchInfo');
+                                                    .collection('AllBatchInfo').doc(id);
 
-                                            StudentInfo.add(updateData)
+                                            StudentInfo.set(updateData)
                                                 .then((value) => setState(() {
                                                       // Navigator.pop(context);
 

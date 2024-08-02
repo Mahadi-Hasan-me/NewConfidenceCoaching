@@ -3,6 +3,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:confidence/Screens/Students/AllStudent.dart';
 import 'package:confidence/Screens/important.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -25,6 +26,14 @@ class AllBatchInfo extends StatefulWidget {
 
 class _AllBatchInfoState extends State<AllBatchInfo> {
   TextEditingController StudentIDController = TextEditingController();
+  TextEditingController RunningTopicsController = TextEditingController();
+
+  static const _chars =
+      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  Random _rnd = Random();
+
+  String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
+      length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
   bool loading = false;
 
@@ -329,11 +338,242 @@ class _AllBatchInfoState extends State<AllBatchInfo> {
                             alignment: MainAxisAlignment.spaceBetween,
                             children: [
                               ElevatedButton(
-                                  onPressed: () {}, child: Text("Edit Topic")),
+                                  onPressed: () async{
+
+                                                                      showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        String SelectedStudentStatus = "";
+                                        String Title =
+                                            "নিচে নতুন রেজিস্ট্রেশন করা স্টুডেন্ট যুক্ত করুন";
+
+                                        bool loading = false;
+
+                                        final List<String> TeachersBatch = [
+                                          'Rezuan Math Care',
+                                          'Sazzad ICT',
+                                          'MediCrack',
+                                          'Protick Physics',
+                                        ];
+                                        String? selectedTeachersBatchValue;
+
+                                        // String LabelText ="আয়ের খাত লিখবেন";
+
+                                        return StatefulBuilder(
+                                          builder: (context, setState) {
+                                            return AlertDialog(
+                                              title: Column(
+                                                children: [
+                                                  Center(
+                                                    child: Text(
+                                                      "${Title}",
+                                                      style: const TextStyle(
+                                                          fontFamily:
+                                                              "Josefin Sans",
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              content: loading
+                                                  ? const Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    )
+                                                  : SingleChildScrollView(
+                                                      child: Column(
+                                                        children: [
+                                                          const SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          Container(
+                                                            width: 300,
+                                                            child: TextField(
+                                                              onChanged:
+                                                                  (value) {},
+                                                              keyboardType:
+                                                                  TextInputType
+                                                                      .number,
+                                                              decoration:
+                                                                  InputDecoration(
+                                                                border:
+                                                                    OutlineInputBorder(),
+                                                                labelText:
+                                                                    'Enter Running Topics',
+
+                                                                hintText:
+                                                                    'Enter Running Topics',
+
+                                                                //  enabledBorder: OutlineInputBorder(
+                                                                //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                                //     ),
+                                                                focusedBorder:
+                                                                    OutlineInputBorder(
+                                                                  borderSide: BorderSide(
+                                                                      width: 3,
+                                                                      color: Theme.of(
+                                                                              context)
+                                                                          .primaryColor),
+                                                                ),
+                                                                errorBorder:
+                                                                    const OutlineInputBorder(
+                                                                  borderSide: BorderSide(
+                                                                      width: 3,
+                                                                      color: Color.fromARGB(
+                                                                          255,
+                                                                          66,
+                                                                          125,
+                                                                          145)),
+                                                                ),
+                                                              ),
+                                                              controller:
+                                                                  RunningTopicsController,
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(context),
+                                                  child: Text("Cancel"),
+                                                ),
+                                                ElevatedButton(
+                                                  onPressed: () async {
+                                                    setState(() {
+                                                      loading = true;
+                                                    });
+
+
+                                                      List BatchOldTopic = [];
+
+                                    BatchOldTopic =
+                                        AllData[i]["BatchOldTopics"];
+
+                                    BatchOldTopic.add(
+                                        AllData[i]["BatchRunningTopics"]);
+
+                                    var UpdateBatchInfo = {
+                                      "BatchOldTopics": BatchOldTopic,
+                                      "BatchRunningTopics":RunningTopicsController.text.trim()
+                                    };
+
+                                    final ChangeBatchInfo = FirebaseFirestore
+                                        .instance
+                                        .collection('AllBatchInfo')
+                                        .doc(AllData[i]["id"]);
+
+                                    ChangeBatchInfo.update(UpdateBatchInfo)
+                                        .then((value) => setState(() {
+                                              // Navigator.pop(context);
+
+                                              AwesomeDialog(
+                                                width: 500,
+                                                context: context,
+                                                animType: AnimType.scale,
+                                                dialogType: DialogType.success,
+                                                body: const Center(
+                                                    child: Text(
+                                                  "ব্যাচের স্টুডেন্ট সফলভাবে যুক্ত হয়েছে",
+                                                  style: TextStyle(
+                                                      fontFamily:
+                                                          "Josefin Sans",
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )),
+                                                title:
+                                                    'ব্যাচের স্টুডেন্ট সফলভাবে যুক্ত হয়েছে',
+                                                desc:
+                                                    'ব্যাচের স্টুডেন্ট সফলভাবে যুক্ত হয়েছে',
+                                                btnOkOnPress: () {
+                                                  Navigator.pop(context);
+                                                },
+                                              ).show();
+
+                                              final snackBar = SnackBar(
+                                                elevation: 0,
+                                                behavior:
+                                                    SnackBarBehavior.floating,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                content: AwesomeSnackbarContent(
+                                                  titleFontSize: 12,
+                                                  title: 'successfull',
+                                                  message:
+                                                      'Hey Thank You. Good Job',
+
+                                                  /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                  contentType:
+                                                      ContentType.success,
+                                                ),
+                                              );
+
+                                              ScaffoldMessenger.of(context)
+                                                ..hideCurrentSnackBar()
+                                                ..showSnackBar(snackBar);
+
+                                              setState(() {
+                                                loading = false;
+                                              });
+                                            }))
+                                        .onError((error, stackTrace) =>
+                                            setState(() {
+                                              final snackBar = SnackBar(
+                                                /// need to set following properties for best effect of awesome_snackbar_content
+                                                elevation: 0,
+
+                                                behavior:
+                                                    SnackBarBehavior.floating,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                content: AwesomeSnackbarContent(
+                                                  title: 'Something Wrong!!!!',
+                                                  message: 'Try again later...',
+
+                                                  /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                  contentType:
+                                                      ContentType.failure,
+                                                ),
+                                              );
+
+                                              ScaffoldMessenger.of(context)
+                                                ..hideCurrentSnackBar()
+                                                ..showSnackBar(snackBar);
+
+                                              setState(() {
+                                                loading = false;
+                                              });
+                                            }));
+
+                                               
+                                                    
+                                                  },
+                                                  child: const Text("Save"),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                    );
+
+
+
+                                  
+                                  },
+                                  child: Text("Edit Topic")),
 
                               // Add New Student In Batch
                               ElevatedButton(
-                                  onPressed: () {
+                                  onPressed: () async {
                                     showDialog(
                                       context: context,
                                       builder: (context) {
@@ -473,218 +713,315 @@ class _AllBatchInfoState extends State<AllBatchInfo> {
                                                     setState(() {
                                                       AllStudentInfo = [];
                                                       AllStudentInfo =
-                                                        SingleStudentInfoquerySnapshot
-                                                            .docs
-                                                            .map((doc) =>
-                                                                doc.data())
-                                                            .toList();
+                                                          SingleStudentInfoquerySnapshot
+                                                              .docs
+                                                              .map((doc) =>
+                                                                  doc.data())
+                                                              .toList();
                                                     });
 
-                                                    if (AllStudentInfo.isEmpty) {
+                                                    if (AllStudentInfo
+                                                        .isEmpty) {
+                                                      // Navigator.pop(context);
 
-                                                              // Navigator.pop(context);
-
-                                                                  AwesomeDialog(
-                                                                    width: 500,
-                                                                    // ignore: use_build_context_synchronously
-                                                                    context:
-                                                                        context,
-                                                                    animType:
-                                                                        AnimType
-                                                                            .scale,
-                                                                    dialogType:
-                                                                        DialogType
-                                                                            .error,
-                                                                    body: const Center(
-                                                                        child: Text(
-                                                                      "দুঃখিত ID টি সঠিক নয়",
-                                                                      style: TextStyle(
-                                                                          fontFamily:
-                                                                              "Josefin Sans",
-                                                                          fontWeight:
-                                                                              FontWeight.bold),
-                                                                    )),
-                                                                    title:
-                                                                        'দুঃখিত ID টি সঠিক নয়',
-                                                                    desc:
-                                                                        'দুঃখিত ID টি সঠিক নয়',
-                                                                    btnOkOnPress:
-                                                                        () {
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                    },
-                                                                  ).show();
-
-
-                                                      
+                                                      AwesomeDialog(
+                                                        width: 500,
+                                                        // ignore: use_build_context_synchronously
+                                                        context: context,
+                                                        animType:
+                                                            AnimType.scale,
+                                                        dialogType:
+                                                            DialogType.error,
+                                                        body: const Center(
+                                                            child: Text(
+                                                          "দুঃখিত ID টি সঠিক নয়",
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  "Josefin Sans",
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        )),
+                                                        title:
+                                                            'দুঃখিত ID টি সঠিক নয়',
+                                                        desc:
+                                                            'দুঃখিত ID টি সঠিক নয়',
+                                                        btnOkOnPress: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                      ).show();
                                                     } else {
+                                                      var id =
+                                                          getRandomString(9);
 
-                                                    
-                                                 var updateData = {
-                                                      "StudentName":AllStudentInfo[0]["StudentName"],
-                                                      "StudentPhoneNumber":AllStudentInfo[0]["StudentPhoneNumber"],
-                                                      "FatherPhoneNo":AllStudentInfo[0]["FatherPhoneNo"],
-                                                      "Department":AllStudentInfo[0]["Department"],
-                                                      "LastAttendanceDate":"",
-                                                      "HSCBatchYear":AllStudentInfo[0]["HSCBatchYear"],
-                                                      "TeachersAcademyName":
-                                                          "${AllData[i]["TeacherAcademyName"]}",
-                                                      "BatchName":
-                                                          "${AllData[i]["BatchName"]}",
-                                                      "SIDNo":
-                                                          StudentIDController
-                                                              .text
-                                                              .trim(),
-                                                      "PerStudentFee":
-                                                          "${AllData[i]["PerStudentFee"]}",
-                                                      "Due":
-                                                          "${AllData[i]["PerStudentFee"]}",
-                                                      "Totalpay":"",
-                                                      "PrivateDay":
-                                                          "${AllData[i]["PrivateDay"]}",
-                                                      "ClassStartHour":
-                                                          "${AllData[i]["ClassStartHour"]}",
-                                                      "ClassStartMinute":
-                                                          "${AllData[i]["ClassStartMinute"]}",
-                                                      "ClassEndHour":
-                                                          "${AllData[i]["ClassEndHour"]}",
-                                                      "ClassEndMinute":
-                                                          "${AllData[i]["ClassEndMinute"]}",
-                                                      "Status": "open",
-                                                      "year":
-                                                          "${DateTime.now().year}",
-                                                      "month":
-                                                          "${DateTime.now().month}/${DateTime.now().year}",
-                                                      "Date":
-                                                          "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
-                                                      "DateTime": DateTime.now()
-                                                          .toIso8601String(),
-                                                    };
+                                                      var updateData = {
+                                                        "id": id,
+                                                        "StudentName":
+                                                            AllStudentInfo[0]
+                                                                ["StudentName"],
+                                                        "StudentPhoneNumber":
+                                                            AllStudentInfo[0][
+                                                                "StudentPhoneNumber"],
+                                                        "FatherPhoneNo":
+                                                            AllStudentInfo[0][
+                                                                "FatherPhoneNo"],
+                                                        "Department":
+                                                            AllStudentInfo[0]
+                                                                ["Department"],
+                                                        "LastAttendanceDate":
+                                                            "",
+                                                        "HSCBatchYear":
+                                                            AllStudentInfo[0][
+                                                                "HSCBatchYear"],
+                                                        "TeachersAcademyName":
+                                                            "${AllData[i]["TeacherAcademyName"]}",
+                                                        "BatchName":
+                                                            "${AllData[i]["BatchName"]}",
+                                                        "SIDNo":
+                                                            StudentIDController
+                                                                .text
+                                                                .trim(),
+                                                        "StudentImageUrl":
+                                                            AllStudentInfo[0][
+                                                                "StudentImageUrl"],
+                                                        "PerStudentFee":
+                                                            "${AllData[i]["PerStudentFee"]}",
+                                                        "Due":
+                                                            "${AllData[i]["PerStudentFee"]}",
+                                                        "Totalpay": "",
+                                                        "PrivateDay":
+                                                            "${AllData[i]["PrivateDay"]}",
+                                                        "ClassStartHour":
+                                                            "${AllData[i]["ClassStartHour"]}",
+                                                        "ClassStartMinute":
+                                                            "${AllData[i]["ClassStartMinute"]}",
+                                                        "ClassEndHour":
+                                                            "${AllData[i]["ClassEndHour"]}",
+                                                        "ClassEndMinute":
+                                                            "${AllData[i]["ClassEndMinute"]}",
+                                                        "Status": "open",
+                                                        "year":
+                                                            "${DateTime.now().year}",
+                                                        "month":
+                                                            "${DateTime.now().month}/${DateTime.now().year}",
+                                                        "Date":
+                                                            "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
+                                                        "DateTime": DateTime
+                                                                .now()
+                                                            .toIso8601String(),
+                                                      };
 
-                                                    final StudentInfo =
-                                                        FirebaseFirestore
-                                                            .instance
-                                                            .collection(
-                                                                'PerTeacherStudentInfo');
+                                                      final PerTeacherStudentInfo =
+                                                          FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'PerTeacherStudentInfo')
+                                                              .doc(id);
 
-                                                    StudentInfo.add(updateData)
-                                                        .then(
-                                                            (value) =>
-                                                                setState(() {
-                                                                  // Navigator.pop(context);
-
-                                                                  AwesomeDialog(
-                                                                    width: 500,
-                                                                    context:
-                                                                        context,
-                                                                    animType:
-                                                                        AnimType
-                                                                            .scale,
-                                                                    dialogType:
-                                                                        DialogType
-                                                                            .success,
-                                                                    body: const Center(
-                                                                        child: Text(
-                                                                      "ব্যাচের স্টুডেন্ট সফলভাবে যুক্ত হয়েছে",
-                                                                      style: TextStyle(
-                                                                          fontFamily:
-                                                                              "Josefin Sans",
-                                                                          fontWeight:
-                                                                              FontWeight.bold),
-                                                                    )),
-                                                                    title:
-                                                                        'ব্যাচের স্টুডেন্ট সফলভাবে যুক্ত হয়েছে',
-                                                                    desc:
-                                                                        'ব্যাচের স্টুডেন্ট সফলভাবে যুক্ত হয়েছে',
-                                                                    btnOkOnPress:
-                                                                        () {
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                    },
-                                                                  ).show();
-
-                                                                  final snackBar =
-                                                                      SnackBar(
-                                                                    elevation:
-                                                                        0,
-                                                                    behavior:
-                                                                        SnackBarBehavior
-                                                                            .floating,
-                                                                    backgroundColor:
-                                                                        Colors
-                                                                            .transparent,
-                                                                    content:
-                                                                        AwesomeSnackbarContent(
-                                                                      titleFontSize:
-                                                                          12,
-                                                                      title:
-                                                                          'successfull',
-                                                                      message:
-                                                                          'Hey Thank You. Good Job',
-
-                                                                      /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                                      contentType:
-                                                                          ContentType
-                                                                              .success,
-                                                                    ),
-                                                                  );
-
-                                                                  ScaffoldMessenger
-                                                                      .of(
-                                                                          context)
-                                                                    ..hideCurrentSnackBar()
-                                                                    ..showSnackBar(
-                                                                        snackBar);
-
+                                                      PerTeacherStudentInfo.set(
+                                                              updateData)
+                                                          .then(
+                                                              (value) =>
                                                                   setState(() {
-                                                                    loading =
-                                                                        false;
-                                                                  });
-                                                                }))
-                                                        .onError((error,
-                                                                stackTrace) =>
-                                                            setState(() {
-                                                              final snackBar =
-                                                                  SnackBar(
-                                                                /// need to set following properties for best effect of awesome_snackbar_content
-                                                                elevation: 0,
+                                                                    // Navigator.pop(context);
 
-                                                                behavior:
-                                                                    SnackBarBehavior
-                                                                        .floating,
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .transparent,
-                                                                content:
-                                                                    AwesomeSnackbarContent(
-                                                                  title:
-                                                                      'Something Wrong!!!!',
-                                                                  message:
-                                                                      'Try again later...',
+                                                                    var UpdateBatchInfo =
+                                                                        {
+                                                                      "TotalStudent":
+                                                                          (int.parse((AllData[i]["TotalStudent"].toString())) + 1)
+                                                                              .toString(),
+                                                                    };
 
-                                                                  /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                                  contentType:
-                                                                      ContentType
-                                                                          .failure,
-                                                                ),
-                                                              );
+                                                                    final ChangeBatchInfo = FirebaseFirestore
+                                                                        .instance
+                                                                        .collection(
+                                                                            'AllBatchInfo')
+                                                                        .doc(AllData[i]
+                                                                            [
+                                                                            "id"]);
 
-                                                              ScaffoldMessenger
-                                                                  .of(context)
-                                                                ..hideCurrentSnackBar()
-                                                                ..showSnackBar(
-                                                                    snackBar);
+                                                                    ChangeBatchInfo.update(
+                                                                            UpdateBatchInfo)
+                                                                        .then((value) =>
+                                                                            setState(
+                                                                                () {
+                                                                              // Navigator.pop(context);
 
+                                                                              AwesomeDialog(
+                                                                                width: 500,
+                                                                                context: context,
+                                                                                animType: AnimType.scale,
+                                                                                dialogType: DialogType.success,
+                                                                                body: const Center(
+                                                                                    child: Text(
+                                                                                  "ব্যাচের স্টুডেন্ট সফলভাবে যুক্ত হয়েছে",
+                                                                                  style: TextStyle(fontFamily: "Josefin Sans", fontWeight: FontWeight.bold),
+                                                                                )),
+                                                                                title: 'ব্যাচের স্টুডেন্ট সফলভাবে যুক্ত হয়েছে',
+                                                                                desc: 'ব্যাচের স্টুডেন্ট সফলভাবে যুক্ত হয়েছে',
+                                                                                btnOkOnPress: () {
+                                                                                  Navigator.pop(context);
+                                                                                },
+                                                                              ).show();
+
+                                                                              final snackBar = SnackBar(
+                                                                                elevation: 0,
+                                                                                behavior: SnackBarBehavior.floating,
+                                                                                backgroundColor: Colors.transparent,
+                                                                                content: AwesomeSnackbarContent(
+                                                                                  titleFontSize: 12,
+                                                                                  title: 'successfull',
+                                                                                  message: 'Hey Thank You. Good Job',
+
+                                                                                  /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                                  contentType: ContentType.success,
+                                                                                ),
+                                                                              );
+
+                                                                              ScaffoldMessenger.of(context)
+                                                                                ..hideCurrentSnackBar()
+                                                                                ..showSnackBar(snackBar);
+
+                                                                              setState(() {
+                                                                                loading = false;
+                                                                              });
+                                                                            }))
+                                                                        .onError((error,
+                                                                                stackTrace) =>
+                                                                            setState(() {
+                                                                              final snackBar = SnackBar(
+                                                                                /// need to set following properties for best effect of awesome_snackbar_content
+                                                                                elevation: 0,
+
+                                                                                behavior: SnackBarBehavior.floating,
+                                                                                backgroundColor: Colors.transparent,
+                                                                                content: AwesomeSnackbarContent(
+                                                                                  title: 'Something Wrong!!!!',
+                                                                                  message: 'Try again later...',
+
+                                                                                  /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                                  contentType: ContentType.failure,
+                                                                                ),
+                                                                              );
+
+                                                                              ScaffoldMessenger.of(context)
+                                                                                ..hideCurrentSnackBar()
+                                                                                ..showSnackBar(snackBar);
+
+                                                                              setState(() {
+                                                                                loading = false;
+                                                                              });
+                                                                            }));
+
+                                                                    AwesomeDialog(
+                                                                      width:
+                                                                          500,
+                                                                      context:
+                                                                          context,
+                                                                      animType:
+                                                                          AnimType
+                                                                              .scale,
+                                                                      dialogType:
+                                                                          DialogType
+                                                                              .success,
+                                                                      body: const Center(
+                                                                          child: Text(
+                                                                        "ব্যাচের স্টুডেন্ট সফলভাবে যুক্ত হয়েছে",
+                                                                        style: TextStyle(
+                                                                            fontFamily:
+                                                                                "Josefin Sans",
+                                                                            fontWeight:
+                                                                                FontWeight.bold),
+                                                                      )),
+                                                                      title:
+                                                                          'ব্যাচের স্টুডেন্ট সফলভাবে যুক্ত হয়েছে',
+                                                                      desc:
+                                                                          'ব্যাচের স্টুডেন্ট সফলভাবে যুক্ত হয়েছে',
+                                                                      btnOkOnPress:
+                                                                          () {
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      },
+                                                                    ).show();
+
+                                                                    final snackBar =
+                                                                        SnackBar(
+                                                                      elevation:
+                                                                          0,
+                                                                      behavior:
+                                                                          SnackBarBehavior
+                                                                              .floating,
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .transparent,
+                                                                      content:
+                                                                          AwesomeSnackbarContent(
+                                                                        titleFontSize:
+                                                                            12,
+                                                                        title:
+                                                                            'successfull',
+                                                                        message:
+                                                                            'Hey Thank You. Good Job',
+
+                                                                        /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                        contentType:
+                                                                            ContentType.success,
+                                                                      ),
+                                                                    );
+
+                                                                    ScaffoldMessenger.of(
+                                                                        context)
+                                                                      ..hideCurrentSnackBar()
+                                                                      ..showSnackBar(
+                                                                          snackBar);
+
+                                                                    setState(
+                                                                        () {
+                                                                      loading =
+                                                                          false;
+                                                                    });
+                                                                  }))
+                                                          .onError((error,
+                                                                  stackTrace) =>
                                                               setState(() {
-                                                                loading = false;
-                                                              });
-                                                            }));
+                                                                final snackBar =
+                                                                    SnackBar(
+                                                                  /// need to set following properties for best effect of awesome_snackbar_content
+                                                                  elevation: 0,
 
+                                                                  behavior:
+                                                                      SnackBarBehavior
+                                                                          .floating,
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .transparent,
+                                                                  content:
+                                                                      AwesomeSnackbarContent(
+                                                                    title:
+                                                                        'Something Wrong!!!!',
+                                                                    message:
+                                                                        'Try again later...',
 
-                                                      
+                                                                    /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                    contentType:
+                                                                        ContentType
+                                                                            .failure,
+                                                                  ),
+                                                                );
+
+                                                                ScaffoldMessenger
+                                                                    .of(context)
+                                                                  ..hideCurrentSnackBar()
+                                                                  ..showSnackBar(
+                                                                      snackBar);
+
+                                                                setState(() {
+                                                                  loading =
+                                                                      false;
+                                                                });
+                                                              }));
                                                     }
-
-
                                                   },
                                                   child: const Text("Save"),
                                                 ),
