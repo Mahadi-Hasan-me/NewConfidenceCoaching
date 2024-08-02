@@ -326,26 +326,59 @@ class _AllBatchInfoState extends State<AllBatchInfo> {
                                     fontSize: 16,
                                     color: Colors.black)),
                           ),
-                          for (int a = 0;
-                              a < AllData[i]["BatchOldTopics"].length;
-                              a++)
-                            Text(
-                              'Batch Old Topics: ${AllData[i]["BatchOldTopics"][a]}',
-                              style: TextStyle(
-                                  color: Colors.black.withOpacity(0.6)),
-                            ),
                           ButtonBar(
                             alignment: MainAxisAlignment.spaceBetween,
                             children: [
                               ElevatedButton(
-                                  onPressed: () async{
-
-                                                                      showDialog(
+                                  onPressed: () async {
+                                    showDialog(
                                       context: context,
                                       builder: (context) {
                                         String SelectedStudentStatus = "";
                                         String Title =
-                                            "নিচে নতুন রেজিস্ট্রেশন করা স্টুডেন্ট যুক্ত করুন";
+                                            "পূর্বের শেষ হওয়া টপিক দেখুন";
+
+                                        // String LabelText ="আয়ের খাত লিখবেন";
+
+                                        return StatefulBuilder(
+                                          builder: (context, setState) {
+                                            return AlertDialog(
+                                                title: Column(
+                                              children: [
+                                                Text(Title),
+                                                for (int a = 0;
+                                                    a <
+                                                        AllData[i][
+                                                                "BatchOldTopics"]
+                                                            .length;
+                                                    a++)
+                                                  Text(
+                                                    '${(a + 1).toString()}. ${AllData[i]["BatchOldTopics"][a]}',
+                                                    style: TextStyle(
+                                                        color: Colors.black
+                                                            .withOpacity(0.6)),
+                                                  ),
+                                              ],
+                                            ));
+                                          },
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Text("Details"))
+                            ],
+                          ),
+                          ButtonBar(
+                            alignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ElevatedButton(
+                                  onPressed: () async {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        String SelectedStudentStatus = "";
+                                        String Title =
+                                            "নিচে নতুন টপিক যুক্ত করুন";
 
                                         bool loading = false;
 
@@ -452,109 +485,147 @@ class _AllBatchInfoState extends State<AllBatchInfo> {
                                                       loading = true;
                                                     });
 
+                                                    List BatchOldTopic = [];
 
-                                                      List BatchOldTopic = [];
+                                                    BatchOldTopic = AllData[i]
+                                                        ["BatchOldTopics"];
 
-                                    BatchOldTopic =
-                                        AllData[i]["BatchOldTopics"];
+                                                    BatchOldTopic.add(AllData[i]
+                                                        ["BatchRunningTopics"]);
 
-                                    BatchOldTopic.add(
-                                        AllData[i]["BatchRunningTopics"]);
+                                                    var UpdateBatchInfo = {
+                                                      "BatchOldTopics":
+                                                          BatchOldTopic,
+                                                      "BatchRunningTopics":
+                                                          RunningTopicsController
+                                                              .text
+                                                              .trim()
+                                                    };
 
-                                    var UpdateBatchInfo = {
-                                      "BatchOldTopics": BatchOldTopic,
-                                      "BatchRunningTopics":RunningTopicsController.text.trim()
-                                    };
+                                                    final ChangeBatchInfo =
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                'AllBatchInfo')
+                                                            .doc(AllData[i]
+                                                                ["BatchID"]);
 
-                                    final ChangeBatchInfo = FirebaseFirestore
-                                        .instance
-                                        .collection('AllBatchInfo')
-                                        .doc(AllData[i]["id"]);
+                                                    ChangeBatchInfo.update(
+                                                            UpdateBatchInfo)
+                                                        .then(
+                                                            (value) =>
+                                                                setState(() {
+                                                                  AwesomeDialog(
+                                                                    width: 500,
+                                                                    context:
+                                                                        context,
+                                                                    animType:
+                                                                        AnimType
+                                                                            .scale,
+                                                                    dialogType:
+                                                                        DialogType
+                                                                            .success,
+                                                                    body: const Center(
+                                                                        child: Text(
+                                                                      "ব্যাচের স্টুডেন্ট সফলভাবে যুক্ত হয়েছে",
+                                                                      style: TextStyle(
+                                                                          fontFamily:
+                                                                              "Josefin Sans",
+                                                                          fontWeight:
+                                                                              FontWeight.bold),
+                                                                    )),
+                                                                    title:
+                                                                        'ব্যাচের স্টুডেন্ট সফলভাবে যুক্ত হয়েছে',
+                                                                    desc:
+                                                                        'ব্যাচের স্টুডেন্ট সফলভাবে যুক্ত হয়েছে',
+                                                                    btnOkOnPress:
+                                                                        () {
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                    },
+                                                                  ).show();
 
-                                    ChangeBatchInfo.update(UpdateBatchInfo)
-                                        .then((value) => setState(() {
-                                              // Navigator.pop(context);
+                                                                  // Navigator.pop(
+                                                                  //     context);
 
-                                              AwesomeDialog(
-                                                width: 500,
-                                                context: context,
-                                                animType: AnimType.scale,
-                                                dialogType: DialogType.success,
-                                                body: const Center(
-                                                    child: Text(
-                                                  "ব্যাচের স্টুডেন্ট সফলভাবে যুক্ত হয়েছে",
-                                                  style: TextStyle(
-                                                      fontFamily:
-                                                          "Josefin Sans",
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                )),
-                                                title:
-                                                    'ব্যাচের স্টুডেন্ট সফলভাবে যুক্ত হয়েছে',
-                                                desc:
-                                                    'ব্যাচের স্টুডেন্ট সফলভাবে যুক্ত হয়েছে',
-                                                btnOkOnPress: () {
-                                                  Navigator.pop(context);
-                                                },
-                                              ).show();
+                                                                  GetBatchInfo();
 
-                                              final snackBar = SnackBar(
-                                                elevation: 0,
-                                                behavior:
-                                                    SnackBarBehavior.floating,
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                content: AwesomeSnackbarContent(
-                                                  titleFontSize: 12,
-                                                  title: 'successfull',
-                                                  message:
-                                                      'Hey Thank You. Good Job',
+                                                                  final snackBar =
+                                                                      SnackBar(
+                                                                    elevation:
+                                                                        0,
+                                                                    behavior:
+                                                                        SnackBarBehavior
+                                                                            .floating,
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    content:
+                                                                        AwesomeSnackbarContent(
+                                                                      titleFontSize:
+                                                                          12,
+                                                                      title:
+                                                                          'successfull',
+                                                                      message:
+                                                                          'Hey Thank You. Good Job',
 
-                                                  /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                  contentType:
-                                                      ContentType.success,
-                                                ),
-                                              );
+                                                                      /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                      contentType:
+                                                                          ContentType
+                                                                              .success,
+                                                                    ),
+                                                                  );
 
-                                              ScaffoldMessenger.of(context)
-                                                ..hideCurrentSnackBar()
-                                                ..showSnackBar(snackBar);
+                                                                  ScaffoldMessenger
+                                                                      .of(
+                                                                          context)
+                                                                    ..hideCurrentSnackBar()
+                                                                    ..showSnackBar(
+                                                                        snackBar);
 
-                                              setState(() {
-                                                loading = false;
-                                              });
-                                            }))
-                                        .onError((error, stackTrace) =>
-                                            setState(() {
-                                              final snackBar = SnackBar(
-                                                /// need to set following properties for best effect of awesome_snackbar_content
-                                                elevation: 0,
+                                                                  setState(() {
+                                                                    loading =
+                                                                        false;
+                                                                  });
+                                                                }))
+                                                        .onError((error,
+                                                                stackTrace) =>
+                                                            setState(() {
+                                                              final snackBar =
+                                                                  SnackBar(
+                                                                /// need to set following properties for best effect of awesome_snackbar_content
+                                                                elevation: 0,
 
-                                                behavior:
-                                                    SnackBarBehavior.floating,
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                content: AwesomeSnackbarContent(
-                                                  title: 'Something Wrong!!!!',
-                                                  message: 'Try again later...',
+                                                                behavior:
+                                                                    SnackBarBehavior
+                                                                        .floating,
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .transparent,
+                                                                content:
+                                                                    AwesomeSnackbarContent(
+                                                                  title:
+                                                                      'Something Wrong!!!!',
+                                                                  message:
+                                                                      'Try again later...',
 
-                                                  /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                  contentType:
-                                                      ContentType.failure,
-                                                ),
-                                              );
+                                                                  /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                  contentType:
+                                                                      ContentType
+                                                                          .failure,
+                                                                ),
+                                                              );
 
-                                              ScaffoldMessenger.of(context)
-                                                ..hideCurrentSnackBar()
-                                                ..showSnackBar(snackBar);
+                                                              ScaffoldMessenger
+                                                                  .of(context)
+                                                                ..hideCurrentSnackBar()
+                                                                ..showSnackBar(
+                                                                    snackBar);
 
-                                              setState(() {
-                                                loading = false;
-                                              });
-                                            }));
-
-                                               
-                                                    
+                                                              setState(() {
+                                                                loading = false;
+                                                              });
+                                                            }));
                                                   },
                                                   child: const Text("Save"),
                                                 ),
@@ -564,10 +635,6 @@ class _AllBatchInfoState extends State<AllBatchInfo> {
                                         );
                                       },
                                     );
-
-
-
-                                  
                                   },
                                   child: Text("Edit Topic")),
 
@@ -753,7 +820,7 @@ class _AllBatchInfoState extends State<AllBatchInfo> {
                                                       ).show();
                                                     } else {
                                                       var id =
-                                                          getRandomString(9);
+                                                          getRandomString(16);
 
                                                       var updateData = {
                                                         "id": id,
@@ -839,7 +906,7 @@ class _AllBatchInfoState extends State<AllBatchInfo> {
                                                                             'AllBatchInfo')
                                                                         .doc(AllData[i]
                                                                             [
-                                                                            "id"]);
+                                                                            "BatchID"]);
 
                                                                     ChangeBatchInfo.update(
                                                                             UpdateBatchInfo)
@@ -847,6 +914,8 @@ class _AllBatchInfoState extends State<AllBatchInfo> {
                                                                             setState(
                                                                                 () {
                                                                               // Navigator.pop(context);
+
+                                                                              GetBatchInfo();
 
                                                                               AwesomeDialog(
                                                                                 width: 500,
