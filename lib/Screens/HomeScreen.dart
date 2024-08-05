@@ -50,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
   TextEditingController StudentIDController = TextEditingController();
   TextEditingController StudentNameController = TextEditingController();
   TextEditingController DayController = TextEditingController();
+  TextEditingController PaymentAmountController = TextEditingController();
 
   static const _chars =
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
@@ -62,50 +63,54 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List AllStudentInfo = [];
 
-  Future<void> getProductInfo() async {
-    // CollectionReference _collectionDueCustomerRef =
-    //   FirebaseFirestore.instance.collection('ProductInfo');
+  Future<void> getAllStudentInfo() async {
+    CollectionReference _collectionStudentInfoRef =
+        FirebaseFirestore.instance.collection('PerTeacherStudentInfo');
 
-    //   QuerySnapshot DueCustomerquerySnapshot = await _collectionDueCustomerRef.get();
+    Query StudentInfoquery = _collectionStudentInfoRef
+        .where("TeachersAcademyName", isEqualTo: "Rezuan Math Care");
 
-    //   // Get data from docs and convert map to List
-    //    AllStudentInfo = DueCustomerquerySnapshot.docs.map((doc) => doc.data()).toList();
+    QuerySnapshot StudentInfoquerySnapshot =
+        await _collectionStudentInfoRef.get();
 
     setState(() {
-      //  AllStudentInfo = DueCustomerquerySnapshot.docs.map((doc) => doc.data()).toList();
+      AllStudentInfo = [];
+      AllStudentInfo =
+          StudentInfoquerySnapshot.docs.map((doc) => doc.data()).toList();
 
-      AllStudentInfo = [
-        {
-          "StudentName": "Mahadi",
-          "StudentID": "3435",
-          "PhoneNo": "43543465",
-          "InstitutionName": "Msjdf",
-          "FatherPhoneNo": "454546",
-          "DueAmount": "600",
-          "PaymentStatus": "Due"
-        }
-      ];
+      // AllStudentInfo = [
+      //   {
+      //     "StudentName": "Mahadi",
+      //     "StudentID": "3435",
+      //     "PhoneNo": "43543465",
+      //     "InstitutionName": "Msjdf",
+      //     "FatherPhoneNo": "454546",
+      //     "DueAmount": "600",
+      //     "PaymentStatus": "Due"
+      //   }
+      // ];
     });
 
     // print(AllData);
   }
 
-  Future<void> getSearchProductInfo(String ProductVisibleID) async {
-    CollectionReference _collectionDueCustomerRef =
-        FirebaseFirestore.instance.collection('ProductInfo');
+  Future<void> getSearchStudentInfo(String SID) async {
+    CollectionReference _collectionStudentInfoRef =
+        FirebaseFirestore.instance.collection('PerTeacherStudentInfo');
 
-    Query DueCustomerquery = _collectionDueCustomerRef.where("ProductVisibleID",
-        isEqualTo: ProductVisibleID);
+    Query StudentInfoquery =
+        _collectionStudentInfoRef.where("SIDNo", isEqualTo: SID);
 
-    QuerySnapshot DueCustomerquerySnapshot = await DueCustomerquery.get();
+    QuerySnapshot StudentInfoquerySnapshot = await StudentInfoquery.get();
 
     // Get data from docs and convert map to List
-    AllStudentInfo =
-        DueCustomerquerySnapshot.docs.map((doc) => doc.data()).toList();
+    // AllStudentInfo =
+    //     StudentInfoquerySnapshot.docs.map((doc) => doc.data()).toList();
 
     setState(() {
+      AllStudentInfo = [];
       AllStudentInfo =
-          DueCustomerquerySnapshot.docs.map((doc) => doc.data()).toList();
+          StudentInfoquerySnapshot.docs.map((doc) => doc.data()).toList();
       SearchByStudentIDController.clear();
     });
 
@@ -132,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // FlutterNativeSplash.remove();
 
-    getProductInfo();
+    getAllStudentInfo();
 
     // setState(() {
     //   _selectedDestination = 0;
@@ -165,7 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: textTheme.titleLarge,
                 ),
               ),
-              Divider(
+              const Divider(
                 height: 1,
                 thickness: 1,
               ),
@@ -177,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   // Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen()));
                 },
               ),
-                            Divider(
+              const Divider(
                 height: 1,
                 thickness: 1,
               ),
@@ -186,7 +191,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 title: Text('All Batch Info'),
                 selected: _selectedDestination == 0,
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllBatchInfo()));
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => AllBatchInfo()));
                 },
               ),
               ListTile(
@@ -514,7 +520,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                             var id = getRandomString(7);
 
                                             var updateData = {
-                                              
                                               "TeachersAcademyName":
                                                   selectedTeachersAcademyValue
                                                       .toString(),
@@ -664,7 +669,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             showDialog(
                               context: context,
                               builder: (context) {
-                                
                                 String Title = "নিচে নতুন ব্যাচের নাম লিখুন";
 
                                 bool loading = false;
@@ -681,21 +685,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ];
                                 String? selectedTeachersAcademyValue;
 
-
-                                  final List<String> HSCBatchYear = [
-                                                                '2024',
-                                                                '2025',
-                                                                '2026',
-                                                                '2027',
-                                                                '2028',
-                                                                '2029',
-                                                                '2030',
-                                                                '2031',
-                                                                '2032',
-                                                                '2033',
-                                                              ];
-                                            String? HSCBatchYearValue;
-
+                                final List<String> HSCBatchYear = [
+                                  '2024',
+                                  '2025',
+                                  '2026',
+                                  '2027',
+                                  '2028',
+                                  '2029',
+                                  '2030',
+                                  '2031',
+                                  '2032',
+                                  '2033',
+                                ];
+                                String? HSCBatchYearValue;
 
                                 return StatefulBuilder(
                                   builder: (context, setState) {
@@ -829,51 +831,65 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       ),
                                                     ),
                                                   ),
-
-                                                                Card(
-                                                              elevation: 20,
-                                                              child: Container(
-                                                                width: 200,
-                                                                child: DropdownButtonHideUnderline(
-                                                                  child: DropdownButton2<String>(
-                                                                    isExpanded: true,
-                                                                    hint: Text(
-                                                                      'Select HSC Batch Year',
-                                                                      style: TextStyle(
-                                                                        fontSize: 14,
-                                                                        color: Theme.of(context).hintColor,
+                                                  Card(
+                                                    elevation: 20,
+                                                    child: Container(
+                                                      width: 200,
+                                                      child:
+                                                          DropdownButtonHideUnderline(
+                                                        child: DropdownButton2<
+                                                            String>(
+                                                          isExpanded: true,
+                                                          hint: Text(
+                                                            'Select HSC Batch Year',
+                                                            style: TextStyle(
+                                                              fontSize: 14,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .hintColor,
+                                                            ),
+                                                          ),
+                                                          items: HSCBatchYear
+                                                              .map((String
+                                                                      item) =>
+                                                                  DropdownMenuItem<
+                                                                      String>(
+                                                                    value: item,
+                                                                    child: Text(
+                                                                      item,
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        fontSize:
+                                                                            14,
                                                                       ),
                                                                     ),
-                                                                    items: HSCBatchYear.map(
-                                                                        (String item) => DropdownMenuItem<String>(
-                                                                              value: item,
-                                                                              child: Text(
-                                                                                item,
-                                                                                style: const TextStyle(
-                                                                                  fontSize: 14,
-                                                                                ),
-                                                                              ),
-                                                                            )).toList(),
-                                                                    value: HSCBatchYearValue,
-                                                                    onChanged: (String? value) {
-                                                                      setState(() {
-                                                                        HSCBatchYearValue = value;
-
-                                                                    
-                                                                      });
-                                                                    },
-                                                                    buttonStyleData: const ButtonStyleData(
-                                                                      padding: EdgeInsets.symmetric(horizontal: 16),
-                                                                      height: 40,
-                                                                      width: 140,
-                                                                    ),
-                                                                    menuItemStyleData: const MenuItemStyleData(
-                                                                      height: 40,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
+                                                                  )).toList(),
+                                                          value:
+                                                              HSCBatchYearValue,
+                                                          onChanged:
+                                                              (String? value) {
+                                                            setState(() {
+                                                              HSCBatchYearValue =
+                                                                  value;
+                                                            });
+                                                          },
+                                                          buttonStyleData:
+                                                              const ButtonStyleData(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        16),
+                                                            height: 40,
+                                                            width: 140,
+                                                          ),
+                                                          menuItemStyleData:
+                                                              const MenuItemStyleData(
+                                                            height: 40,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
                                                   const SizedBox(
                                                     height: 20,
                                                   ),
@@ -971,9 +987,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   const SizedBox(
                                                     height: 20,
                                                   ),
-
-
-                                                 Container(
+                                                  Container(
                                                     width: 300,
                                                     child: TextField(
                                                       onChanged: (value) {},
@@ -1013,18 +1027,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                           145)),
                                                         ),
                                                       ),
-                                                      controller:
-                                                          DayController,
+                                                      controller: DayController,
                                                     ),
                                                   ),
                                                   const SizedBox(
                                                     height: 20,
                                                   ),
-
-
-
-
-
                                                   Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -1193,22 +1201,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                               loading = true;
                                             });
 
-                                          var id = getRandomString(9);
+                                            var id = getRandomString(9);
 
                                             var updateData = {
-                                              "BatchID":id,
+                                              "BatchID": id,
                                               "BatchName": BatchNameController
                                                   .text
                                                   .trim()
                                                   .toString(),
-                                              "TotalStudent":"0",
+                                              "TotalStudent": "0",
                                               "BatchRunningTopics":
                                                   BatchDescriptionController
                                                       .text
                                                       .trim()
                                                       .toString(),
-                                              "PrivateDay":DayController.text.trim(),
-                                              "HSCBatchYear":HSCBatchYearValue,
+                                              "PrivateDay":
+                                                  DayController.text.trim(),
+                                              "HSCBatchYear": HSCBatchYearValue,
                                               "PerStudentFee":
                                                   PerStudentFeeController.text
                                                       .trim()
@@ -1232,7 +1241,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                             final StudentInfo =
                                                 FirebaseFirestore.instance
-                                                    .collection('AllBatchInfo').doc(id);
+                                                    .collection('AllBatchInfo')
+                                                    .doc(id);
 
                                             StudentInfo.set(updateData)
                                                 .then((value) => setState(() {
@@ -1494,7 +1504,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       ElevatedButton(
                           onPressed: () async {
-                            getSearchProductInfo(SearchByStudentIDController
+                            getSearchStudentInfo(SearchByStudentIDController
                                 .text
                                 .trim()
                                 .toLowerCase());
@@ -1546,10 +1556,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           DataColumn(
                             label: Text('Phone No'),
                           ),
-                          DataColumn2(
-                            label: Text('Institution Name'),
-                            size: ColumnSize.L,
-                          ),
+                          // DataColumn2(
+                          //   label: Text('Institution Name'),
+                          //   size: ColumnSize.L,
+                          // ),
                           DataColumn2(
                               label: Text('Father Phone No'), fixedWidth: 170),
                           DataColumn(
@@ -1578,47 +1588,40 @@ class _HomeScreenState extends State<HomeScreen> {
                             (index) => DataRow(cells: [
                                   DataCell(Text('${index + 1}')),
 
-                                  DataCell(Text(AllStudentInfo[index]
-                                          ["StudentID"]
+                                  DataCell(Text(AllStudentInfo[index]["SIDNo"]
                                       .toString()
                                       .toUpperCase())),
 
-                                  DataCell(AllStudentInfo[index]
-                                                  ["PaymentStatus"]
-                                              .toString()
-                                              .toUpperCase() ==
-                                          "DUE"
+                                  DataCell((int.parse(AllStudentInfo[index]
+                                                  ["Due"]
+                                              .toString())) >
+                                          0
                                       ? Text(
-                                          AllStudentInfo[index]["PaymentStatus"]
-                                              .toString()
-                                              .toUpperCase(),
+                                          "DUE".toString().toUpperCase(),
                                           style: const TextStyle(
                                               color: Colors.red,
                                               fontWeight: FontWeight.bold),
                                         )
                                       : Text(
-                                          AllStudentInfo[index]["PaymentStatus"]
-                                              .toString()
-                                              .toUpperCase(),
+                                          "PAID".toString().toUpperCase(),
                                           style: const TextStyle(
                                               color: Colors.green,
                                               fontWeight: FontWeight.bold),
                                         )),
 
-                                  DataCell(AllStudentInfo[index]
-                                                  ["PaymentStatus"]
-                                              .toString()
-                                              .toUpperCase() ==
-                                          "DUE"
+                                  DataCell((int.parse(AllStudentInfo[index]
+                                                  ["Due"]
+                                              .toString())) >
+                                          0
                                       ? Text(
-                                          "${AllStudentInfo[index]["DueAmount"].toString().toUpperCase()}৳",
+                                          "${AllStudentInfo[index]["Due"].toString().toUpperCase()}৳",
                                           style: const TextStyle(
                                               color: Colors.red,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 22),
                                         )
                                       : Text(
-                                          "${AllStudentInfo[index]["DueAmount"].toString().toUpperCase()}৳",
+                                          "${AllStudentInfo[index]["Due"].toString().toUpperCase()}৳",
                                           style: const TextStyle(
                                               color: Colors.green,
                                               fontWeight: FontWeight.bold,
@@ -1629,15 +1632,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ["StudentName"]
                                       .toString()
                                       .toUpperCase())),
-                                  DataCell(Text(AllStudentInfo[index]["PhoneNo"]
+                                  DataCell(Text(AllStudentInfo[index]
+                                          ["StudentPhoneNumber"]
                                       .toString()
                                       .toUpperCase())),
 
-                                  DataCell(Text(
-                                      "${AllStudentInfo[index]["InstitutionName"].toString().toUpperCase()}")),
+                                  // DataCell(Text(
+                                  //     "${AllStudentInfo[index]["InstitutionName"].toString().toUpperCase()}")),
 
-                                  DataCell(Text(
-                                      "${AllStudentInfo[index]["FatherPhoneNo"].toString().toUpperCase()}")),
+                                  DataCell(Text(AllStudentInfo[index]
+                                          ["FatherPhoneNo"]
+                                      .toString()
+                                      .toUpperCase())),
 
                                   DataCell(ElevatedButton(
                                       onPressed: () {
@@ -1695,10 +1701,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                     border:
                                                                         OutlineInputBorder(),
                                                                     labelText:
-                                                                        'SID: ${AllStudentInfo[index]["StudentID"].toString().toUpperCase()}',
+                                                                        'SID: ${AllStudentInfo[index]["SIDNo"].toString().toUpperCase()}',
 
                                                                     hintText:
-                                                                        'SID: ${AllStudentInfo[index]["StudentID"].toString().toUpperCase()}',
+                                                                        'SID: ${AllStudentInfo[index]["SIDNo"].toString().toUpperCase()}',
 
                                                                     //  enabledBorder: OutlineInputBorder(
                                                                     //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
@@ -1797,10 +1803,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                     border:
                                                                         OutlineInputBorder(),
                                                                     labelText:
-                                                                        'Due: ${AllStudentInfo[index]["DueAmount"].toString().toUpperCase()}৳',
+                                                                        'Due: ${AllStudentInfo[index]["Due"].toString().toUpperCase()}৳',
 
                                                                     hintText:
-                                                                        'Due: ${AllStudentInfo[index]["DueAmount"].toString().toUpperCase()}৳',
+                                                                        'Due: ${AllStudentInfo[index]["Due"].toString().toUpperCase()}৳',
 
                                                                     //  enabledBorder: OutlineInputBorder(
                                                                     //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
@@ -1832,6 +1838,60 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               const SizedBox(
                                                                 height: 20,
                                                               ),
+                                                              SizedBox(
+                                                                width: 300,
+                                                                child:
+                                                                    TextField(
+                                                                  readOnly:
+                                                                      true,
+                                                                  onChanged:
+                                                                      (value) {},
+                                                                  keyboardType:
+                                                                      TextInputType
+                                                                          .text,
+                                                                  decoration:
+                                                                      InputDecoration(
+                                                                    border:
+                                                                        OutlineInputBorder(),
+                                                                    labelText:
+                                                                        'Payment Amount',
+
+                                                                    hintText:
+                                                                        'Payment Amount',
+
+                                                                    //  enabledBorder: OutlineInputBorder(
+                                                                    //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                                    //     ),
+                                                                    focusedBorder:
+                                                                        OutlineInputBorder(
+                                                                      borderSide: BorderSide(
+                                                                          width:
+                                                                              3,
+                                                                          color:
+                                                                              Theme.of(context).primaryColor),
+                                                                    ),
+                                                                    errorBorder:
+                                                                        const OutlineInputBorder(
+                                                                      borderSide: BorderSide(
+                                                                          width:
+                                                                              3,
+                                                                          color: Color.fromARGB(
+                                                                              255,
+                                                                              66,
+                                                                              125,
+                                                                              145)),
+                                                                    ),
+                                                                  ),
+                                                                  controller:
+                                                                      PaymentAmountController,
+                                                                ),
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 20,
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 20,
+                                                              ),
                                                               CheckboxListTile(
                                                                 title: const Text(
                                                                     "Discount Available?",
@@ -1859,6 +1919,47 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               const SizedBox(
                                                                 height: 20,
                                                               ),
+                                                              DiscountAvailable
+                                                                  ? SizedBox(
+                                                                      width:
+                                                                          300,
+                                                                      child:
+                                                                          TextField(
+                                                                        readOnly:
+                                                                            true,
+                                                                        onChanged:
+                                                                            (value) {},
+                                                                        keyboardType:
+                                                                            TextInputType.text,
+                                                                        decoration:
+                                                                            InputDecoration(
+                                                                          border:
+                                                                              OutlineInputBorder(),
+                                                                          labelText:
+                                                                              'Discount Amount',
+
+                                                                          hintText:
+                                                                              'Discount Amount',
+
+                                                                          //  enabledBorder: OutlineInputBorder(
+                                                                          //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                                          //     ),
+                                                                          focusedBorder:
+                                                                              OutlineInputBorder(
+                                                                            borderSide:
+                                                                                BorderSide(width: 3, color: Theme.of(context).primaryColor),
+                                                                          ),
+                                                                          errorBorder:
+                                                                              const OutlineInputBorder(
+                                                                            borderSide:
+                                                                                BorderSide(width: 3, color: Color.fromARGB(255, 66, 125, 145)),
+                                                                          ),
+                                                                        ),
+                                                                        controller:
+                                                                            DiscountAmountController,
+                                                                      ),
+                                                                    )
+                                                                  : Text(""),
                                                             ],
                                                           ),
                                                         ),
@@ -1869,13 +1970,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               context),
                                                       child: Text("Cancel"),
                                                     ),
+
+                                                    
                                                     ElevatedButton(
                                                       onPressed: () async {
                                                         setState(() {
                                                           loading = true;
                                                         });
 
-                                                        var MsgData = {
+                                                        var PaymentData = {
+
+                                                          "PaymentAmount":PaymentAmountController.text.trim(),
+                                                          "SIDNo":AllStudentInfo[index]["SIDNo"],
+                                                          "DiscountAmount":DiscountAvailable?DiscountAmountController.text.trim():"",
+                                                          "TeacherAcademyName":AllStudentInfo[index]["TeacherAcademyName"],
+                                                          "BatchName":AllStudentInfo[index]["BatchName"],
                                                           "year":
                                                               "${DateTime.now().year}",
                                                           "month":
@@ -1885,36 +1994,171 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           "DateTime": DateTime
                                                                   .now()
                                                               .toIso8601String(),
-                                                          "msg":
-                                                              ClassOfMsgController
-                                                                  .text
-                                                                  .trim()
+                                                          
                                                         };
 
-                                                        final ClassOffSMS =
+                                                        final PerTeacherStudentPayment =
                                                             FirebaseFirestore
                                                                 .instance
                                                                 .collection(
-                                                                    'ClassOffSMS')
+                                                                    'PerTeacherStudentPayment')
                                                                 .doc(
                                                                     ProductUniqueID);
 
-                                                        ClassOffSMS.set(MsgData)
+                                                        PerTeacherStudentPayment.set(PaymentData)
+                                                            .then((value) =>
+                                                                setState(
+                                                                    () async {
+
+
+
+
+
+
+
+
+                                                var PaymentDataUpdate = {
+
+                                                              "Due":DiscountAvailable?((int.parse(AllStudentInfo[index]["Due"]))-(int.parse((PaymentAmountController.text.trim().toString())))+(int.parse(DiscountAmountController.text.trim().toString()))).toString():((int.parse(AllStudentInfo[index]["Due"]))-(int.parse((PaymentAmountController.text.trim().toString())))).toString(),
+                                                              "Totalpay":(int.parse(AllStudentInfo[index]["Totalpay"])+int.parse(PaymentAmountController.text.trim().toString())).toString(),
+                                                          
+                                                        };
+                                                        
+
+                                                        final PerTeacherStudentPayment =
+                                                            FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'PerTeacherStudentInfo')
+                                                                .doc(AllStudentInfo[index]["id"]);
+
+                                                        PerTeacherStudentPayment.update(PaymentDataUpdate)
                                                             .then((value) =>
                                                                 setState(
                                                                     () async {
                                                                   Navigator.pop(
                                                                       context);
 
+                                                                  // try {
+                                                                  //   var AdminMsg = "Hello ${AllStudentInfo[index]["StudentName"]} you pay ${PaymentAmountController.text.trim()}৳/${AllStudentInfo[index]["Due"]} ${AllStudentInfo[index]["TeacherAcademyName"]}";
+
+                                                                  //   final response =
+                                                                  //       await http
+                                                                  //           .get(Uri.parse('https://api.greenweb.com.bd/api.php?token=1024519252916991043295858a1b3ac3cb09ae52385b1489dff95&to=${AllStudentInfo[index]["FatherPhoneNo"]}&message=$AdminMsg'));
+
+                                                                  //   if (response
+                                                                  //           .statusCode ==
+                                                                  //       200) {
+                                                                  //     // If the server did return a 200 OK response,
+                                                                  //     // then parse the JSON.
+                                                                  //     print(jsonDecode(
+                                                                  //         response
+                                                                  //             .body));
+                                                                  //   } else {
+                                                                  //     // If the server did not return a 200 OK response,
+                                                                  //     // then throw an exception.
+                                                                  //     throw Exception(
+                                                                  //         'Failed to load album');
+                                                                  //   }
+                                                                  // } catch (e) {}
+
+                                                                  // Navigator.pop(context);
+
+                                                                  // getProductInfo();
+
+                                                                  final snackBar =
+                                                                      SnackBar(
+                                                                    elevation:
+                                                                        0,
+                                                                    behavior:
+                                                                        SnackBarBehavior
+                                                                            .floating,
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    content:
+                                                                        AwesomeSnackbarContent(
+                                                                      titleFontSize:
+                                                                          12,
+                                                                      title:
+                                                                          'successfull',
+                                                                      message:
+                                                                          'Hey Thank You. Good Job',
+
+                                                                      /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                      contentType:
+                                                                          ContentType
+                                                                              .success,
+                                                                    ),
+                                                                  );
+
+                                                                  ScaffoldMessenger
+                                                                      .of(
+                                                                          context)
+                                                                    ..hideCurrentSnackBar()
+                                                                    ..showSnackBar(
+                                                                        snackBar);
+
+                                                                  setState(() {
+                                                                    loading =
+                                                                        false;
+                                                                  });
+                                                                }))
+                                                            .onError((error,
+                                                                    stackTrace) =>
+                                                                setState(() {
+                                                                  final snackBar =
+                                                                      SnackBar(
+                                                                    /// need to set following properties for best effect of awesome_snackbar_content
+                                                                    elevation:
+                                                                        0,
+
+                                                                    behavior:
+                                                                        SnackBarBehavior
+                                                                            .floating,
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    content:
+                                                                        AwesomeSnackbarContent(
+                                                                      title:
+                                                                          'Something Wrong!!!!',
+                                                                      message:
+                                                                          'Try again later...',
+
+                                                                      /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                      contentType:
+                                                                          ContentType
+                                                                              .failure,
+                                                                    ),
+                                                                  );
+
+                                                                  ScaffoldMessenger
+                                                                      .of(
+                                                                          context)
+                                                                    ..hideCurrentSnackBar()
+                                                                    ..showSnackBar(
+                                                                        snackBar);
+
+                                                                  setState(() {
+                                                                    loading =
+                                                                        false;
+                                                                  });
+                                                                }));
+
+
+
+
+
+                                                                  Navigator.pop(
+                                                                      context);
+
                                                                   try {
-                                                                    var AdminMsg =
-                                                                        ClassOfMsgController
-                                                                            .text
-                                                                            .trim();
+                                                                    var AdminMsg = "Hello ${AllStudentInfo[index]["StudentName"]} you pay ${PaymentAmountController.text.trim()}৳/${AllStudentInfo[index]["Due"]} ${AllStudentInfo[index]["TeacherAcademyName"]}";
 
                                                                     final response =
                                                                         await http
-                                                                            .get(Uri.parse('https://api.greenweb.com.bd/api.php?token=1024519252916991043295858a1b3ac3cb09ae52385b1489dff95&to=${AllStudentInfo[index]["PhoneNo"].trim()}&message=$AdminMsg'));
+                                                                            .get(Uri.parse('https://api.greenweb.com.bd/api.php?token=1024519252916991043295858a1b3ac3cb09ae52385b1489dff95&to=${AllStudentInfo[index]["FatherPhoneNo"]}&message=$AdminMsg'));
 
                                                                     if (response
                                                                             .statusCode ==
@@ -2016,7 +2260,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   });
                                                                 }));
                                                       },
-                                                      child: const Text("Send"),
+                                                      child: const Text("Pay Now"),
                                                     ),
                                                   ],
                                                 );
@@ -3267,7 +3511,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                                                             Navigator.pop(context);
 
-                                                                            getProductInfo();
+                                                                            // getStudentInfo();
 
                                                                             try {
                                                                               var AdminMsg = "Dear Customer,Tarongo Electronics থেকে আপনি ${CashInController.text.trim()} টাকা দিয়ে একটি Product ক্রয় করেছেন।";
@@ -3779,7 +4023,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   setState(() {
                                                                     // Navigator.pop(context);
 
-                                                                    getProductInfo();
+                                                                    // getProductInfo();
 
                                                                     AwesomeDialog(
                                                                       width:
