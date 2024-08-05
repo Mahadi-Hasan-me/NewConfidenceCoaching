@@ -841,7 +841,7 @@ class _AllBatchInfoState extends State<AllBatchInfo> {
                                                         "HSCBatchYear":
                                                             AllStudentInfo[0][
                                                                 "HSCBatchYear"],
-                                                        "TeachersAcademyName":
+                                                        "TeacherAcademyName":
                                                             "${AllData[i]["TeacherAcademyName"]}",
                                                         "BatchName":
                                                             "${AllData[i]["BatchName"]}",

@@ -556,7 +556,7 @@ class _ExamMarksState extends State<ExamMarks> {
                                             var id = getRandomString(7);
 
                                             var updateData = {
-                                              "TeachersAcademyName":
+                                              "TeacherAcademyName":
                                                   selectedTeachersAcademyValue
                                                       .toString(),
                                               "TeacherBatchName":
@@ -1794,37 +1794,29 @@ class _ExamMarksState extends State<ExamMarks> {
                                                       setState(() async {
                                                         // Navigator.pop(context);
 
-                                                        var Msg = "SID:${StudentMarksWithInfo[i]
-                                                    ["StudentID"]},TN:${StudentMarksWithInfo[i]["TopicName"]
-                                                    .toString()}, M:${StudentMarksWithInfo[i]["TotalMarks"]
-                                                    .toString()} HM:${StudentMarksWithInfo[i]["HighestMarks"]
-                                                    .toString()}, P:${StudentMarksWithInfo[i]["Position"]
-                                                    .toString()}, ${StudentMarksWithInfo[i]["AcademyName"]
-                                                    .toString()}";
+                                                        var Msg =
+                                                            "SID:${StudentMarksWithInfo[i]["StudentID"]},TN:${StudentMarksWithInfo[i]["TopicName"].toString()}, M:${StudentMarksWithInfo[i]["TotalMarks"].toString()} HM:${StudentMarksWithInfo[i]["HighestMarks"].toString()}, P:${StudentMarksWithInfo[i]["Position"].toString()}, ${StudentMarksWithInfo[i]["AcademyName"].toString()}";
 
-                                             try {
+                                                        try {
+                                                          final response =
+                                                              await http.get(
+                                                                  Uri.parse(
+                                                                      'https://api.greenweb.com.bd/api.php?token=100651104321696050272e74e099c1bc81798bc3aa4ed57a8d030&to=${AllStudentInfo[i]["FatherPhoneNo"].toString().trim()}&message=${Msg}'));
 
-                                                         final response = await http
-                                                            .get(Uri.parse(
-                                                                'https://api.greenweb.com.bd/api.php?token=100651104321696050272e74e099c1bc81798bc3aa4ed57a8d030&to=${AllStudentInfo[i]["FatherPhoneNo"].toString().trim()}&message=${Msg}'));
+                                                          if (response
+                                                                  .statusCode ==
+                                                              200) {
+                                                            // If the server did return a 200 OK response,
+                                                            // then parse the JSON.
 
-                                                        if (response
-                                                                .statusCode ==
-                                                            200) {
-                                                          // If the server did return a 200 OK response,
-                                                          // then parse the JSON.
-
-                                                          print("");
-                                                        } else {
-                                                          // If the server did not return a 200 OK response,
-                                                          // then throw an exception.
-                                                          throw Exception(
-                                                              'Failed to load album');
-                                                        }
-                                               
-                                             } catch (e) {
-                                               
-                                             }
+                                                            print("");
+                                                          } else {
+                                                            // If the server did not return a 200 OK response,
+                                                            // then throw an exception.
+                                                            throw Exception(
+                                                                'Failed to load album');
+                                                          }
+                                                        } catch (e) {}
 
                                                         AwesomeDialog(
                                                           width: 500,
