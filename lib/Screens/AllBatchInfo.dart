@@ -856,7 +856,7 @@ class _AllBatchInfoState extends State<AllBatchInfo> {
                                                             "${AllData[i]["PerStudentFee"]}",
                                                         "Due":
                                                             "${AllData[i]["PerStudentFee"]}",
-                                                        "Totalpay": "",
+                                                        "Totalpay": "0",
                                                         "PrivateDay":
                                                             "${AllData[i]["PrivateDay"]}",
                                                         "ClassStartHour":

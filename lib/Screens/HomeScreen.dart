@@ -239,423 +239,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     itemBuilder: (BuildContext bc) {
                       return [
-                        PopupMenuItem(
-                          child: Text(
-                            "Add Registered Student",
-                            style: TextStyle(
-                                fontFamily: "Josefin Sans",
-                                fontWeight: FontWeight.bold),
-                          ),
-                          value: '/about',
-                          onTap: () async {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                String SelectedStudentStatus = "";
-                                String Title =
-                                    "নিচে নতুন রেজিস্ট্রেশন করা স্টুডেন্ট যুক্ত করুন";
-
-                                bool loading = false;
-
-                                final List<String> TeachersBatch = [
-                                  'Rezuan Math Care',
-                                  'Sazzad ICT',
-                                  'MediCrack',
-                                  'Protick Physics',
-                                ];
-                                String? selectedTeachersBatchValue;
-
-                                // String LabelText ="আয়ের খাত লিখবেন";
-
-                                return StatefulBuilder(
-                                  builder: (context, setState) {
-                                    return AlertDialog(
-                                      title: Column(
-                                        children: [
-                                          Center(
-                                            child: Text(
-                                              "${Title}",
-                                              style: const TextStyle(
-                                                  fontFamily: "Josefin Sans",
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      content: loading
-                                          ? const Center(
-                                              child:
-                                                  CircularProgressIndicator(),
-                                            )
-                                          : SingleChildScrollView(
-                                              child: Column(
-                                                children: [
-                                                  Container(
-                                                    width: 300,
-                                                    child:
-                                                        DropdownButtonHideUnderline(
-                                                      child: DropdownButton2<
-                                                          String>(
-                                                        isExpanded: true,
-                                                        hint: Text(
-                                                          'Select Teacher',
-                                                          style: TextStyle(
-                                                            fontSize: 14,
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .hintColor,
-                                                          ),
-                                                        ),
-                                                        items: TeachersAcademy
-                                                            .map((String
-                                                                    item) =>
-                                                                DropdownMenuItem<
-                                                                    String>(
-                                                                  value: item,
-                                                                  child: Text(
-                                                                    item,
-                                                                    style:
-                                                                        const TextStyle(
-                                                                      fontSize:
-                                                                          14,
-                                                                    ),
-                                                                  ),
-                                                                )).toList(),
-                                                        value:
-                                                            selectedTeachersAcademyValue,
-                                                        onChanged:
-                                                            (String? value) {
-                                                          setState(() {
-                                                            selectedTeachersAcademyValue =
-                                                                value;
-                                                          });
-                                                        },
-                                                        buttonStyleData:
-                                                            const ButtonStyleData(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                                  horizontal:
-                                                                      16),
-                                                          height: 40,
-                                                          width: 140,
-                                                        ),
-                                                        menuItemStyleData:
-                                                            const MenuItemStyleData(
-                                                          height: 40,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  Container(
-                                                    width: 300,
-                                                    child:
-                                                        DropdownButtonHideUnderline(
-                                                      child: DropdownButton2<
-                                                          String>(
-                                                        isExpanded: true,
-                                                        hint: Text(
-                                                          'Select Batch',
-                                                          style: TextStyle(
-                                                            fontSize: 14,
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .hintColor,
-                                                          ),
-                                                        ),
-                                                        items: TeachersBatch
-                                                            .map((String
-                                                                    item) =>
-                                                                DropdownMenuItem<
-                                                                    String>(
-                                                                  value: item,
-                                                                  child: Text(
-                                                                    item,
-                                                                    style:
-                                                                        const TextStyle(
-                                                                      fontSize:
-                                                                          14,
-                                                                    ),
-                                                                  ),
-                                                                )).toList(),
-                                                        value:
-                                                            selectedTeachersBatchValue,
-                                                        onChanged:
-                                                            (String? value) {
-                                                          setState(() {
-                                                            selectedTeachersBatchValue =
-                                                                value;
-                                                          });
-                                                        },
-                                                        buttonStyleData:
-                                                            const ButtonStyleData(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                                  horizontal:
-                                                                      16),
-                                                          height: 40,
-                                                          width: 140,
-                                                        ),
-                                                        menuItemStyleData:
-                                                            const MenuItemStyleData(
-                                                          height: 40,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  Container(
-                                                    width: 300,
-                                                    child: TextField(
-                                                      onChanged: (value) {},
-                                                      keyboardType:
-                                                          TextInputType.number,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        border:
-                                                            OutlineInputBorder(),
-                                                        labelText:
-                                                            'Enter Student ID',
-
-                                                        hintText:
-                                                            'Enter Student ID',
-
-                                                        //  enabledBorder: OutlineInputBorder(
-                                                        //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                        //     ),
-                                                        focusedBorder:
-                                                            OutlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              width: 3,
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .primaryColor),
-                                                        ),
-                                                        errorBorder:
-                                                            const OutlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                                  width: 3,
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          66,
-                                                                          125,
-                                                                          145)),
-                                                        ),
-                                                      ),
-                                                      controller:
-                                                          StudentIDController,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  Container(
-                                                    width: 300,
-                                                    child: TextField(
-                                                      onChanged: (value) {},
-                                                      keyboardType:
-                                                          TextInputType.number,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        border:
-                                                            OutlineInputBorder(),
-                                                        labelText:
-                                                            'Enter Teacher ID',
-
-                                                        hintText:
-                                                            'Enter Teacher ID',
-
-                                                        //  enabledBorder: OutlineInputBorder(
-                                                        //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                        //     ),
-                                                        focusedBorder:
-                                                            OutlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              width: 3,
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .primaryColor),
-                                                        ),
-                                                        errorBorder:
-                                                            const OutlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                                  width: 3,
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          66,
-                                                                          125,
-                                                                          145)),
-                                                        ),
-                                                      ),
-                                                      controller:
-                                                          TeacherIDController,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context),
-                                          child: Text("Cancel"),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () async {
-                                            setState(() {
-                                              loading = true;
-                                            });
-
-                                            var id = getRandomString(7);
-
-                                            var updateData = {
-                                              "TeachersAcademyName":
-                                                  selectedTeachersAcademyValue
-                                                      .toString(),
-                                              "TeacherBatchName":
-                                                  selectedBatchNameValue
-                                                      .toString(),
-                                              "TeacherID": TeacherIDController
-                                                  .text
-                                                  .trim(),
-                                              "StudentID": TeacherIDController
-                                                  .text
-                                                  .trim(),
-                                              "Status": "open",
-                                              "year": "${DateTime.now().year}",
-                                              "month":
-                                                  "${DateTime.now().month}/${DateTime.now().year}",
-                                              "Date":
-                                                  "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
-                                              "DateTime": DateTime.now()
-                                                  .toIso8601String(),
-                                            };
-
-                                            final StudentInfo =
-                                                FirebaseFirestore.instance
-                                                    .collection(
-                                                        'PerTeacherStudentInfo')
-                                                    .doc(ProductUniqueID);
-
-                                            StudentInfo.set(updateData)
-                                                .then((value) => setState(() {
-                                                      // Navigator.pop(context);
-
-                                                      AwesomeDialog(
-                                                        width: 500,
-                                                        context: context,
-                                                        animType:
-                                                            AnimType.scale,
-                                                        dialogType:
-                                                            DialogType.success,
-                                                        body: const Center(
-                                                            child: Text(
-                                                          "ব্যাচের স্টুডেন্ট সফলভাবে যুক্ত হয়েছে",
-                                                          style: TextStyle(
-                                                              fontFamily:
-                                                                  "Josefin Sans",
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        )),
-                                                        title:
-                                                            'ব্যাচের স্টুডেন্ট সফলভাবে যুক্ত হয়েছে',
-                                                        desc:
-                                                            'ব্যাচের স্টুডেন্ট সফলভাবে যুক্ত হয়েছে',
-                                                        btnOkOnPress: () {
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
-                                                      ).show();
-
-                                                      final snackBar = SnackBar(
-                                                        elevation: 0,
-                                                        behavior:
-                                                            SnackBarBehavior
-                                                                .floating,
-                                                        backgroundColor:
-                                                            Colors.transparent,
-                                                        content:
-                                                            AwesomeSnackbarContent(
-                                                          titleFontSize: 12,
-                                                          title: 'successfull',
-                                                          message:
-                                                              'Hey Thank You. Good Job',
-
-                                                          /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                          contentType:
-                                                              ContentType
-                                                                  .success,
-                                                        ),
-                                                      );
-
-                                                      ScaffoldMessenger.of(
-                                                          context)
-                                                        ..hideCurrentSnackBar()
-                                                        ..showSnackBar(
-                                                            snackBar);
-
-                                                      setState(() {
-                                                        loading = false;
-                                                      });
-                                                    }))
-                                                .onError((error, stackTrace) =>
-                                                    setState(() {
-                                                      final snackBar = SnackBar(
-                                                        /// need to set following properties for best effect of awesome_snackbar_content
-                                                        elevation: 0,
-
-                                                        behavior:
-                                                            SnackBarBehavior
-                                                                .floating,
-                                                        backgroundColor:
-                                                            Colors.transparent,
-                                                        content:
-                                                            AwesomeSnackbarContent(
-                                                          title:
-                                                              'Something Wrong!!!!',
-                                                          message:
-                                                              'Try again later...',
-
-                                                          /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                          contentType:
-                                                              ContentType
-                                                                  .failure,
-                                                        ),
-                                                      );
-
-                                                      ScaffoldMessenger.of(
-                                                          context)
-                                                        ..hideCurrentSnackBar()
-                                                        ..showSnackBar(
-                                                            snackBar);
-
-                                                      setState(() {
-                                                        loading = false;
-                                                      });
-                                                    }));
-                                          },
-                                          child: const Text("Save"),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                            );
-                          },
-                        ),
+            
 
                         PopupMenuItem(
                           child: Text(
@@ -1571,7 +1155,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             // numeric: true,
                           ),
                           DataColumn(
-                            label: Text('Send Exam Marks'),
+                            label: Text('Academy Name'),
+                            // numeric: true,
+                          ),
+                          DataColumn(
+                            label: Text('Status'),
                             // numeric: true,
                           ),
                           DataColumn(
@@ -1645,7 +1233,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       .toString()
                                       .toUpperCase())),
 
-                                  DataCell(ElevatedButton(
+                                  DataCell(AllStudentInfo[index]["Status"]=="close"?Text(""):ElevatedButton(
                                       onPressed: () {
                                         showDialog(
                                           context: context,
@@ -1842,8 +1430,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 width: 300,
                                                                 child:
                                                                     TextField(
-                                                                  readOnly:
-                                                                      true,
+
                                                                   onChanged:
                                                                       (value) {},
                                                                   keyboardType:
@@ -1925,8 +1512,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                           300,
                                                                       child:
                                                                           TextField(
-                                                                        readOnly:
-                                                                            true,
+
                                                                         onChanged:
                                                                             (value) {},
                                                                         keyboardType:
@@ -1970,8 +1556,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               context),
                                                       child: Text("Cancel"),
                                                     ),
-
-                                                    
                                                     ElevatedButton(
                                                       onPressed: () async {
                                                         setState(() {
@@ -1979,12 +1563,28 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         });
 
                                                         var PaymentData = {
-
-                                                          "PaymentAmount":PaymentAmountController.text.trim(),
-                                                          "SIDNo":AllStudentInfo[index]["SIDNo"],
-                                                          "DiscountAmount":DiscountAvailable?DiscountAmountController.text.trim():"",
-                                                          "TeacherAcademyName":AllStudentInfo[index]["TeacherAcademyName"],
-                                                          "BatchName":AllStudentInfo[index]["BatchName"],
+                                                          "PaymentAmount":
+                                                              PaymentAmountController
+                                                                  .text
+                                                                  .trim(),
+                                                          "SIDNo":
+                                                              AllStudentInfo[
+                                                                      index]
+                                                                  ["SIDNo"],
+                                                          "DiscountAmount":
+                                                              DiscountAvailable
+                                                                  ? DiscountAmountController
+                                                                      .text
+                                                                      .trim()
+                                                                  : "",
+                                                          "TeacherAcademyName":
+                                                              AllStudentInfo[
+                                                                      index][
+                                                                  "TeacherAcademyName"],
+                                                          "BatchName":
+                                                              AllStudentInfo[
+                                                                      index]
+                                                                  ["BatchName"],
                                                           "year":
                                                               "${DateTime.now().year}",
                                                           "month":
@@ -1994,7 +1594,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           "DateTime": DateTime
                                                                   .now()
                                                               .toIso8601String(),
-                                                          
                                                         };
 
                                                         final PerTeacherStudentPayment =
@@ -2005,156 +1604,133 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 .doc(
                                                                     ProductUniqueID);
 
-                                                        PerTeacherStudentPayment.set(PaymentData)
+                                                        PerTeacherStudentPayment
+                                                                .set(
+                                                                    PaymentData)
                                                             .then((value) =>
                                                                 setState(
                                                                     () async {
+                                                                  var PaymentDataUpdate =
+                                                                      {
+                                                                    "Due": DiscountAvailable
+                                                                        ? ((int.parse(AllStudentInfo[index]["Due"])) - (int.parse((PaymentAmountController.text.trim().toString()))) + (int.parse(DiscountAmountController.text.trim().toString())))
+                                                                            .toString()
+                                                                        : ((int.parse(AllStudentInfo[index]["Due"])) -
+                                                                                (int.parse((PaymentAmountController.text.trim().toString()))))
+                                                                            .toString(),
+                                                                    "Totalpay": (int.parse(AllStudentInfo[index]["Totalpay"]) +
+                                                                            int.parse(PaymentAmountController.text.trim().toString()))
+                                                                        .toString(),
+                                                                  };
 
+                                                                  print(
+                                                                      PaymentDataUpdate);
 
+                                                                  print(
+                                                                      PaymentData);
 
+                                                                  final PerTeacherStudentPayment = FirebaseFirestore
+                                                                      .instance
+                                                                      .collection(
+                                                                          'PerTeacherStudentInfo')
+                                                                      .doc(AllStudentInfo[
+                                                                              index]
+                                                                          [
+                                                                          "id"]);
 
+                                                                  PerTeacherStudentPayment
+                                                                          .update(
+                                                                              PaymentDataUpdate)
+                                                                      .then((value) =>
+                                                                          setState(
+                                                                              () async {
+                                                                            Navigator.pop(context);
 
+                                                                            // try {
+                                                                            //   var AdminMsg = "Hello ${AllStudentInfo[index]["StudentName"]} you pay ${PaymentAmountController.text.trim()}৳/${AllStudentInfo[index]["Due"]} ${AllStudentInfo[index]["TeacherAcademyName"]}";
 
+                                                                            //   final response =
+                                                                            //       await http
+                                                                            //           .get(Uri.parse('https://api.greenweb.com.bd/api.php?token=1024519252916991043295858a1b3ac3cb09ae52385b1489dff95&to=${AllStudentInfo[index]["FatherPhoneNo"]}&message=$AdminMsg'));
 
+                                                                            //   if (response
+                                                                            //           .statusCode ==
+                                                                            //       200) {
+                                                                            //     // If the server did return a 200 OK response,
+                                                                            //     // then parse the JSON.
+                                                                            //     print(jsonDecode(
+                                                                            //         response
+                                                                            //             .body));
+                                                                            //   } else {
+                                                                            //     // If the server did not return a 200 OK response,
+                                                                            //     // then throw an exception.
+                                                                            //     throw Exception(
+                                                                            //         'Failed to load album');
+                                                                            //   }
+                                                                            // } catch (e) {}
 
-                                                var PaymentDataUpdate = {
+                                                                            // Navigator.pop(context);
 
-                                                              "Due":DiscountAvailable?((int.parse(AllStudentInfo[index]["Due"]))-(int.parse((PaymentAmountController.text.trim().toString())))+(int.parse(DiscountAmountController.text.trim().toString()))).toString():((int.parse(AllStudentInfo[index]["Due"]))-(int.parse((PaymentAmountController.text.trim().toString())))).toString(),
-                                                              "Totalpay":(int.parse(AllStudentInfo[index]["Totalpay"])+int.parse(PaymentAmountController.text.trim().toString())).toString(),
-                                                          
-                                                        };
-                                                        
+                                                                            // getProductInfo();
 
-                                                        final PerTeacherStudentPayment =
-                                                            FirebaseFirestore
-                                                                .instance
-                                                                .collection(
-                                                                    'PerTeacherStudentInfo')
-                                                                .doc(AllStudentInfo[index]["id"]);
+                                                                            final snackBar =
+                                                                                SnackBar(
+                                                                              elevation: 0,
+                                                                              behavior: SnackBarBehavior.floating,
+                                                                              backgroundColor: Colors.transparent,
+                                                                              content: AwesomeSnackbarContent(
+                                                                                titleFontSize: 12,
+                                                                                title: 'successfull',
+                                                                                message: 'Hey Thank You. Good Job',
 
-                                                        PerTeacherStudentPayment.update(PaymentDataUpdate)
-                                                            .then((value) =>
-                                                                setState(
-                                                                    () async {
-                                                                  Navigator.pop(
-                                                                      context);
+                                                                                /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                                contentType: ContentType.success,
+                                                                              ),
+                                                                            );
 
-                                                                  // try {
-                                                                  //   var AdminMsg = "Hello ${AllStudentInfo[index]["StudentName"]} you pay ${PaymentAmountController.text.trim()}৳/${AllStudentInfo[index]["Due"]} ${AllStudentInfo[index]["TeacherAcademyName"]}";
+                                                                            ScaffoldMessenger.of(context)
+                                                                              ..hideCurrentSnackBar()
+                                                                              ..showSnackBar(snackBar);
 
-                                                                  //   final response =
-                                                                  //       await http
-                                                                  //           .get(Uri.parse('https://api.greenweb.com.bd/api.php?token=1024519252916991043295858a1b3ac3cb09ae52385b1489dff95&to=${AllStudentInfo[index]["FatherPhoneNo"]}&message=$AdminMsg'));
+                                                                            setState(() {
+                                                                              loading = false;
+                                                                            });
+                                                                          }))
+                                                                      .onError((error,
+                                                                              stackTrace) =>
+                                                                          setState(
+                                                                              () {
+                                                                            final snackBar =
+                                                                                SnackBar(
+                                                                              /// need to set following properties for best effect of awesome_snackbar_content
+                                                                              elevation: 0,
 
-                                                                  //   if (response
-                                                                  //           .statusCode ==
-                                                                  //       200) {
-                                                                  //     // If the server did return a 200 OK response,
-                                                                  //     // then parse the JSON.
-                                                                  //     print(jsonDecode(
-                                                                  //         response
-                                                                  //             .body));
-                                                                  //   } else {
-                                                                  //     // If the server did not return a 200 OK response,
-                                                                  //     // then throw an exception.
-                                                                  //     throw Exception(
-                                                                  //         'Failed to load album');
-                                                                  //   }
-                                                                  // } catch (e) {}
+                                                                              behavior: SnackBarBehavior.floating,
+                                                                              backgroundColor: Colors.transparent,
+                                                                              content: AwesomeSnackbarContent(
+                                                                                title: 'Something Wrong!!!!',
+                                                                                message: 'Try again later...',
 
-                                                                  // Navigator.pop(context);
+                                                                                /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                                contentType: ContentType.failure,
+                                                                              ),
+                                                                            );
 
-                                                                  // getProductInfo();
+                                                                            ScaffoldMessenger.of(context)
+                                                                              ..hideCurrentSnackBar()
+                                                                              ..showSnackBar(snackBar);
 
-                                                                  final snackBar =
-                                                                      SnackBar(
-                                                                    elevation:
-                                                                        0,
-                                                                    behavior:
-                                                                        SnackBarBehavior
-                                                                            .floating,
-                                                                    backgroundColor:
-                                                                        Colors
-                                                                            .transparent,
-                                                                    content:
-                                                                        AwesomeSnackbarContent(
-                                                                      titleFontSize:
-                                                                          12,
-                                                                      title:
-                                                                          'successfull',
-                                                                      message:
-                                                                          'Hey Thank You. Good Job',
-
-                                                                      /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                                      contentType:
-                                                                          ContentType
-                                                                              .success,
-                                                                    ),
-                                                                  );
-
-                                                                  ScaffoldMessenger
-                                                                      .of(
-                                                                          context)
-                                                                    ..hideCurrentSnackBar()
-                                                                    ..showSnackBar(
-                                                                        snackBar);
-
-                                                                  setState(() {
-                                                                    loading =
-                                                                        false;
-                                                                  });
-                                                                }))
-                                                            .onError((error,
-                                                                    stackTrace) =>
-                                                                setState(() {
-                                                                  final snackBar =
-                                                                      SnackBar(
-                                                                    /// need to set following properties for best effect of awesome_snackbar_content
-                                                                    elevation:
-                                                                        0,
-
-                                                                    behavior:
-                                                                        SnackBarBehavior
-                                                                            .floating,
-                                                                    backgroundColor:
-                                                                        Colors
-                                                                            .transparent,
-                                                                    content:
-                                                                        AwesomeSnackbarContent(
-                                                                      title:
-                                                                          'Something Wrong!!!!',
-                                                                      message:
-                                                                          'Try again later...',
-
-                                                                      /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                                      contentType:
-                                                                          ContentType
-                                                                              .failure,
-                                                                    ),
-                                                                  );
-
-                                                                  ScaffoldMessenger
-                                                                      .of(
-                                                                          context)
-                                                                    ..hideCurrentSnackBar()
-                                                                    ..showSnackBar(
-                                                                        snackBar);
-
-                                                                  setState(() {
-                                                                    loading =
-                                                                        false;
-                                                                  });
-                                                                }));
-
-
-
-
+                                                                            setState(() {
+                                                                              loading = false;
+                                                                            });
+                                                                          }));
 
                                                                   Navigator.pop(
                                                                       context);
 
                                                                   try {
-                                                                    var AdminMsg = "Hello ${AllStudentInfo[index]["StudentName"]} you pay ${PaymentAmountController.text.trim()}৳/${AllStudentInfo[index]["Due"]} ${AllStudentInfo[index]["TeacherAcademyName"]}";
+                                                                    var AdminMsg =
+                                                                        "Hello ${AllStudentInfo[index]["StudentName"]} you pay ${PaymentAmountController.text.trim()}৳/${AllStudentInfo[index]["Due"]} ${AllStudentInfo[index]["TeacherAcademyName"]}";
 
                                                                     final response =
                                                                         await http
@@ -2260,7 +1836,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   });
                                                                 }));
                                                       },
-                                                      child: const Text("Pay Now"),
+                                                      child:
+                                                          const Text("Pay Now"),
                                                     ),
                                                   ],
                                                 );
@@ -2360,7 +1937,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                       ClassOfMsgController,
                                                                 ),
                                                               ),
-                                                              SizedBox(
+                                                              const SizedBox(
                                                                 height: 20,
                                                               ),
                                                             ],
@@ -2537,1124 +2114,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                   // }, child: Text("Send Exam Marks"))),
 
-                                  DataCell(ElevatedButton(
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            String SelectedStudentStatus = "";
-                                            String Title =
-                                                "নিচে Customer এর Details লিখুন";
-                                            bool DiscountAvailable = false;
-                                            bool ConditionAvailable = false;
+                                  DataCell(Text("${AllStudentInfo[index]["TeachersAcademyName"]}")),
 
-                                            bool loading = false;
+                                  DataCell(AllStudentInfo[index]["Status"]=="Open"?ElevatedButton(onPressed: (){
 
-                                            BatchNameController.text =
-                                                AllStudentInfo[index]
-                                                    ["StudentName"];
+                                  }, child: Text("Close", style: TextStyle(color: Colors.red),)):ElevatedButton(onPressed: (){
 
-                                            BatchDescriptionController.text =
-                                                AllStudentInfo[index]
-                                                    ["StudentName"];
-
-                                            PerStudentFeeController.text =
-                                                AllStudentInfo[index]
-                                                    ["StudentName"];
-
-                                            SalePriceController.text =
-                                                AllStudentInfo[index]
-                                                    ["StudentName"];
-
-                                            BuyingPriceController.text =
-                                                AllStudentInfo[index]
-                                                    ["StudentName"];
-
-                                            var QtyAmount = "1";
-
-                                            // String LabelText ="আয়ের খাত লিখবেন";
-
-                                            return StatefulBuilder(
-                                              builder: (context, setState) {
-                                                return AlertDialog(
-                                                  title: Column(
-                                                    children: [
-                                                      Center(
-                                                        child: Text(
-                                                          Title,
-                                                          style: const TextStyle(
-                                                              fontFamily:
-                                                                  "Josefin Sans",
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  content: loading
-                                                      ? const Center(
-                                                          child:
-                                                              CircularProgressIndicator(),
-                                                        )
-                                                      : SingleChildScrollView(
-                                                          child: Column(
-                                                            children: [
-                                                              SizedBox(
-                                                                  height: 10),
-
-                                                              Container(
-                                                                width: 300,
-                                                                child:
-                                                                    TextField(
-                                                                  readOnly:
-                                                                      true,
-                                                                  onChanged:
-                                                                      (value) {},
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .number,
-                                                                  decoration:
-                                                                      InputDecoration(
-                                                                    border:
-                                                                        OutlineInputBorder(),
-                                                                    labelText:
-                                                                        'Stock Amount: ${AllStudentInfo[index]["StudentName"]}',
-
-                                                                    hintText:
-                                                                        'Stock Amount: ${AllStudentInfo[index]["StudentName"]}',
-
-                                                                    //  enabledBorder: OutlineInputBorder(
-                                                                    //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                                    //     ),
-                                                                    focusedBorder:
-                                                                        OutlineInputBorder(
-                                                                      borderSide: BorderSide(
-                                                                          width:
-                                                                              3,
-                                                                          color:
-                                                                              Theme.of(context).primaryColor),
-                                                                    ),
-                                                                    errorBorder:
-                                                                        const OutlineInputBorder(
-                                                                      borderSide: BorderSide(
-                                                                          width:
-                                                                              3,
-                                                                          color: Color.fromARGB(
-                                                                              255,
-                                                                              66,
-                                                                              125,
-                                                                              145)),
-                                                                    ),
-                                                                  ),
-                                                                  controller:
-                                                                      PerStudentFeeController,
-                                                                ),
-                                                              ),
-
-                                                              const SizedBox(
-                                                                height: 20,
-                                                              ),
-
-                                                              Container(
-                                                                width: 300,
-                                                                child:
-                                                                    TextField(
-                                                                  readOnly:
-                                                                      true,
-                                                                  onChanged:
-                                                                      (value) {},
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .number,
-                                                                  decoration:
-                                                                      InputDecoration(
-                                                                    border:
-                                                                        OutlineInputBorder(),
-                                                                    labelText:
-                                                                        'Buying Price: ${AllStudentInfo[index]["StudentName"]}',
-
-                                                                    hintText:
-                                                                        'Buying Price: ${AllStudentInfo[index]["StudentName"]}',
-
-                                                                    //  enabledBorder: OutlineInputBorder(
-                                                                    //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                                    //     ),
-                                                                    focusedBorder:
-                                                                        OutlineInputBorder(
-                                                                      borderSide: BorderSide(
-                                                                          width:
-                                                                              3,
-                                                                          color:
-                                                                              Theme.of(context).primaryColor),
-                                                                    ),
-                                                                    errorBorder:
-                                                                        const OutlineInputBorder(
-                                                                      borderSide: BorderSide(
-                                                                          width:
-                                                                              3,
-                                                                          color: Color.fromARGB(
-                                                                              255,
-                                                                              66,
-                                                                              125,
-                                                                              145)),
-                                                                    ),
-                                                                  ),
-                                                                  controller:
-                                                                      BuyingPriceController,
-                                                                ),
-                                                              ),
-
-                                                              SizedBox(
-                                                                height: 20,
-                                                              ),
-
-                                                              Container(
-                                                                width: 300,
-                                                                child:
-                                                                    TextField(
-                                                                  readOnly:
-                                                                      true,
-                                                                  onChanged:
-                                                                      (value) {},
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .number,
-                                                                  decoration:
-                                                                      InputDecoration(
-                                                                    border:
-                                                                        OutlineInputBorder(),
-                                                                    labelText:
-                                                                        'Sale Price:${AllStudentInfo[index]["StudentName"]}',
-
-                                                                    hintText:
-                                                                        'Sale Price:${AllStudentInfo[index]["StudentName"]}',
-
-                                                                    //  enabledBorder: OutlineInputBorder(
-                                                                    //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                                    //     ),
-                                                                    focusedBorder:
-                                                                        OutlineInputBorder(
-                                                                      borderSide: BorderSide(
-                                                                          width:
-                                                                              3,
-                                                                          color:
-                                                                              Theme.of(context).primaryColor),
-                                                                    ),
-                                                                    errorBorder:
-                                                                        const OutlineInputBorder(
-                                                                      borderSide: BorderSide(
-                                                                          width:
-                                                                              3,
-                                                                          color: Color.fromARGB(
-                                                                              255,
-                                                                              66,
-                                                                              125,
-                                                                              145)),
-                                                                    ),
-                                                                  ),
-                                                                  controller:
-                                                                      SalePriceController,
-                                                                ),
-                                                              ),
-
-                                                              SizedBox(
-                                                                height: 20,
-                                                              ),
-
-                                                              Container(
-                                                                width: 300,
-                                                                child:
-                                                                    TextField(
-                                                                  onChanged:
-                                                                      (value) {},
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .name,
-                                                                  decoration:
-                                                                      InputDecoration(
-                                                                    border:
-                                                                        OutlineInputBorder(),
-                                                                    labelText:
-                                                                        'Customer Name',
-
-                                                                    hintText:
-                                                                        'Customer Name',
-
-                                                                    //  enabledBorder: OutlineInputBorder(
-                                                                    //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                                    //     ),
-                                                                    focusedBorder:
-                                                                        OutlineInputBorder(
-                                                                      borderSide: BorderSide(
-                                                                          width:
-                                                                              3,
-                                                                          color:
-                                                                              Theme.of(context).primaryColor),
-                                                                    ),
-                                                                    errorBorder:
-                                                                        OutlineInputBorder(
-                                                                      borderSide: BorderSide(
-                                                                          width:
-                                                                              3,
-                                                                          color: Color.fromARGB(
-                                                                              255,
-                                                                              66,
-                                                                              125,
-                                                                              145)),
-                                                                    ),
-                                                                  ),
-                                                                  controller:
-                                                                      CustomerNameController,
-                                                                ),
-                                                              ),
-
-                                                              SizedBox(
-                                                                height: 20,
-                                                              ),
-
-                                                              Container(
-                                                                width: 300,
-                                                                child:
-                                                                    TextField(
-                                                                  onChanged:
-                                                                      (value) {},
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .phone,
-                                                                  decoration:
-                                                                      InputDecoration(
-                                                                    border:
-                                                                        OutlineInputBorder(),
-                                                                    labelText:
-                                                                        'Customer Phone No',
-
-                                                                    hintText:
-                                                                        'Customer Phone No',
-
-                                                                    //  enabledBorder: OutlineInputBorder(
-                                                                    //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                                    //     ),
-                                                                    focusedBorder:
-                                                                        OutlineInputBorder(
-                                                                      borderSide: BorderSide(
-                                                                          width:
-                                                                              3,
-                                                                          color:
-                                                                              Theme.of(context).primaryColor),
-                                                                    ),
-                                                                    errorBorder:
-                                                                        const OutlineInputBorder(
-                                                                      borderSide: BorderSide(
-                                                                          width:
-                                                                              3,
-                                                                          color: Color.fromARGB(
-                                                                              255,
-                                                                              66,
-                                                                              125,
-                                                                              145)),
-                                                                    ),
-                                                                  ),
-                                                                  controller:
-                                                                      CustomerPhoneNoController,
-                                                                ),
-                                                              ),
-
-                                                              SizedBox(
-                                                                height: 20,
-                                                              ),
-
-                                                              Container(
-                                                                width: 300,
-                                                                child:
-                                                                    TextField(
-                                                                  onChanged:
-                                                                      (value) {},
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .streetAddress,
-                                                                  decoration:
-                                                                      InputDecoration(
-                                                                    border:
-                                                                        OutlineInputBorder(),
-                                                                    labelText:
-                                                                        'Customer Address',
-
-                                                                    hintText:
-                                                                        'Customer Address',
-
-                                                                    //  enabledBorder: OutlineInputBorder(
-                                                                    //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                                    //     ),
-                                                                    focusedBorder:
-                                                                        OutlineInputBorder(
-                                                                      borderSide: BorderSide(
-                                                                          width:
-                                                                              3,
-                                                                          color:
-                                                                              Theme.of(context).primaryColor),
-                                                                    ),
-                                                                    errorBorder:
-                                                                        const OutlineInputBorder(
-                                                                      borderSide: BorderSide(
-                                                                          width:
-                                                                              3,
-                                                                          color: Color.fromARGB(
-                                                                              255,
-                                                                              66,
-                                                                              125,
-                                                                              145)),
-                                                                    ),
-                                                                  ),
-                                                                  controller:
-                                                                      CustomerAddressController,
-                                                                ),
-                                                              ),
-
-                                                              SizedBox(
-                                                                height: 20,
-                                                              ),
-
-                                                              Container(
-                                                                width: 300,
-                                                                child:
-                                                                    TextField(
-                                                                  readOnly:
-                                                                      true,
-                                                                  onChanged:
-                                                                      (value) {},
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .streetAddress,
-                                                                  decoration:
-                                                                      InputDecoration(
-                                                                    border:
-                                                                        OutlineInputBorder(),
-                                                                    // labelText: 'TotalPrice:${(int.parse(AllStudentInfo[index]["StudentName"].toString())*int.parse(QtyAmount))}',
-
-                                                                    // hintText: 'TotalPrice:${(int.parse(AllStudentInfo[index]["StudentName"].toString())*int.parse(QtyAmount))}',
-
-                                                                    //  enabledBorder: OutlineInputBorder(
-                                                                    //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                                    //     ),
-                                                                    focusedBorder:
-                                                                        OutlineInputBorder(
-                                                                      borderSide: BorderSide(
-                                                                          width:
-                                                                              3,
-                                                                          color:
-                                                                              Theme.of(context).primaryColor),
-                                                                    ),
-                                                                    errorBorder:
-                                                                        const OutlineInputBorder(
-                                                                      borderSide: BorderSide(
-                                                                          width:
-                                                                              3,
-                                                                          color: Color.fromARGB(
-                                                                              255,
-                                                                              66,
-                                                                              125,
-                                                                              145)),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-
-                                                              SizedBox(
-                                                                height: 20,
-                                                              ),
-
-                                                              //  InputQty(
-
-                                                              //     decoration: QtyDecorationProps(width: 50, contentPadding: EdgeInsets.all(20)),
-                                                              //     maxVal: double.parse(AllStudentInfo[index]["ProductAmount"].toString()),
-                                                              //     initVal: 1,
-                                                              //     minVal: 1,
-                                                              //     steps: 1,
-                                                              //     onQtyChanged: (val) {
-
-                                                              //       setState((){
-                                                              //         QtyAmount = val.toString();
-                                                              //       });
-                                                              //       print(val);
-                                                              //     },
-                                                              //   ),
-
-                                                              SizedBox(
-                                                                height: 20,
-                                                              ),
-
-                                                              Container(
-                                                                width: 300,
-                                                                child:
-                                                                    TextField(
-                                                                  onChanged:
-                                                                      (value) {},
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .number,
-                                                                  decoration:
-                                                                      InputDecoration(
-                                                                    border:
-                                                                        OutlineInputBorder(),
-                                                                    labelText:
-                                                                        'Cash In',
-
-                                                                    hintText:
-                                                                        'Cash In',
-
-                                                                    //  enabledBorder: OutlineInputBorder(
-                                                                    //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                                    //     ),
-                                                                    focusedBorder:
-                                                                        OutlineInputBorder(
-                                                                      borderSide: BorderSide(
-                                                                          width:
-                                                                              3,
-                                                                          color:
-                                                                              Theme.of(context).primaryColor),
-                                                                    ),
-                                                                    errorBorder:
-                                                                        const OutlineInputBorder(
-                                                                      borderSide: BorderSide(
-                                                                          width:
-                                                                              3,
-                                                                          color: Color.fromARGB(
-                                                                              255,
-                                                                              66,
-                                                                              125,
-                                                                              145)),
-                                                                    ),
-                                                                  ),
-                                                                  controller:
-                                                                      CashInController,
-                                                                ),
-                                                              ),
-
-                                                              SizedBox(
-                                                                height: 20,
-                                                              ),
-
-                                                              Container(
-                                                                width: 300,
-                                                                child:
-                                                                    TextField(
-                                                                  onChanged:
-                                                                      (value) {},
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .number,
-                                                                  decoration:
-                                                                      InputDecoration(
-                                                                    border:
-                                                                        OutlineInputBorder(),
-                                                                    labelText:
-                                                                        'File No',
-
-                                                                    hintText:
-                                                                        'File No',
-
-                                                                    //  enabledBorder: OutlineInputBorder(
-                                                                    //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                                    //     ),
-                                                                    focusedBorder:
-                                                                        OutlineInputBorder(
-                                                                      borderSide: BorderSide(
-                                                                          width:
-                                                                              3,
-                                                                          color:
-                                                                              Theme.of(context).primaryColor),
-                                                                    ),
-                                                                    errorBorder:
-                                                                        const OutlineInputBorder(
-                                                                      borderSide: BorderSide(
-                                                                          width:
-                                                                              3,
-                                                                          color: Color.fromARGB(
-                                                                              255,
-                                                                              66,
-                                                                              125,
-                                                                              145)),
-                                                                    ),
-                                                                  ),
-                                                                  controller:
-                                                                      FileNoController,
-                                                                ),
-                                                              ),
-
-                                                              SizedBox(
-                                                                height: 20,
-                                                              ),
-
-                                                              CheckboxListTile(
-                                                                title: const Text(
-                                                                    "Discount Available?",
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            17,
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .bold,
-                                                                        fontFamily:
-                                                                            "Josefin Sans")),
-                                                                value:
-                                                                    DiscountAvailable,
-                                                                onChanged:
-                                                                    (newValue) {
-                                                                  setState(() {
-                                                                    DiscountAvailable =
-                                                                        newValue!;
-                                                                  });
-                                                                },
-                                                                controlAffinity:
-                                                                    ListTileControlAffinity
-                                                                        .leading, //  <-- leading Checkbox
-                                                              ),
-
-                                                              const SizedBox(
-                                                                height: 20,
-                                                              ),
-
-                                                              CheckboxListTile(
-                                                                title: const Text(
-                                                                    "Condition Available?",
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            17,
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .bold,
-                                                                        fontFamily:
-                                                                            "Josefin Sans")),
-                                                                value:
-                                                                    ConditionAvailable,
-                                                                onChanged:
-                                                                    (newValue) {
-                                                                  setState(() {
-                                                                    ConditionAvailable =
-                                                                        newValue!;
-                                                                  });
-                                                                },
-                                                                controlAffinity:
-                                                                    ListTileControlAffinity
-                                                                        .leading, //  <-- leading Checkbox
-                                                              ),
-
-                                                              SizedBox(
-                                                                height: 10,
-                                                              ),
-
-                                                              DiscountAvailable
-                                                                  ? Container(
-                                                                      width:
-                                                                          300,
-                                                                      child:
-                                                                          TextField(
-                                                                        onChanged:
-                                                                            (value) {},
-                                                                        keyboardType:
-                                                                            TextInputType.number,
-                                                                        decoration:
-                                                                            InputDecoration(
-                                                                          border:
-                                                                              OutlineInputBorder(),
-                                                                          labelText:
-                                                                              'Discount Amount',
-
-                                                                          hintText:
-                                                                              'Discount Amount',
-
-                                                                          //  enabledBorder: OutlineInputBorder(
-                                                                          //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                                          //     ),
-                                                                          focusedBorder:
-                                                                              OutlineInputBorder(
-                                                                            borderSide:
-                                                                                BorderSide(width: 3, color: Theme.of(context).primaryColor),
-                                                                          ),
-                                                                          errorBorder:
-                                                                              const OutlineInputBorder(
-                                                                            borderSide:
-                                                                                BorderSide(width: 3, color: Color.fromARGB(255, 66, 125, 145)),
-                                                                          ),
-                                                                        ),
-                                                                        controller:
-                                                                            DiscountAmountController,
-                                                                      ),
-                                                                    )
-                                                                  : Text(""),
-
-                                                              SizedBox(
-                                                                height: 10,
-                                                              ),
-
-                                                              DiscountAvailable
-                                                                  ? Container(
-                                                                      width:
-                                                                          300,
-                                                                      child:
-                                                                          TextField(
-                                                                        onChanged:
-                                                                            (value) {},
-                                                                        keyboardType:
-                                                                            TextInputType.number,
-                                                                        decoration:
-                                                                            InputDecoration(
-                                                                          border:
-                                                                              OutlineInputBorder(),
-                                                                          labelText:
-                                                                              'Interest',
-
-                                                                          hintText:
-                                                                              'Interest',
-
-                                                                          //  enabledBorder: OutlineInputBorder(
-                                                                          //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                                          //     ),
-                                                                          focusedBorder:
-                                                                              OutlineInputBorder(
-                                                                            borderSide:
-                                                                                BorderSide(width: 3, color: Theme.of(context).primaryColor),
-                                                                          ),
-                                                                          errorBorder:
-                                                                              const OutlineInputBorder(
-                                                                            borderSide:
-                                                                                BorderSide(width: 3, color: Color.fromARGB(255, 66, 125, 145)),
-                                                                          ),
-                                                                        ),
-                                                                        controller:
-                                                                            InterestController,
-                                                                      ),
-                                                                    )
-                                                                  : Text(""),
-
-                                                              const SizedBox(
-                                                                height: 10,
-                                                              ),
-
-                                                              ConditionAvailable
-                                                                  ? Container(
-                                                                      width:
-                                                                          300,
-                                                                      child:
-                                                                          TextField(
-                                                                        onChanged:
-                                                                            (value) {},
-                                                                        keyboardType:
-                                                                            TextInputType.number,
-                                                                        decoration:
-                                                                            InputDecoration(
-                                                                          border:
-                                                                              OutlineInputBorder(),
-                                                                          labelText:
-                                                                              'Condition month',
-
-                                                                          hintText:
-                                                                              'Condition month',
-
-                                                                          //  enabledBorder: OutlineInputBorder(
-                                                                          //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                                          //     ),
-                                                                          focusedBorder:
-                                                                              OutlineInputBorder(
-                                                                            borderSide:
-                                                                                BorderSide(width: 3, color: Theme.of(context).primaryColor),
-                                                                          ),
-                                                                          errorBorder:
-                                                                              const OutlineInputBorder(
-                                                                            borderSide:
-                                                                                BorderSide(width: 3, color: Color.fromARGB(255, 66, 125, 145)),
-                                                                          ),
-                                                                        ),
-                                                                        controller:
-                                                                            ConditionMonthController,
-                                                                      ),
-                                                                    )
-                                                                  : Text(""),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                  actions: <Widget>[
-                                                    TextButton(
-                                                      onPressed: () =>
-                                                          Navigator.pop(
-                                                              context),
-                                                      child: Text("Cancel"),
-                                                    ),
-                                                    ElevatedButton(
-                                                      onPressed: () async {
-                                                        setState(() {
-                                                          loading = true;
-                                                        });
-
-                                                        var CustomerType =
-                                                            "Due";
-
-                                                        if (DiscountAvailable) {
-                                                          if ((((int.parse(AllStudentInfo[index]["SalePrice"]
-                                                                              .toString()) *
-                                                                          int.parse(
-                                                                              QtyAmount)) -
-                                                                      int.parse(CashInController
-                                                                          .text
-                                                                          .trim()
-                                                                          .toString())) -
-                                                                  int.parse(
-                                                                      DiscountAmountController
-                                                                          .text
-                                                                          .trim()
-                                                                          .toString())) <=
-                                                              0) {
-                                                            setState(() {
-                                                              CustomerType =
-                                                                  "Paid";
-                                                            });
-                                                          } else {
-                                                            setState(() {
-                                                              CustomerType =
-                                                                  "Due";
-                                                            });
-                                                          }
-                                                        } else {
-                                                          if ((int.parse(AllStudentInfo[
-                                                                              index]
-                                                                          [
-                                                                          "SalePrice"]
-                                                                      .toString()) -
-                                                                  int.parse(
-                                                                      CashInController
-                                                                          .text
-                                                                          .trim()
-                                                                          .toString())) <=
-                                                              0) {
-                                                            setState(() {
-                                                              CustomerType =
-                                                                  "Paid";
-                                                            });
-                                                          } else {
-                                                            setState(() {
-                                                              CustomerType =
-                                                                  "Due";
-                                                            });
-                                                          }
-                                                        }
-
-                                                        var updateData = {
-                                                          "CustomerID":
-                                                              ProductUniqueID,
-                                                          "ProductName":
-                                                              BatchNameController
-                                                                  .text
-                                                                  .trim()
-                                                                  .toString(),
-                                                          "ProductDescription":
-                                                              BatchDescriptionController
-                                                                  .text
-                                                                  .trim()
-                                                                  .toString(),
-                                                          "ProductUniqueID":
-                                                              AllStudentInfo[
-                                                                      index][
-                                                                  "ProductUniqueID"],
-                                                          "ProductVisibleID":
-                                                              AllStudentInfo[
-                                                                      index][
-                                                                  "ProductVisibleID"],
-                                                          "CustomerName":
-                                                              CustomerNameController
-                                                                  .text
-                                                                  .trim()
-                                                                  .toLowerCase(),
-                                                          "CustomerPhoneNo":
-                                                              CustomerPhoneNoController
-                                                                  .text
-                                                                  .trim(),
-                                                          "CustomerAddress":
-                                                              CustomerAddressController
-                                                                  .text
-                                                                  .trim(),
-                                                          "Discount":
-                                                              DiscountAvailable
-                                                                  ? DiscountAmountController
-                                                                      .text
-                                                                      .trim()
-                                                                      .toString()
-                                                                  : "0",
-                                                          "Interest":
-                                                              DiscountAvailable
-                                                                  ? InterestController
-                                                                      .text
-                                                                      .trim()
-                                                                      .toString()
-                                                                  : "0",
-                                                          "InterestDue":
-                                                              DiscountAvailable
-                                                                  ? InterestController
-                                                                      .text
-                                                                      .trim()
-                                                                      .toString()
-                                                                  : "0",
-                                                          "InterestPaid": "0",
-                                                          "Qty": QtyAmount,
-                                                          'CustomerType':
-                                                              CustomerType,
-                                                          "Due": DiscountAvailable
-                                                              ? (((int.parse(AllStudentInfo[index]["SalePrice"].toString()) * int.parse(QtyAmount)) -
-                                                                          int.parse(CashInController
-                                                                              .text
-                                                                              .trim()
-                                                                              .toString())) -
-                                                                      int.parse(DiscountAmountController
-                                                                          .text
-                                                                          .trim()
-                                                                          .toString()))
-                                                                  .toString()
-                                                              : (int.parse(AllStudentInfo[index]["SalePrice"]
-                                                                          .toString()) -
-                                                                      int.parse(CashInController
-                                                                          .text
-                                                                          .trim()
-                                                                          .toString()))
-                                                                  .toString(),
-                                                          "FileNo":
-                                                              FileNoController
-                                                                  .text
-                                                                  .trim(),
-                                                          "CashIn":
-                                                              CashInController
-                                                                  .text
-                                                                  .trim()
-                                                                  .toString(),
-                                                          "TotalCashIn":
-                                                              CashInController
-                                                                  .text
-                                                                  .trim()
-                                                                  .toString(),
-                                                          "TotalPrice": (int.parse(
-                                                                      AllStudentInfo[index]
-                                                                              [
-                                                                              "SalePrice"]
-                                                                          .toString()) *
-                                                                  int.parse(
-                                                                      QtyAmount))
-                                                              .toString(),
-                                                          "ConditionMonth":
-                                                              ConditionAvailable
-                                                                  ? ConditionMonthController
-                                                                      .text
-                                                                      .trim()
-                                                                      .toString()
-                                                                  : "0",
-                                                          "BuyingPrice":
-                                                              AllStudentInfo[
-                                                                      index][
-                                                                  "BuyingPrice"],
-                                                          "SalePrice":
-                                                              AllStudentInfo[
-                                                                      index]
-                                                                  ["SalePrice"],
-                                                          "year":
-                                                              "${DateTime.now().year}",
-                                                          "month":
-                                                              "${DateTime.now().month}/${DateTime.now().year}",
-                                                          "Date":
-                                                              "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
-                                                          "DateTime": DateTime
-                                                                  .now()
-                                                              .toIso8601String(),
-                                                          "PaymentGivingDay":
-                                                              DateTime.now()
-                                                                          .day ==
-                                                                      31
-                                                                  ? "30"
-                                                                  : "${DateTime.now().day}"
-                                                        };
-
-                                                        final StudentInfo =
-                                                            FirebaseFirestore
-                                                                .instance
-                                                                .collection(
-                                                                    'ProductSaleInfo')
-                                                                .doc(
-                                                                    ProductUniqueID);
-
-                                                        StudentInfo.set(
-                                                                updateData)
-                                                            .then((value) =>
-                                                                setState(
-                                                                    () async {
-                                                                  final docUser = FirebaseFirestore
-                                                                      .instance
-                                                                      .collection(
-                                                                          "ProductInfo")
-                                                                      .doc(AllStudentInfo[
-                                                                              index]
-                                                                          [
-                                                                          "ProductUniqueID"]);
-
-                                                                  final jsonData =
-                                                                      {
-                                                                    "ProductAmount":
-                                                                        (int.parse(AllStudentInfo[index]["ProductAmount"].toString()) -
-                                                                                int.parse(QtyAmount))
-                                                                            .toString(),
-                                                                  };
-
-                                                                  await docUser
-                                                                      .update(
-                                                                          jsonData)
-                                                                      .then((value) =>
-                                                                          setState(
-                                                                              () async {
-                                                                            loading =
-                                                                                false;
-
-                                                                            Navigator.pop(context);
-
-                                                                            // getStudentInfo();
-
-                                                                            try {
-                                                                              var AdminMsg = "Dear Customer,Tarongo Electronics থেকে আপনি ${CashInController.text.trim()} টাকা দিয়ে একটি Product ক্রয় করেছেন।";
-
-                                                                              final response = await http.get(Uri.parse('https://api.greenweb.com.bd/api.php?token=1024519252916991043295858a1b3ac3cb09ae52385b1489dff95&to=${CustomerPhoneNoController.text.trim()}&message=${AdminMsg}'));
-
-                                                                              if (response.statusCode == 200) {
-                                                                                // If the server did return a 200 OK response,
-                                                                                // then parse the JSON.
-                                                                                print(jsonDecode(response.body));
-                                                                              } else {
-                                                                                // If the server did not return a 200 OK response,
-                                                                                // then throw an exception.
-                                                                                throw Exception('Failed to load album');
-                                                                              }
-                                                                            } catch (e) {}
-                                                                          }))
-                                                                      .onError((error,
-                                                                              stackTrace) =>
-                                                                          ScaffoldMessenger.of(context)
-                                                                              .showSnackBar(SnackBar(
-                                                                            backgroundColor:
-                                                                                Colors.red,
-                                                                            content:
-                                                                                const Text('Something Wrong!'),
-                                                                            action:
-                                                                                SnackBarAction(
-                                                                              label: 'Undo',
-                                                                              onPressed: () {
-                                                                                // Some code to undo the change.
-                                                                              },
-                                                                            ),
-                                                                          )));
-
-                                                                  // Navigator.pop(context);
-
-                                                                  // getProductInfo();
-
-                                                                  // AwesomeDialog(
-                                                                  //   width: 500,
-                                                                  //   context: context,
-                                                                  //   animType: AnimType.scale,
-                                                                  //   dialogType: DialogType.success,
-                                                                  //   body: Center(child: Text("আপনি আপনার Product এর গায়ে (${AllStudentInfo[index]["ProductVisibleID"]}) Code টি লিখে রাখুন", style: const TextStyle(fontFamily: "Josefin Sans", fontWeight: FontWeight.bold),)),
-                                                                  //   title: 'নিচে Product এর Code টি দেখুন',
-                                                                  //   desc:   'নিচে Product এর Code টি দেখুন',
-                                                                  //   btnOkOnPress: () {
-
-                                                                  //     Navigator.pop(context);
-
-                                                                  //   },
-                                                                  //   ).show();
-
-                                                                  final snackBar =
-                                                                      SnackBar(
-                                                                    elevation:
-                                                                        0,
-                                                                    behavior:
-                                                                        SnackBarBehavior
-                                                                            .floating,
-                                                                    backgroundColor:
-                                                                        Colors
-                                                                            .transparent,
-                                                                    content:
-                                                                        AwesomeSnackbarContent(
-                                                                      titleFontSize:
-                                                                          12,
-                                                                      title:
-                                                                          'successfull',
-                                                                      message:
-                                                                          'Hey Thank You. Good Job',
-
-                                                                      /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                                      contentType:
-                                                                          ContentType
-                                                                              .success,
-                                                                    ),
-                                                                  );
-
-                                                                  ScaffoldMessenger
-                                                                      .of(
-                                                                          context)
-                                                                    ..hideCurrentSnackBar()
-                                                                    ..showSnackBar(
-                                                                        snackBar);
-
-                                                                  setState(() {
-                                                                    loading =
-                                                                        false;
-                                                                  });
-                                                                }))
-                                                            .onError((error,
-                                                                    stackTrace) =>
-                                                                setState(() {
-                                                                  final snackBar =
-                                                                      SnackBar(
-                                                                    /// need to set following properties for best effect of awesome_snackbar_content
-                                                                    elevation:
-                                                                        0,
-
-                                                                    behavior:
-                                                                        SnackBarBehavior
-                                                                            .floating,
-                                                                    backgroundColor:
-                                                                        Colors
-                                                                            .transparent,
-                                                                    content:
-                                                                        AwesomeSnackbarContent(
-                                                                      title:
-                                                                          'Something Wrong!!!!',
-                                                                      message:
-                                                                          'Try again later...',
-
-                                                                      /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                                      contentType:
-                                                                          ContentType
-                                                                              .failure,
-                                                                    ),
-                                                                  );
-
-                                                                  ScaffoldMessenger
-                                                                      .of(
-                                                                          context)
-                                                                    ..hideCurrentSnackBar()
-                                                                    ..showSnackBar(
-                                                                        snackBar);
-
-                                                                  setState(() {
-                                                                    loading =
-                                                                        false;
-                                                                  });
-                                                                }));
-                                                      },
-                                                      child: const Text("Save"),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          },
-                                        );
-                                      },
-                                      child: Text("Sale"))),
+                                  }, child: Text("Open", style: TextStyle(color: Colors.green),))),
 
                                   DataCell(ElevatedButton(
                                     onPressed: () async {
