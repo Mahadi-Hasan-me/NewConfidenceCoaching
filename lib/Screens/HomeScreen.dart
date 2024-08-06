@@ -51,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
   TextEditingController StudentNameController = TextEditingController();
   TextEditingController DayController = TextEditingController();
   TextEditingController PaymentAmountController = TextEditingController();
+  TextEditingController StudentPhoneNoController = TextEditingController();
 
   static const _chars =
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
@@ -103,12 +104,35 @@ class _HomeScreenState extends State<HomeScreen> {
     // print(AllData);
   }
 
-  Future<void> getSearchStudentInfo(String SID) async {
+  Future<void> getSearchByID(String SID) async {
     CollectionReference _collectionStudentInfoRef =
         FirebaseFirestore.instance.collection('PerTeacherStudentInfo');
 
     Query StudentInfoquery =
         _collectionStudentInfoRef.where("SIDNo", isEqualTo: SID);
+
+    QuerySnapshot StudentInfoquerySnapshot = await StudentInfoquery.get();
+
+    // Get data from docs and convert map to List
+    // AllStudentInfo =
+    //     StudentInfoquerySnapshot.docs.map((doc) => doc.data()).toList();
+
+    setState(() {
+      AllStudentInfo = [];
+      AllStudentInfo =
+          StudentInfoquerySnapshot.docs.map((doc) => doc.data()).toList();
+      SearchByStudentIDController.clear();
+    });
+
+    // print(AllData);
+  }
+
+  Future<void> getSearchByStudentPhoneNo(String StudentPhoneNumber) async {
+    CollectionReference _collectionStudentInfoRef =
+        FirebaseFirestore.instance.collection('PerTeacherStudentInfo');
+
+    Query StudentInfoquery = _collectionStudentInfoRef
+        .where("StudentPhoneNumber", isEqualTo: StudentPhoneNumber);
 
     QuerySnapshot StudentInfoquerySnapshot = await StudentInfoquery.get();
 
@@ -956,11 +980,272 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         PopupMenuItem(
                           value: '/hello',
-                          child: Text(
-                            "Send SMS to All Student",
-                            style: TextStyle(
-                                fontFamily: "Josefin Sans",
-                                fontWeight: FontWeight.bold),
+                          child: InkWell(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  String Title =
+                                      "নিচে Class বন্ধের বার্তা লিখুন";
+
+                                  bool loading = false;
+
+                                  int SuccessfulMSG = 0;
+                                  int unSuccessfullMSG = 0;
+                                  int TotalMSG = AllStudentInfo.length;
+
+                                  // String LabelText ="আয়ের খাত লিখবেন";
+
+                                  return StatefulBuilder(
+                                    builder: (context, setState) {
+                                      return AlertDialog(
+                                        title: Column(
+                                          children: [
+                                            Center(
+                                              child: Text(
+                                                Title,
+                                                style: const TextStyle(
+                                                    fontFamily: "Josefin Sans",
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        content: loading
+                                            ?  Center(
+                                                child:
+                                                    Column(
+                                                      children: [
+                                                        Text("Successfully Send: ${SuccessfulMSG.toString()}"),
+                                                        Text("Failed: ${unSuccessfullMSG.toString()}"),
+                                                        Text("Total SMS: ${TotalMSG.toString()}"),
+                                                        
+                                                        CircularProgressIndicator(),
+                                                      ],
+                                                    ),
+                                              )
+                                            : SingleChildScrollView(
+                                                child: Column(
+                                                  children: [
+                                                    const SizedBox(height: 10),
+                                                    Container(
+                                                      width: 300,
+                                                      child: TextField(
+                                                        maxLines: 10,
+                                                        onChanged: (value) {},
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        decoration:
+                                                            InputDecoration(
+                                                          border:
+                                                              OutlineInputBorder(),
+                                                          labelText:
+                                                              'Message BOX',
+
+                                                          hintText:
+                                                              'Message BOX',
+
+                                                          //  enabledBorder: OutlineInputBorder(
+                                                          //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                          //     ),
+                                                          focusedBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                                width: 3,
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .primaryColor),
+                                                          ),
+                                                          errorBorder:
+                                                              const OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                                width: 3,
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        66,
+                                                                        125,
+                                                                        145)),
+                                                          ),
+                                                        ),
+                                                        controller:
+                                                            ClassOfMsgController,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context),
+                                            child: Text("Cancel"),
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () async {
+                                              setState(() {
+                                                loading = true;
+                                              });
+
+                                              var MsgData = {
+                                                "MSGID": ProductUniqueID,
+                                                "year":
+                                                    "${DateTime.now().year}",
+                                                "month":
+                                                    "${DateTime.now().month}/${DateTime.now().year}",
+                                                "Date":
+                                                    "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
+                                                "DateTime": DateTime.now()
+                                                    .toIso8601String(),
+                                                "msg": ClassOfMsgController.text
+                                                    .trim()
+                                              };
+
+                                              final CentralBoardSMS =
+                                                  FirebaseFirestore.instance
+                                                      .collection(
+                                                          'CentralBoardSMS')
+                                                      .doc(ProductUniqueID);
+
+                                              CentralBoardSMS.set(MsgData)
+                                                  .then((value) =>
+                                                      setState(() async {
+                                                        var AdminMsg =
+                                                            ClassOfMsgController
+                                                                .text
+                                                                .trim();
+
+                                                        for (var i = 0;
+                                                            i <
+                                                                AllStudentInfo
+                                                                    .length;
+                                                            i++) {
+                                                          try {
+                                                            final response =
+                                                                await http.get(
+                                                                    Uri.parse(
+                                                                        'https://api.greenweb.com.bd/api.php?token=1024519252916991043295858a1b3ac3cb09ae52385b1489dff95&to=${AllStudentInfo[i]["StudentPhoneNumber"].trim()}&message=$AdminMsg'));
+
+                                                            if (response
+                                                                    .statusCode ==
+                                                                200) {
+                                                              setState(() {
+                                                                SuccessfulMSG++;
+                                                              });
+                                                              // If the server did return a 200 OK response,
+                                                              // then parse the JSON.
+                                                              print(jsonDecode(
+                                                                  response
+                                                                      .body));
+                                                            } else {
+                                                              setState(() {
+                                                                unSuccessfullMSG++;
+                                                              });
+                                                              // If the server did not return a 200 OK response,
+                                                              // then throw an exception.
+                                                              throw Exception(
+                                                                  'Failed to load album');
+                                                            }
+                                                          } catch (e) {}
+                                                        }
+
+                                                        // Navigator.pop(context);
+
+                                                        // getProductInfo();
+                                                        Navigator.pop(context);
+
+                                                        final snackBar =
+                                                            SnackBar(
+                                                          elevation: 0,
+                                                          behavior:
+                                                              SnackBarBehavior
+                                                                  .floating,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          content:
+                                                              AwesomeSnackbarContent(
+                                                            titleFontSize: 12,
+                                                            title:
+                                                                'successfull',
+                                                            message:
+                                                                'Hey Thank You. Good Job',
+
+                                                            /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                            contentType:
+                                                                ContentType
+                                                                    .success,
+                                                          ),
+                                                        );
+
+                                                        ScaffoldMessenger.of(
+                                                            context)
+                                                          ..hideCurrentSnackBar()
+                                                          ..showSnackBar(
+                                                              snackBar);
+
+                                                        setState(() {
+                                                          loading = false;
+                                                        });
+                                                      }))
+                                                  .onError((error,
+                                                          stackTrace) =>
+                                                      setState(() {
+                                                        final snackBar =
+                                                            SnackBar(
+                                                          /// need to set following properties for best effect of awesome_snackbar_content
+                                                          elevation: 0,
+
+                                                          behavior:
+                                                              SnackBarBehavior
+                                                                  .floating,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          content:
+                                                              AwesomeSnackbarContent(
+                                                            title:
+                                                                'Something Wrong!!!!',
+                                                            message:
+                                                                'Try again later...',
+
+                                                            /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                            contentType:
+                                                                ContentType
+                                                                    .failure,
+                                                          ),
+                                                        );
+
+                                                        ScaffoldMessenger.of(
+                                                            context)
+                                                          ..hideCurrentSnackBar()
+                                                          ..showSnackBar(
+                                                              snackBar);
+
+                                                        setState(() {
+                                                          loading = false;
+                                                        });
+                                                      }));
+                                            },
+                                            child: const Text("Send"),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                            child: const Text(
+                              "Send SMS to All Student",
+                              style: TextStyle(
+                                  fontFamily: "Josefin Sans",
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
 
@@ -971,9 +1256,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               showDialog(
                                 context: context,
                                 builder: (context) {
-                                  String SelectedStudentStatus = "";
                                   String Title = "নিচে ID দিয়ে Search করুন";
-
                                   bool loading = false;
 
                                   // String LabelText ="আয়ের খাত লিখবেন";
@@ -1070,10 +1353,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 loading = true;
                                               });
 
-                                              getSearchStudentInfo(
-                                                  StudentIDController.text
-                                                      .trim()
-                                                      .toString());
+                                              getSearchByID(StudentIDController
+                                                  .text
+                                                  .trim()
+                                                  .toString());
                                               setState(() {
                                                 loading = false;
                                               });
@@ -1088,7 +1371,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 },
                               );
                             },
-                            child: Text(
+                            child: const Text(
                               "Search By ID",
                               style: TextStyle(
                                   fontFamily: "Josefin Sans",
@@ -1099,11 +1382,135 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         PopupMenuItem(
                           value: '/hello',
-                          child: Text(
-                            "Search By Phone No",
-                            style: TextStyle(
-                                fontFamily: "Josefin Sans",
-                                fontWeight: FontWeight.bold),
+                          child: InkWell(
+                            onTap: () async {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  String Title =
+                                      "নিচে Phone No দিয়ে Search করুন";
+
+                                  bool loading = false;
+
+                                  // String LabelText ="আয়ের খাত লিখবেন";
+
+                                  return StatefulBuilder(
+                                    builder: (context, setState) {
+                                      return AlertDialog(
+                                        title: Column(
+                                          children: [
+                                            Center(
+                                              child: Text(
+                                                "${Title}",
+                                                style: const TextStyle(
+                                                    fontFamily: "Josefin Sans",
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        content: loading
+                                            ? const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              )
+                                            : SingleChildScrollView(
+                                                child: Column(
+                                                  children: [
+                                                    const SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    Container(
+                                                      width: 300,
+                                                      child: TextField(
+                                                        onChanged: (value) {},
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .number,
+                                                        decoration:
+                                                            InputDecoration(
+                                                          border:
+                                                              OutlineInputBorder(),
+                                                          labelText:
+                                                              'Enter Student Phone No',
+
+                                                          hintText:
+                                                              'Enter Student Phone No',
+
+                                                          //  enabledBorder: OutlineInputBorder(
+                                                          //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                          //     ),
+                                                          focusedBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                                width: 3,
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .primaryColor),
+                                                          ),
+                                                          errorBorder:
+                                                              const OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                                width: 3,
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        66,
+                                                                        125,
+                                                                        145)),
+                                                          ),
+                                                        ),
+                                                        controller:
+                                                            StudentPhoneNoController,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context),
+                                            child: Text("Cancel"),
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () async {
+                                              setState(() {
+                                                loading = true;
+                                              });
+
+                                              getSearchByStudentPhoneNo(
+                                                  StudentPhoneNoController.text
+                                                      .trim()
+                                                      .toString());
+
+                                              setState(() {
+                                                loading = false;
+                                              });
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text("Search"),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                            child: const Text(
+                              "Search By Phone No",
+                              style: TextStyle(
+                                  fontFamily: "Josefin Sans",
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
 
@@ -1253,7 +1660,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       ElevatedButton(
                           onPressed: () async {
-                            // getSearchStudentInfo(SearchByStudentIDController
+                            // getSearchByID(SearchByStudentIDController
                             //     .text
                             //     .trim()
                             //     .toLowerCase());
@@ -1664,7 +2071,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                                 controller: DiscountAmountController,
                                                                               ),
                                                                             )
-                                                                          : Text(
+                                                                          : const Text(
                                                                               ""),
                                                                     ],
                                                                   ),
@@ -1674,7 +2081,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               onPressed: () =>
                                                                   Navigator.pop(
                                                                       context),
-                                                              child: Text(
+                                                              child: const Text(
                                                                   "Cancel"),
                                                             ),
                                                             ElevatedButton(
