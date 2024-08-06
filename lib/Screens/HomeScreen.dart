@@ -134,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
   String? selectedTeachersAcademyValue;
 
-   List<String> BatchName = [
+  List<String> BatchName = [
     'HSC261',
     'HSC262',
     'HSC263',
@@ -218,6 +218,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 selected: _selectedDestination == 2,
                 onTap: () {
                   // Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllCustomers()));
+                  getAllStudentInfo();
                 },
               ),
               ListTile(
@@ -936,7 +937,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                             );
                           },
-                          child: Text(
+                          child: const Text(
                             "Create Batch Name",
                             style: TextStyle(
                                 fontFamily: "Josefin Sans",
@@ -965,11 +966,134 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         PopupMenuItem(
                           value: '/hello',
-                          child: Text(
-                            "Search By ID",
-                            style: TextStyle(
-                                fontFamily: "Josefin Sans",
-                                fontWeight: FontWeight.bold),
+                          child: InkWell(
+                            onTap: () async {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  String SelectedStudentStatus = "";
+                                  String Title = "নিচে ID দিয়ে Search করুন";
+
+                                  bool loading = false;
+
+                                  // String LabelText ="আয়ের খাত লিখবেন";
+
+                                  return StatefulBuilder(
+                                    builder: (context, setState) {
+                                      return AlertDialog(
+                                        title: Column(
+                                          children: [
+                                            Center(
+                                              child: Text(
+                                                "${Title}",
+                                                style: const TextStyle(
+                                                    fontFamily: "Josefin Sans",
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        content: loading
+                                            ? const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              )
+                                            : SingleChildScrollView(
+                                                child: Column(
+                                                  children: [
+                                                    const SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    Container(
+                                                      width: 300,
+                                                      child: TextField(
+                                                        onChanged: (value) {},
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .number,
+                                                        decoration:
+                                                            InputDecoration(
+                                                          border:
+                                                              OutlineInputBorder(),
+                                                          labelText:
+                                                              'Enter Student ID',
+
+                                                          hintText:
+                                                              'Enter Student ID',
+
+                                                          //  enabledBorder: OutlineInputBorder(
+                                                          //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                          //     ),
+                                                          focusedBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                                width: 3,
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .primaryColor),
+                                                          ),
+                                                          errorBorder:
+                                                              const OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                                width: 3,
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        66,
+                                                                        125,
+                                                                        145)),
+                                                          ),
+                                                        ),
+                                                        controller:
+                                                            StudentIDController,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context),
+                                            child: Text("Cancel"),
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () async {
+                                              setState(() {
+                                                loading = true;
+                                              });
+
+                                              getSearchStudentInfo(
+                                                  StudentIDController.text
+                                                      .trim()
+                                                      .toString());
+                                              setState(() {
+                                                loading = false;
+                                              });
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text("Search"),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                            child: Text(
+                              "Search By ID",
+                              style: TextStyle(
+                                  fontFamily: "Josefin Sans",
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
 
@@ -1065,8 +1189,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       i < AllBatchInfo.length;
                                       i++) {
                                     BatchName.add(AllBatchInfo[i]["BatchName"]);
-                                  };
-
+                                  }
+                                  ;
                                 });
 
                                 setState(() {
