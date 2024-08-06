@@ -52,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
   TextEditingController DayController = TextEditingController();
   TextEditingController PaymentAmountController = TextEditingController();
   TextEditingController StudentPhoneNoController = TextEditingController();
+  TextEditingController SetDueController = TextEditingController();
 
   static const _chars =
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
@@ -971,15 +972,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         PopupMenuItem(
                           value: '/hello',
-                          child: Text(
-                            "Send SMS for Class Off",
-                            style: TextStyle(
-                                fontFamily: "Josefin Sans",
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        PopupMenuItem(
-                          value: '/hello',
                           child: InkWell(
                             onTap: () {
                               showDialog(
@@ -1013,17 +1005,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ],
                                         ),
                                         content: loading
-                                            ?  Center(
-                                                child:
-                                                    Column(
-                                                      children: [
-                                                        Text("Successfully Send: ${SuccessfulMSG.toString()}"),
-                                                        Text("Failed: ${unSuccessfullMSG.toString()}"),
-                                                        Text("Total SMS: ${TotalMSG.toString()}"),
-                                                        
-                                                        CircularProgressIndicator(),
-                                                      ],
-                                                    ),
+                                            ? Center(
+                                                child: Column(
+                                                  children: [
+                                                    Text(
+                                                        "Successfully Send: ${SuccessfulMSG.toString()}"),
+                                                    Text(
+                                                        "Failed: ${unSuccessfullMSG.toString()}"),
+                                                    Text(
+                                                        "Total SMS: ${TotalMSG.toString()}"),
+                                                    CircularProgressIndicator(),
+                                                  ],
+                                                ),
                                               )
                                             : SingleChildScrollView(
                                                 child: Column(
@@ -1516,11 +1509,272 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         PopupMenuItem(
                           value: '/hello',
-                          child: Text(
-                            "Set Due for All Student",
-                            style: TextStyle(
-                                fontFamily: "Josefin Sans",
-                                fontWeight: FontWeight.bold),
+                          child: InkWell(
+                            onTap: () async {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  String Title =
+                                      "নিচে Class বন্ধের বার্তা লিখুন";
+
+                                  bool loading = false;
+
+                                  int SuccessfulMSG = 0;
+                                  int unSuccessfullMSG = 0;
+                                  int TotalMSG = AllStudentInfo.length;
+
+                                  // String LabelText ="আয়ের খাত লিখবেন";
+
+                                  return StatefulBuilder(
+                                    builder: (context, setState) {
+                                      return AlertDialog(
+                                        title: Column(
+                                          children: [
+                                            Center(
+                                              child: Text(
+                                                Title,
+                                                style: const TextStyle(
+                                                    fontFamily: "Josefin Sans",
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        content: loading
+                                            ? Center(
+                                                child: Column(
+                                                  children: [
+                                                    Text(
+                                                        "Successfully Send: ${SuccessfulMSG.toString()}"),
+                                                    Text(
+                                                        "Failed: ${unSuccessfullMSG.toString()}"),
+                                                    Text(
+                                                        "Total SMS: ${TotalMSG.toString()}"),
+                                                    CircularProgressIndicator(),
+                                                  ],
+                                                ),
+                                              )
+                                            : SingleChildScrollView(
+                                                child: Column(
+                                                  children: [
+                                                    const SizedBox(height: 10),
+                                                    Container(
+                                                      width: 300,
+                                                      child: TextField(
+                                                        maxLines: 10,
+                                                        onChanged: (value) {},
+                                                        keyboardType:
+                                                            TextInputType.text,
+                                                        decoration:
+                                                            InputDecoration(
+                                                          border:
+                                                              OutlineInputBorder(),
+                                                          labelText:
+                                                              'Message BOX',
+
+                                                          hintText:
+                                                              'Message BOX',
+
+                                                          //  enabledBorder: OutlineInputBorder(
+                                                          //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                          //     ),
+                                                          focusedBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                                width: 3,
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .primaryColor),
+                                                          ),
+                                                          errorBorder:
+                                                              const OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                                width: 3,
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        66,
+                                                                        125,
+                                                                        145)),
+                                                          ),
+                                                        ),
+                                                        controller:
+                                                            SetDueController,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context),
+                                            child: Text("Cancel"),
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () async {
+                                              setState(() {
+                                                loading = true;
+                                              });
+
+                                              for (var i = 0;
+                                                  i < AllStudentInfo.length;
+                                                  i++) {
+                                                var MsgData = {
+                                                  "Due": (int.parse(
+                                                              AllStudentInfo[i]
+                                                                      ["Due"]
+                                                                  .toString()) +
+                                                          int.parse(AllStudentInfo[
+                                                                      i][
+                                                                  "PerStudentFee"]
+                                                              .toString()))
+                                                      .toString(),
+                                                };
+
+                                                final CentralBoardSMS =
+                                                    FirebaseFirestore.instance
+                                                        .collection(
+                                                            'PerTeacherStudentInfo')
+                                                        .doc(AllStudentInfo[i]
+                                                            ["id"]);
+
+                                                CentralBoardSMS.set(MsgData)
+                                                    .then((value) =>
+                                                        setState(() async {
+                                                          var AdminMsg =
+                                                              "SID:${AllStudentInfo[i]["SIDNo"]} DUE:${(int.parse(AllStudentInfo[i]["Due"].toString()) + int.parse(AllStudentInfo[i]["PerStudentFee"].toString())).toString()}tk Please pay by 10/${DateTime.now().month}/${DateTime.now().year}";
+
+                                                          try {
+                                                            final response =
+                                                                await http.get(
+                                                                    Uri.parse(
+                                                                        'https://api.greenweb.com.bd/api.php?token=1024519252916991043295858a1b3ac3cb09ae52385b1489dff95&to=${AllStudentInfo[i]["StudentPhoneNumber"].trim()}&message=$AdminMsg'));
+
+                                                            if (response
+                                                                    .statusCode ==
+                                                                200) {
+                                                              setState(() {
+                                                                SuccessfulMSG++;
+                                                              });
+                                                              // If the server did return a 200 OK response,
+                                                              // then parse the JSON.
+                                                              print(jsonDecode(
+                                                                  response
+                                                                      .body));
+                                                            } else {
+                                                              setState(() {
+                                                                unSuccessfullMSG++;
+                                                              });
+                                                              // If the server did not return a 200 OK response,
+                                                              // then throw an exception.
+                                                              throw Exception(
+                                                                  'Failed to load album');
+                                                            }
+                                                          } catch (e) {}
+
+                                                          // Navigator.pop(context);
+
+                                                          // getProductInfo();
+                                                          Navigator.pop(
+                                                              context);
+
+                                                          final snackBar =
+                                                              SnackBar(
+                                                            elevation: 0,
+                                                            behavior:
+                                                                SnackBarBehavior
+                                                                    .floating,
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            content:
+                                                                AwesomeSnackbarContent(
+                                                              titleFontSize: 12,
+                                                              title:
+                                                                  'successfull',
+                                                              message:
+                                                                  'Hey Thank You. Good Job',
+
+                                                              /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                              contentType:
+                                                                  ContentType
+                                                                      .success,
+                                                            ),
+                                                          );
+
+                                                          ScaffoldMessenger.of(
+                                                              context)
+                                                            ..hideCurrentSnackBar()
+                                                            ..showSnackBar(
+                                                                snackBar);
+
+                                                          setState(() {
+                                                            loading = false;
+                                                          });
+                                                        }))
+                                                    .onError((error,
+                                                            stackTrace) =>
+                                                        setState(() {
+                                                          final snackBar =
+                                                              SnackBar(
+                                                            /// need to set following properties for best effect of awesome_snackbar_content
+                                                            elevation: 0,
+
+                                                            behavior:
+                                                                SnackBarBehavior
+                                                                    .floating,
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            content:
+                                                                AwesomeSnackbarContent(
+                                                              titleFontSize: 12,
+                                                              title:
+                                                                  'Something Wrong!!!!',
+                                                              message:
+                                                                  'Try again later...',
+
+                                                              /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                              contentType:
+                                                                  ContentType
+                                                                      .failure,
+                                                            ),
+                                                          );
+
+                                                          ScaffoldMessenger.of(
+                                                              context)
+                                                            ..hideCurrentSnackBar()
+                                                            ..showSnackBar(
+                                                                snackBar);
+
+                                                          setState(() {
+                                                            loading = false;
+                                                          });
+                                                        }));
+
+                                                getAllStudentInfo();
+                                              }
+                                            },
+                                            child: const Text("Set Due"),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                            child: const Text(
+                              "Set Due for All Student",
+                              style: TextStyle(
+                                  fontFamily: "Josefin Sans",
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
 
@@ -1810,7 +2064,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       .toUpperCase())),
 
                                   DataCell(
-                                      AllStudentInfo[index]["Status"] == "close"
+                                      AllStudentInfo[index]["Status"] == "Close"
                                           ? Text("")
                                           : ElevatedButton(
                                               onPressed: () {
@@ -2418,7 +2672,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                               Theme.of(context).primaryColor),
                                                                     ),
                                                                     errorBorder:
-                                                                        OutlineInputBorder(
+                                                                        const OutlineInputBorder(
                                                                       borderSide: BorderSide(
                                                                           width:
                                                                               3,
@@ -2616,13 +2870,187 @@ class _HomeScreenState extends State<HomeScreen> {
                                   DataCell(AllStudentInfo[index]["Status"] ==
                                           "Open"
                                       ? ElevatedButton(
-                                          onPressed: () {},
-                                          child: Text(
+                                          onPressed: () async {
+                                            var MsgData = {"Status": "Close"};
+
+                                            final ClassOffSMS =
+                                                FirebaseFirestore.instance
+                                                    .collection(
+                                                        'PerTeacherStudentInfo')
+                                                    .doc(AllStudentInfo[index]
+                                                        ["id"]);
+
+                                            ClassOffSMS.update(MsgData)
+                                                .then((value) =>
+                                                    setState(() async {
+                                                      // Navigator.pop(
+                                                      //     context);
+
+                                                      getAllStudentInfo();
+
+                                                      final snackBar = SnackBar(
+                                                        elevation: 0,
+                                                        behavior:
+                                                            SnackBarBehavior
+                                                                .floating,
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        content:
+                                                            AwesomeSnackbarContent(
+                                                          titleFontSize: 12,
+                                                          title: 'successfull',
+                                                          message:
+                                                              'Hey Thank You. Good Job',
+
+                                                          /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                          contentType:
+                                                              ContentType
+                                                                  .success,
+                                                        ),
+                                                      );
+
+                                                      ScaffoldMessenger.of(
+                                                          context)
+                                                        ..hideCurrentSnackBar()
+                                                        ..showSnackBar(
+                                                            snackBar);
+
+                                                      // setState(() {
+                                                      //   loading =
+                                                      //       false;
+                                                      // });
+                                                    }))
+                                                .onError((error, stackTrace) =>
+                                                    setState(() {
+                                                      final snackBar = SnackBar(
+                                                        /// need to set following properties for best effect of awesome_snackbar_content
+                                                        elevation: 0,
+
+                                                        behavior:
+                                                            SnackBarBehavior
+                                                                .floating,
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        content:
+                                                            AwesomeSnackbarContent(
+                                                          titleFontSize: 12,
+                                                          title:
+                                                              'Something Wrong!!!!',
+                                                          message:
+                                                              'Try again later...',
+
+                                                          /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                          contentType:
+                                                              ContentType
+                                                                  .failure,
+                                                        ),
+                                                      );
+
+                                                      ScaffoldMessenger.of(
+                                                          context)
+                                                        ..hideCurrentSnackBar()
+                                                        ..showSnackBar(
+                                                            snackBar);
+
+                                                      // setState(() {
+                                                      //   loading =
+                                                      //       false;
+                                                      // });
+                                                    }));
+                                          },
+                                          child: const Text(
                                             "Close",
                                             style: TextStyle(color: Colors.red),
                                           ))
                                       : ElevatedButton(
-                                          onPressed: () {},
+                                          onPressed: () async {
+                                            var MsgData = {"Status": "Open"};
+
+                                            final ClassOffSMS =
+                                                FirebaseFirestore.instance
+                                                    .collection(
+                                                        'PerTeacherStudentInfo')
+                                                    .doc(AllStudentInfo[index]
+                                                        ["id"]);
+
+                                            ClassOffSMS.update(MsgData)
+                                                .then((value) =>
+                                                    setState(() async {
+                                                      // Navigator.pop(
+                                                      //     context);
+
+                                                      getAllStudentInfo();
+
+                                                      final snackBar = SnackBar(
+                                                        elevation: 0,
+                                                        behavior:
+                                                            SnackBarBehavior
+                                                                .floating,
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        content:
+                                                            AwesomeSnackbarContent(
+                                                          titleFontSize: 12,
+                                                          title: 'successfull',
+                                                          message:
+                                                              'Hey Thank You. Good Job',
+
+                                                          /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                          contentType:
+                                                              ContentType
+                                                                  .success,
+                                                        ),
+                                                      );
+
+                                                      ScaffoldMessenger.of(
+                                                          context)
+                                                        ..hideCurrentSnackBar()
+                                                        ..showSnackBar(
+                                                            snackBar);
+
+                                                      // setState(() {
+                                                      //   loading =
+                                                      //       false;
+                                                      // });
+                                                    }))
+                                                .onError((error, stackTrace) =>
+                                                    setState(() {
+                                                      final snackBar = SnackBar(
+                                                        /// need to set following properties for best effect of awesome_snackbar_content
+                                                        elevation: 0,
+
+                                                        behavior:
+                                                            SnackBarBehavior
+                                                                .floating,
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        content:
+                                                            AwesomeSnackbarContent(
+                                                          titleFontSize: 12,
+                                                          title:
+                                                              'Something Wrong!!!!',
+                                                          message:
+                                                              'Try again later...',
+
+                                                          /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                          contentType:
+                                                              ContentType
+                                                                  .failure,
+                                                        ),
+                                                      );
+
+                                                      ScaffoldMessenger.of(
+                                                          context)
+                                                        ..hideCurrentSnackBar()
+                                                        ..showSnackBar(
+                                                            snackBar);
+
+                                                      // setState(() {
+                                                      //   loading =
+                                                      //       false;
+                                                      // });
+                                                    }));
+                                          },
                                           child: Text(
                                             "Open",
                                             style:
