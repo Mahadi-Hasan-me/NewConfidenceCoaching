@@ -5,6 +5,7 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:confidence/Screens/AllBatchInfo.dart';
 import 'package:confidence/Screens/ExamMarks/ExamMarks.dart';
+import 'package:confidence/Screens/Students/StudentProfile.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -1636,14 +1637,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       .toString(),
                                                 };
 
-                                                final CentralBoardSMS =
+                                                final PerTeacherStudentInfo =
                                                     FirebaseFirestore.instance
                                                         .collection(
                                                             'PerTeacherStudentInfo')
                                                         .doc(AllStudentInfo[i]
                                                             ["id"]);
 
-                                                CentralBoardSMS.set(MsgData)
+                                                PerTeacherStudentInfo.update(MsgData)
                                                     .then((value) =>
                                                         setState(() async {
                                                           var AdminMsg =
@@ -3543,72 +3544,79 @@ class _HomeScreenState extends State<HomeScreen> {
                                         },
                                       );
                                     },
-                                    child: Text(
+                                    style: const ButtonStyle(
+                                      shadowColor: WidgetStatePropertyAll(
+                                          Colors.green),
+                                      backgroundColor: WidgetStatePropertyAll(
+                                          Colors.green),
+                                    ),
+                                    child: const Text(
                                       "Edit",
                                       style: TextStyle(color: Colors.white),
-                                    ),
-                                    style: ButtonStyle(
-                                      shadowColor: MaterialStatePropertyAll(
-                                          Colors.green),
-                                      backgroundColor: MaterialStatePropertyAll(
-                                          Colors.green),
                                     ),
                                   )),
 
                                   DataCell(ElevatedButton(
                                       onPressed: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return StatefulBuilder(
-                                                  builder: (context, setState) {
-                                                return AlertDialog(
-                                                  title: Text(
-                                                      'Show Details ${AllStudentInfo[index]["ProductVisibleID"].toString().toUpperCase()}'),
-                                                  content:
-                                                      SingleChildScrollView(
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                            "Product ID: ${AllStudentInfo[index]["ProductVisibleID"].toString().toUpperCase()}"),
-                                                        Text(
-                                                            "Product Name: ${AllStudentInfo[index]["ProductName"]}"),
-                                                        Text(
-                                                            "Product Description: ${AllStudentInfo[index]["ProductDescription"]}"),
-                                                        Text(
-                                                            "Product Buying Price: ${AllStudentInfo[index]["BuyingPrice"]}"),
-                                                        Text(
-                                                            "Product Sale Price: ${AllStudentInfo[index]["SalePrice"]}"),
-                                                        Text(
-                                                            "Product Stock: ${AllStudentInfo[index]["ProductAmount"]}"),
-                                                        Text(
-                                                            "Stock Date: ${AllStudentInfo[index]["Date"]}"),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  actions: [
-                                                    ElevatedButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Text('CANCEL'),
-                                                    ),
-                                                    ElevatedButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Text('ACCEPT'),
-                                                    ),
-                                                  ],
-                                                );
-                                              });
-                                            });
+
+
+                                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => StudentProfile(SIDNo: AllStudentInfo[index]["SIDNo"])));
+
+
+
+                                        
+                                        // showDialog(
+                                        //     context: context,
+                                        //     builder: (context) {
+                                        //       return StatefulBuilder(
+                                        //           builder: (context, setState) {
+                                        //         return AlertDialog(
+                                        //           title: Text(
+                                        //               'Show Details ${AllStudentInfo[index]["ProductVisibleID"].toString().toUpperCase()}'),
+                                        //           content:
+                                        //               SingleChildScrollView(
+                                        //             child: Column(
+                                        //               mainAxisAlignment:
+                                        //                   MainAxisAlignment
+                                        //                       .start,
+                                        //               crossAxisAlignment:
+                                        //                   CrossAxisAlignment
+                                        //                       .start,
+                                        //               children: [
+                                        //                 Text(
+                                        //                     "Product ID: ${AllStudentInfo[index]["ProductVisibleID"].toString().toUpperCase()}"),
+                                        //                 Text(
+                                        //                     "Product Name: ${AllStudentInfo[index]["ProductName"]}"),
+                                        //                 Text(
+                                        //                     "Product Description: ${AllStudentInfo[index]["ProductDescription"]}"),
+                                        //                 Text(
+                                        //                     "Product Buying Price: ${AllStudentInfo[index]["BuyingPrice"]}"),
+                                        //                 Text(
+                                        //                     "Product Sale Price: ${AllStudentInfo[index]["SalePrice"]}"),
+                                        //                 Text(
+                                        //                     "Product Stock: ${AllStudentInfo[index]["ProductAmount"]}"),
+                                        //                 Text(
+                                        //                     "Stock Date: ${AllStudentInfo[index]["Date"]}"),
+                                        //               ],
+                                        //             ),
+                                        //           ),
+                                        //           actions: [
+                                        //             ElevatedButton(
+                                        //               onPressed: () {
+                                        //                 Navigator.pop(context);
+                                        //               },
+                                        //               child: Text('CANCEL'),
+                                        //             ),
+                                        //             ElevatedButton(
+                                        //               onPressed: () {
+                                        //                 Navigator.pop(context);
+                                        //               },
+                                        //               child: Text('ACCEPT'),
+                                        //             ),
+                                        //           ],
+                                        //         );
+                                        //       });
+                                        //     });
                                       },
                                       child: Text("Details")))
                                 ]))),
