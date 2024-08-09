@@ -4,6 +4,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:confidence/Screens/AllBatchInfo.dart';
+import 'package:confidence/Screens/Attendance/ShowStudentAttendance.dart';
 import 'package:confidence/Screens/Dashboard/StudentAllPayment.dart';
 import 'package:confidence/Screens/ExamMarks/ExamMarks.dart';
 import 'package:confidence/Screens/Students/StudentProfile.dart';
@@ -1950,7 +1951,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         headingRowColor:
                             const WidgetStatePropertyAll(Colors.pink),
                         horizontalMargin: 12,
-                        minWidth: 600,
+                        minWidth: 2600,
                         dividerThickness: 3,
                         isHorizontalScrollBarVisible: true,
                         columns: const [
@@ -1998,8 +1999,20 @@ class _HomeScreenState extends State<HomeScreen> {
                             label: Text('Edit'),
                             // numeric: true,
                           ),
+
+                   
+
+
+
                           DataColumn(
                             label: Text('Details'),
+                            // numeric: true,
+                          ),
+
+
+
+                          DataColumn(
+                            label: Text('Attendance'),
                             // numeric: true,
                           ),
 
@@ -3075,6 +3088,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => StudentProfile(SIDNo: AllStudentInfo[index]["SIDNo"])));
                                       },
                                       child: Text("Detail"))),
+
+
+                                      DataCell(ElevatedButton(
+                                      onPressed: () {
+
+
+                                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowStudentAttendance(SIDNo: AllStudentInfo[index]["SIDNo"], TeacherAcademyName: AllStudentInfo[index]["TeacherAcademyName"])));
+                                      },
+                                      child: Text("Attendance"))),
 
 
                                       DataCell(ElevatedButton(
