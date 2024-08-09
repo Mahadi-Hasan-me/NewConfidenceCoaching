@@ -367,7 +367,30 @@ class _AllBatchInfoState extends State<AllBatchInfo> {
                                       },
                                     );
                                   },
-                                  child: Text("Details"))
+                                  child: Text("Details")),
+
+                                                ElevatedButton(
+                                  onPressed: () {
+
+
+                        Navigator.push(
+                            context,MaterialPageRoute(builder: (context) => PerDayPaymentHistory(TeacherAcademyName: AllData[i]["TeacherAcademyName"], BatchName: AllData[i]["BatchName"])),
+                          );
+
+
+                                  }, child: Text("Daily Payment")),
+
+
+                          
+
+                    ElevatedButton(
+                                  onPressed: () {
+                        Navigator.push(
+                            context,MaterialPageRoute(builder: (context) => Permonthstudentpaymenthistory(TeacherAcademyName: AllData[i]["TeacherAcademyName"], BatchName: AllData[i]["BatchName"])),
+                          );
+
+
+                                  }, child: Text("Monthly Payment")),
                             ],
                           ),
                           ButtonBar(
@@ -1105,28 +1128,7 @@ class _AllBatchInfoState extends State<AllBatchInfo> {
                                   },
                                   child: Text("Add Student")),
 
-                              ElevatedButton(
-                                  onPressed: () {
-
-
-                        Navigator.push(
-                            context,MaterialPageRoute(builder: (context) => PerDayPaymentHistory(TeacherAcademyName: AllData[i]["TeacherAcademyName"], BatchName: AllData[i]["BatchName"])),
-                          );
-
-
-                                  }, child: Text("Daily Payment")),
-
-
-                          
-
-                    ElevatedButton(
-                                  onPressed: () {
-                        Navigator.push(
-                            context,MaterialPageRoute(builder: (context) => Permonthstudentpaymenthistory(TeacherAcademyName: AllData[i]["TeacherAcademyName"], BatchName: AllData[i]["BatchName"])),
-                          );
-
-
-                                  }, child: Text("Monthly Payment")),
+                
                             ],
                           )
                         ],

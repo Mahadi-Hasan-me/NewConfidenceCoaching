@@ -3074,7 +3074,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => StudentProfile(SIDNo: AllStudentInfo[index]["SIDNo"])));
                                       },
-                                      child: Text("Details"))),
+                                      child: Text("Detail"))),
 
 
                                       DataCell(ElevatedButton(
@@ -3106,7 +3106,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           String? selectedTeachersAcademyValue;
                                                 return AlertDialog(
                                                   title: Text(
-                                                      'Show Details ${AllStudentInfo[index]["ProductVisibleID"].toString().toUpperCase()}'),
+                                                      'Payment Info ${AllStudentInfo[index]["SIDNo"].toString().toUpperCase()}'),
                                                   content:
                                                       SingleChildScrollView(
                                                     child: Column(
