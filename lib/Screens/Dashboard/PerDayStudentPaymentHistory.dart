@@ -7,14 +7,19 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 
 
-class PerDayServiceFeeHistory extends StatefulWidget {
-  const PerDayServiceFeeHistory({super.key});
+class PerDayPaymentHistory extends StatefulWidget {
+
+    final TeacherAcademyName;
+  final BatchName;
+
+  
+  const PerDayPaymentHistory({super.key, required this.TeacherAcademyName, required this.BatchName});
 
   @override
-  State<PerDayServiceFeeHistory> createState() => _PerDayServiceFeeHistoryState();
+  State<PerDayPaymentHistory> createState() => _PerDayPaymentHistoryState();
 }
 
-class _PerDayServiceFeeHistoryState extends State<PerDayServiceFeeHistory> {
+class _PerDayPaymentHistoryState extends State<PerDayPaymentHistory> {
 
 
   // এখানে Date দিয়ে Data fetch করতে হবে। 
@@ -81,7 +86,7 @@ List  AllData = [];
     int moneyAdd = 0;
 
   CollectionReference _collectionRef =
-    FirebaseFirestore.instance.collection('ServiceInfo');
+    FirebaseFirestore.instance.collection('PerTeacherStudentPayment');
 
 Future<void> getData(String paymentDate) async {
     // Get docs from collection reference
@@ -92,7 +97,7 @@ Future<void> getData(String paymentDate) async {
     });
 
 
-    Query query = _collectionRef.where("Date", isEqualTo: paymentDate);
+    Query query = _collectionRef.where("Date", isEqualTo: paymentDate).where("TeacherAcademyName", isEqualTo: widget.TeacherAcademyName).where("BatchName", isEqualTo: widget.BatchName);
     QuerySnapshot querySnapshot = await query.get();
 
     // Get data from docs and convert map to List
@@ -119,7 +124,7 @@ Future<void> getData(String paymentDate) async {
 
       for (var i = 0; i < AllData.length; i++) {
 
-       var money = AllData[i]["ServiceAmount"];
+       var money = AllData[i]["PaymentAmount"];
       int moneyInt = int.parse(money);
 
       
@@ -203,7 +208,7 @@ Future<void> getData(String paymentDate) async {
     ),
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
         leading: IconButton(onPressed: () => Navigator.of(context).pop(), icon: Icon(Icons.chevron_left)),
-        title:  Text("Per Day Service History", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
+        title:  Text("Per Day Payment History", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
         backgroundColor: Colors.transparent,
         bottomOpacity: 0.0,
         elevation: 0.0,
@@ -224,7 +229,7 @@ Future<void> getData(String paymentDate) async {
             color:Theme.of(context).primaryColor,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text("${VisiblePaymentDate} তারিখে ${moneyAdd}৳ টাকা Fee নেওয়া হয়েছে।", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+              child: Text("${VisiblePaymentDate} তারিখে ${moneyAdd}৳ টাকা Fee নেওয়া হয়েছে।", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
             ),),
 
 
@@ -270,7 +275,7 @@ Future<void> getData(String paymentDate) async {
                     borderRadius: BorderRadius.circular(5),
                   ), 
                       
-                            title: Text("${AllData[index]["ServiceAmount"]}৳", style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
+                            title: Text("${AllData[index]["PaymentAmount"]}৳", style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
                             trailing: ElevatedButton(onPressed: (){
 
                     // Navigator.push(
@@ -285,17 +290,17 @@ Future<void> getData(String paymentDate) async {
                               children: [
 
 
-                                Text("Name:${AllData[index]["CustomerName"]}"),
+                                Text("SID No:${AllData[index]["SIDNo"]}"),
 
 
-                                Text("Sevice:${AllData[index]["ServiceName"]}"),
+                                Text("Teacher Academy Name:${AllData[index]["TeacherAcademyName"]}"),
 
                                 // Text("NID:${AllData[index]["CustomerNID"]}"),
       
-                                Text("Phone Numnber:${AllData[index]["CustomerPhoneNumber"]}"),
+                                Text("Discount Amount:${AllData[index]["DiscountAmount"]}"),
 
 
-                                Text("Address:${AllData[index]["CustomerAddress"]}"),
+                                Text("Date Time:${AllData[index]["DateTime"]}"),
 
                                 
                                 Text("Date: ${AllData[index]["Date"]}"),

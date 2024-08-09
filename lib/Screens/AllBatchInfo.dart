@@ -1,5 +1,7 @@
 import 'dart:math';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:confidence/Screens/Dashboard/PerDayStudentPaymentHistory.dart';
+import 'package:confidence/Screens/Dashboard/PerMonthStudentPaymentHistory.dart';
 import 'package:confidence/Screens/Students/AllStudent.dart';
 import 'package:confidence/Screens/important.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -1104,7 +1106,27 @@ class _AllBatchInfoState extends State<AllBatchInfo> {
                                   child: Text("Add Student")),
 
                               ElevatedButton(
-                                  onPressed: () {}, child: Text("Edit")),
+                                  onPressed: () {
+
+
+                        Navigator.push(
+                            context,MaterialPageRoute(builder: (context) => PerDayPaymentHistory(TeacherAcademyName: AllData[i]["TeacherAcademyName"], BatchName: AllData[i]["BatchName"])),
+                          );
+
+
+                                  }, child: Text("Daily Payment")),
+
+
+                          
+
+                    ElevatedButton(
+                                  onPressed: () {
+                        Navigator.push(
+                            context,MaterialPageRoute(builder: (context) => Permonthstudentpaymenthistory(TeacherAcademyName: AllData[i]["TeacherAcademyName"], BatchName: AllData[i]["BatchName"])),
+                          );
+
+
+                                  }, child: Text("Monthly Payment")),
                             ],
                           )
                         ],

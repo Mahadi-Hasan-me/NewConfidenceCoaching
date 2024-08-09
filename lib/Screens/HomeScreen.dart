@@ -4,6 +4,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:confidence/Screens/AllBatchInfo.dart';
+import 'package:confidence/Screens/Dashboard/StudentAllPayment.dart';
 import 'package:confidence/Screens/ExamMarks/ExamMarks.dart';
 import 'package:confidence/Screens/Students/StudentProfile.dart';
 import 'package:data_table_2/data_table_2.dart';
@@ -2001,6 +2002,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             label: Text('Details'),
                             // numeric: true,
                           ),
+
+                          DataColumn(
+                            label: Text('All Fee'),
+                            // numeric: true,
+                          ),
                         ],
                         rows: List<DataRow>.generate(
                             AllStudentInfo.length,
@@ -3058,505 +3064,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 TextStyle(color: Colors.green),
                                           ))),
 
-                                  DataCell(ElevatedButton(
-                                    onPressed: () async {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          String SelectedStudentStatus = "";
-                                          String Title =
-                                              "নিচে Product Edit করুন";
+                                  DataCell(ElevatedButton(onPressed: (){
 
-                                          bool loading = false;
-
-                                          BatchNameController.text =
-                                              AllStudentInfo[index]
-                                                  ["ProductName"];
-
-                                          BatchDescriptionController.text =
-                                              AllStudentInfo[index]
-                                                  ["ProductDescription"];
-
-                                          PerStudentFeeController.text =
-                                              AllStudentInfo[index]
-                                                  ["ProductAmount"];
-
-                                          SalePriceController.text =
-                                              AllStudentInfo[index]
-                                                  ["SalePrice"];
-
-                                          BuyingPriceController.text =
-                                              AllStudentInfo[index]
-                                                  ["BuyingPrice"];
-
-                                          // String LabelText ="আয়ের খাত লিখবেন";
-
-                                          return StatefulBuilder(
-                                            builder: (context, setState) {
-                                              return AlertDialog(
-                                                title: Column(
-                                                  children: [
-                                                    Center(
-                                                      child: Text(
-                                                        Title,
-                                                        style: const TextStyle(
-                                                            fontFamily:
-                                                                "Josefin Sans",
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                content: loading
-                                                    ? const Center(
-                                                        child:
-                                                            CircularProgressIndicator(),
-                                                      )
-                                                    : SingleChildScrollView(
-                                                        child: Column(
-                                                          children: [
-                                                            Container(
-                                                              width: 200,
-                                                              child: TextField(
-                                                                onChanged:
-                                                                    (value) {},
-                                                                keyboardType:
-                                                                    TextInputType
-                                                                        .name,
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                  border:
-                                                                      OutlineInputBorder(),
-                                                                  labelText:
-                                                                      'Product Name',
-
-                                                                  hintText:
-                                                                      'Product Name',
-
-                                                                  //  enabledBorder: OutlineInputBorder(
-                                                                  //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                                  //     ),
-                                                                  focusedBorder:
-                                                                      OutlineInputBorder(
-                                                                    borderSide: BorderSide(
-                                                                        width:
-                                                                            3,
-                                                                        color: Theme.of(context)
-                                                                            .primaryColor),
-                                                                  ),
-                                                                  errorBorder:
-                                                                      OutlineInputBorder(
-                                                                    borderSide: BorderSide(
-                                                                        width:
-                                                                            3,
-                                                                        color: Color.fromARGB(
-                                                                            255,
-                                                                            66,
-                                                                            125,
-                                                                            145)),
-                                                                  ),
-                                                                ),
-                                                                controller:
-                                                                    BatchNameController,
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              height: 20,
-                                                            ),
-                                                            Container(
-                                                              width: 200,
-                                                              child: TextField(
-                                                                onChanged:
-                                                                    (value) {},
-                                                                keyboardType:
-                                                                    TextInputType
-                                                                        .number,
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                  border:
-                                                                      OutlineInputBorder(),
-                                                                  labelText:
-                                                                      'Product Description',
-
-                                                                  hintText:
-                                                                      'Product Description',
-
-                                                                  //  enabledBorder: OutlineInputBorder(
-                                                                  //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                                  //     ),
-                                                                  focusedBorder:
-                                                                      OutlineInputBorder(
-                                                                    borderSide: BorderSide(
-                                                                        width:
-                                                                            3,
-                                                                        color: Theme.of(context)
-                                                                            .primaryColor),
-                                                                  ),
-                                                                  errorBorder:
-                                                                      const OutlineInputBorder(
-                                                                    borderSide: BorderSide(
-                                                                        width:
-                                                                            3,
-                                                                        color: Color.fromARGB(
-                                                                            255,
-                                                                            66,
-                                                                            125,
-                                                                            145)),
-                                                                  ),
-                                                                ),
-                                                                controller:
-                                                                    BatchDescriptionController,
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              height: 20,
-                                                            ),
-                                                            Container(
-                                                              width: 200,
-                                                              child: TextField(
-                                                                onChanged:
-                                                                    (value) {},
-                                                                keyboardType:
-                                                                    TextInputType
-                                                                        .number,
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                  border:
-                                                                      OutlineInputBorder(),
-                                                                  labelText:
-                                                                      'Stock Amount',
-
-                                                                  hintText:
-                                                                      'Stock Amount',
-
-                                                                  //  enabledBorder: OutlineInputBorder(
-                                                                  //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                                  //     ),
-                                                                  focusedBorder:
-                                                                      OutlineInputBorder(
-                                                                    borderSide: BorderSide(
-                                                                        width:
-                                                                            3,
-                                                                        color: Theme.of(context)
-                                                                            .primaryColor),
-                                                                  ),
-                                                                  errorBorder:
-                                                                      OutlineInputBorder(
-                                                                    borderSide: BorderSide(
-                                                                        width:
-                                                                            3,
-                                                                        color: Color.fromARGB(
-                                                                            255,
-                                                                            66,
-                                                                            125,
-                                                                            145)),
-                                                                  ),
-                                                                ),
-                                                                controller:
-                                                                    PerStudentFeeController,
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              height: 20,
-                                                            ),
-                                                            Container(
-                                                              width: 200,
-                                                              child: TextField(
-                                                                onChanged:
-                                                                    (value) {},
-                                                                keyboardType:
-                                                                    TextInputType
-                                                                        .number,
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                  border:
-                                                                      OutlineInputBorder(),
-                                                                  labelText:
-                                                                      'Buying Price',
-
-                                                                  hintText:
-                                                                      'Buying Price',
-
-                                                                  //  enabledBorder: OutlineInputBorder(
-                                                                  //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                                  //     ),
-                                                                  focusedBorder:
-                                                                      OutlineInputBorder(
-                                                                    borderSide: BorderSide(
-                                                                        width:
-                                                                            3,
-                                                                        color: Theme.of(context)
-                                                                            .primaryColor),
-                                                                  ),
-                                                                  errorBorder:
-                                                                      OutlineInputBorder(
-                                                                    borderSide: BorderSide(
-                                                                        width:
-                                                                            3,
-                                                                        color: Color.fromARGB(
-                                                                            255,
-                                                                            66,
-                                                                            125,
-                                                                            145)),
-                                                                  ),
-                                                                ),
-                                                                controller:
-                                                                    BuyingPriceController,
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              height: 20,
-                                                            ),
-                                                            Container(
-                                                              width: 200,
-                                                              child: TextField(
-                                                                onChanged:
-                                                                    (value) {},
-                                                                keyboardType:
-                                                                    TextInputType
-                                                                        .number,
-                                                                decoration:
-                                                                    InputDecoration(
-                                                                  border:
-                                                                      OutlineInputBorder(),
-                                                                  labelText:
-                                                                      'Sale Price',
-
-                                                                  hintText:
-                                                                      'Sale Price',
-
-                                                                  //  enabledBorder: OutlineInputBorder(
-                                                                  //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                                  //     ),
-                                                                  focusedBorder:
-                                                                      OutlineInputBorder(
-                                                                    borderSide: BorderSide(
-                                                                        width:
-                                                                            3,
-                                                                        color: Theme.of(context)
-                                                                            .primaryColor),
-                                                                  ),
-                                                                  errorBorder:
-                                                                      const OutlineInputBorder(
-                                                                    borderSide: BorderSide(
-                                                                        width:
-                                                                            3,
-                                                                        color: Color.fromARGB(
-                                                                            255,
-                                                                            66,
-                                                                            125,
-                                                                            145)),
-                                                                  ),
-                                                                ),
-                                                                controller:
-                                                                    SalePriceController,
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              height: 20,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                actions: <Widget>[
-                                                  TextButton(
-                                                    onPressed: () =>
-                                                        Navigator.pop(context),
-                                                    child: Text("Cancel"),
-                                                  ),
-                                                  ElevatedButton(
-                                                    onPressed: () async {
-                                                      setState(() {
-                                                        loading = true;
-                                                      });
-
-                                                      var updateData = {
-                                                        "ProductName":
-                                                            BatchNameController
-                                                                .text
-                                                                .trim()
-                                                                .toString(),
-                                                        "ProductDescription":
-                                                            BatchDescriptionController
-                                                                .text
-                                                                .trim()
-                                                                .toString(),
-                                                        "ProductAmount":
-                                                            PerStudentFeeController
-                                                                .text
-                                                                .trim()
-                                                                .toString(),
-                                                        "BuyingPrice":
-                                                            BuyingPriceController
-                                                                .text
-                                                                .trim()
-                                                                .toString(),
-                                                        "SalePrice":
-                                                            SalePriceController
-                                                                .text
-                                                                .trim()
-                                                                .toString(),
-                                                        "year":
-                                                            "${DateTime.now().year}",
-                                                        "month":
-                                                            "${DateTime.now().month}/${DateTime.now().year}",
-                                                        "Date":
-                                                            "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
-                                                        "DateTime": DateTime
-                                                                .now()
-                                                            .toIso8601String(),
-                                                      };
-
-                                                      final StudentInfo =
-                                                          FirebaseFirestore
-                                                              .instance
-                                                              .collection(
-                                                                  'ProductInfo')
-                                                              .doc(AllStudentInfo[
-                                                                      index][
-                                                                  "ProductUniqueID"]);
-
-                                                      StudentInfo.update(
-                                                              updateData)
-                                                          .then(
-                                                              (value) =>
-                                                                  setState(() {
-                                                                    // Navigator.pop(context);
-
-                                                                    // getProductInfo();
-
-                                                                    AwesomeDialog(
-                                                                      width:
-                                                                          500,
-                                                                      context:
-                                                                          context,
-                                                                      animType:
-                                                                          AnimType
-                                                                              .scale,
-                                                                      dialogType:
-                                                                          DialogType
-                                                                              .success,
-                                                                      body: Center(
-                                                                          child: Text(
-                                                                        "আপনি আপনার Product এর গায়ে (${AllStudentInfo[index]["ProductVisibleID"]}) Code টি লিখে রাখুন",
-                                                                        style: const TextStyle(
-                                                                            fontFamily:
-                                                                                "Josefin Sans",
-                                                                            fontWeight:
-                                                                                FontWeight.bold),
-                                                                      )),
-                                                                      title:
-                                                                          'নিচে Product এর Code টি দেখুন',
-                                                                      desc:
-                                                                          'নিচে Product এর Code টি দেখুন',
-                                                                      btnOkOnPress:
-                                                                          () {
-                                                                        Navigator.pop(
-                                                                            context);
-                                                                      },
-                                                                    ).show();
-
-                                                                    final snackBar =
-                                                                        SnackBar(
-                                                                      elevation:
-                                                                          0,
-                                                                      behavior:
-                                                                          SnackBarBehavior
-                                                                              .floating,
-                                                                      backgroundColor:
-                                                                          Colors
-                                                                              .transparent,
-                                                                      content:
-                                                                          AwesomeSnackbarContent(
-                                                                        titleFontSize:
-                                                                            12,
-                                                                        title:
-                                                                            'successfull',
-                                                                        message:
-                                                                            'Hey Thank You. Good Job',
-
-                                                                        /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                                        contentType:
-                                                                            ContentType.success,
-                                                                      ),
-                                                                    );
-
-                                                                    ScaffoldMessenger.of(
-                                                                        context)
-                                                                      ..hideCurrentSnackBar()
-                                                                      ..showSnackBar(
-                                                                          snackBar);
-
-                                                                    setState(
-                                                                        () {
-                                                                      loading =
-                                                                          false;
-                                                                    });
-                                                                  }))
-                                                          .onError((error,
-                                                                  stackTrace) =>
-                                                              setState(() {
-                                                                final snackBar =
-                                                                    SnackBar(
-                                                                  /// need to set following properties for best effect of awesome_snackbar_content
-                                                                  elevation: 0,
-
-                                                                  behavior:
-                                                                      SnackBarBehavior
-                                                                          .floating,
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .transparent,
-                                                                  content:
-                                                                      AwesomeSnackbarContent(
-                                                                    title:
-                                                                        'Something Wrong!!!!',
-                                                                    message:
-                                                                        'Try again later...',
-
-                                                                    /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                                    contentType:
-                                                                        ContentType
-                                                                            .failure,
-                                                                  ),
-                                                                );
-
-                                                                ScaffoldMessenger
-                                                                    .of(context)
-                                                                  ..hideCurrentSnackBar()
-                                                                  ..showSnackBar(
-                                                                      snackBar);
-
-                                                                setState(() {
-                                                                  loading =
-                                                                      false;
-                                                                });
-                                                              }));
-                                                    },
-                                                    child: const Text("Save"),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        },
-                                      );
-                                    },
-                                    style: const ButtonStyle(
-                                      shadowColor: WidgetStatePropertyAll(
-                                          Colors.green),
-                                      backgroundColor: WidgetStatePropertyAll(
-                                          Colors.green),
-                                    ),
-                                    child: const Text(
-                                      "Edit",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  )),
+                                  }, child: Text("Edit"))),
 
                                   DataCell(ElevatedButton(
+                                      onPressed: () {
+
+
+                                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => StudentProfile(SIDNo: AllStudentInfo[index]["SIDNo"])));
+                                      },
+                                      child: Text("Details"))),
+
+
+                                      DataCell(ElevatedButton(
                                       onPressed: () {
 
 
@@ -3565,60 +3086,108 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
                                         
-                                        // showDialog(
-                                        //     context: context,
-                                        //     builder: (context) {
-                                        //       return StatefulBuilder(
-                                        //           builder: (context, setState) {
-                                        //         return AlertDialog(
-                                        //           title: Text(
-                                        //               'Show Details ${AllStudentInfo[index]["ProductVisibleID"].toString().toUpperCase()}'),
-                                        //           content:
-                                        //               SingleChildScrollView(
-                                        //             child: Column(
-                                        //               mainAxisAlignment:
-                                        //                   MainAxisAlignment
-                                        //                       .start,
-                                        //               crossAxisAlignment:
-                                        //                   CrossAxisAlignment
-                                        //                       .start,
-                                        //               children: [
-                                        //                 Text(
-                                        //                     "Product ID: ${AllStudentInfo[index]["ProductVisibleID"].toString().toUpperCase()}"),
-                                        //                 Text(
-                                        //                     "Product Name: ${AllStudentInfo[index]["ProductName"]}"),
-                                        //                 Text(
-                                        //                     "Product Description: ${AllStudentInfo[index]["ProductDescription"]}"),
-                                        //                 Text(
-                                        //                     "Product Buying Price: ${AllStudentInfo[index]["BuyingPrice"]}"),
-                                        //                 Text(
-                                        //                     "Product Sale Price: ${AllStudentInfo[index]["SalePrice"]}"),
-                                        //                 Text(
-                                        //                     "Product Stock: ${AllStudentInfo[index]["ProductAmount"]}"),
-                                        //                 Text(
-                                        //                     "Stock Date: ${AllStudentInfo[index]["Date"]}"),
-                                        //               ],
-                                        //             ),
-                                        //           ),
-                                        //           actions: [
-                                        //             ElevatedButton(
-                                        //               onPressed: () {
-                                        //                 Navigator.pop(context);
-                                        //               },
-                                        //               child: Text('CANCEL'),
-                                        //             ),
-                                        //             ElevatedButton(
-                                        //               onPressed: () {
-                                        //                 Navigator.pop(context);
-                                        //               },
-                                        //               child: Text('ACCEPT'),
-                                        //             ),
-                                        //           ],
-                                        //         );
-                                        //       });
-                                        //     });
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+
+
+                                              
+                                              return StatefulBuilder(
+
+                                                
+                                                  builder: (context, setState) {
+
+                                                      final List<String> TeachersAcademy = [
+                                                            'Rezuan Math Care',
+                                                            'Sazzad ICT',
+                                                            'MediCrack',
+                                                            'Protick Physics',
+                                                          ];
+                                                          String? selectedTeachersAcademyValue;
+                                                return AlertDialog(
+                                                  title: Text(
+                                                      'Show Details ${AllStudentInfo[index]["ProductVisibleID"].toString().toUpperCase()}'),
+                                                  content:
+                                                      SingleChildScrollView(
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+
+
+                                                         Card(
+                                                              elevation: 20,
+                                                              child: Container(
+                                                                width: 200,
+                                                                child: DropdownButtonHideUnderline(
+                                                                  child: DropdownButton2<String>(
+                                                                    isExpanded: true,
+                                                                    hint: Text(
+                                                                      'Select Academy Name',
+                                                                      style: TextStyle(
+                                                                        fontSize: 14,
+                                                                        color: Theme.of(context).hintColor,
+                                                                      ),
+                                                                    ),
+                                                                    items: TeachersAcademy.map(
+                                                                        (String item) => DropdownMenuItem<String>(
+                                                                              value: item,
+                                                                              child: Text(
+                                                                                item,
+                                                                                style: const TextStyle(
+                                                                                  fontSize: 14,
+                                                                                ),
+                                                                              ),
+                                                                            )).toList(),
+                                                                    value: selectedTeachersAcademyValue,
+                                                                    onChanged: (String? value) {
+                                                                      setState(() {
+                                                                        selectedTeachersAcademyValue = value;
+
+                                                                                    Navigator.push(
+                                                                                                  context,MaterialPageRoute(builder: (context) =>StudentAllPayment(TeacherAcademyName: value, SIDNo: AllStudentInfo[index]["SIDNo"])),
+                                                                                                );
+                                                                      });
+                                                                    },
+                                                                    buttonStyleData: const ButtonStyleData(
+                                                                      padding: EdgeInsets.symmetric(horizontal: 16),
+                                                                      height: 40,
+                                                                      width: 140,
+                                                                    ),
+                                                                    menuItemStyleData: const MenuItemStyleData(
+                                                                      height: 40,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                   
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  actions: [
+                                                    ElevatedButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text('CANCEL'),
+                                                    ),
+                                                    ElevatedButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text('ACCEPT'),
+                                                    ),
+                                                  ],
+                                                );
+                                              });
+                                            });
                                       },
-                                      child: Text("Details")))
+                                      child: Text("All Fee")))
                                 ]))),
                   ),
                 ),
