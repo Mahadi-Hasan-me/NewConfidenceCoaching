@@ -26,6 +26,8 @@ class ExamMarks extends StatefulWidget {
 class _ExamMarksState extends State<ExamMarks> {
   int _selectedDestination = 0;
 
+  bool DataLoad = false;
+
   var uuid = Uuid();
 
   TextEditingController SearchByStudentIDController = TextEditingController();
@@ -76,14 +78,56 @@ class _ExamMarksState extends State<ExamMarks> {
     Query StudentInfoquery = _collectionStudentInfoRef
         .where("TeacherAcademyName", isEqualTo: "Rezuan Math Care");
 
-    QuerySnapshot StudentInfoquerySnapshot =
-        await _collectionStudentInfoRef.get();
+    QuerySnapshot StudentInfoquerySnapshot = await StudentInfoquery.get();
+     AllStudentInfo =
+            StudentInfoquerySnapshot.docs.map((doc) => doc.data()).toList();
 
-    setState(() {
-      AllStudentInfo = [];
-      AllStudentInfo =
-          StudentInfoquerySnapshot.docs.map((doc) => doc.data()).toList();
-    });
+    if (AllStudentInfo.isEmpty) {
+      DataLoad = false;
+    } else {
+      setState(() {
+        AllStudentInfo = [];
+        AllStudentInfo =
+            StudentInfoquerySnapshot.docs.map((doc) => doc.data()).toList();
+
+        MarksController.clear();
+        createControllers();
+      });
+      DataLoad = true;
+    }
+
+    // print(AllData);
+  }
+
+  Future<void> getSearchAllStudentInfo(
+      String AcademyName, String HSCBatchYear) async {
+    CollectionReference _collectionStudentInfoRef =
+        FirebaseFirestore.instance.collection('PerTeacherStudentInfo');
+
+    Query StudentInfoquery = _collectionStudentInfoRef
+        .where("TeacherAcademyName", isEqualTo: AcademyName)
+        .where("BatchName", isEqualTo: HSCBatchYear);
+
+    QuerySnapshot StudentInfoquerySnapshot = await StudentInfoquery.get();
+
+    AllStudentInfo =
+        StudentInfoquerySnapshot.docs.map((doc) => doc.data()).toList();
+
+    if (AllStudentInfo.isEmpty) {
+      setState(() {
+        DataLoad = false;
+      });
+    } else {
+      setState(() {
+        AllStudentInfo = [];
+        AllStudentInfo =
+            StudentInfoquerySnapshot.docs.map((doc) => doc.data()).toList();
+        MarksController.clear();
+        createControllers();
+
+        DataLoad = true;
+      });
+    }
 
     // print(AllData);
   }
@@ -110,8 +154,6 @@ class _ExamMarksState extends State<ExamMarks> {
 
     getAllStudentInfo();
 
-    createControllers();
-
     // setState(() {
     //   _selectedDestination = 0;
     // });
@@ -119,35 +161,6 @@ class _ExamMarksState extends State<ExamMarks> {
     // TODO: implement initState
     super.initState();
   }
-
-
-
-
-    Future<void> getSearchAllStudentInfo(
-      String AcademyName, String HSCBatchYear) async {
-    CollectionReference _collectionStudentInfoRef =
-        FirebaseFirestore.instance.collection('PerTeacherStudentInfo');
-
-    Query StudentInfoquery = _collectionStudentInfoRef
-        .where("TeacherAcademyName", isEqualTo: AcademyName)
-        .where("HSCBatchYear", isEqualTo: HSCBatchYear);
-
-    QuerySnapshot StudentInfoquerySnapshot =
-        await _collectionStudentInfoRef.get();
-
-    setState(() {
-      AllStudentInfo = [];
-      AllStudentInfo =
-          StudentInfoquerySnapshot.docs.map((doc) => doc.data()).toList();
-    });
-
-    // print(AllData);
-  }
-
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -222,8 +235,8 @@ class _ExamMarksState extends State<ExamMarks> {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-
-                  Text("Add Student Exam Marks ${selectedTeachersAcademyValue} ${selectedBatchNameValue}"),
+                  Text(
+                      "Add Student Exam Marks ${selectedTeachersAcademyValue} ${selectedBatchNameValue}"),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -271,7 +284,8 @@ class _ExamMarksState extends State<ExamMarks> {
                                 //     StudentInfoquerySnapshot.docs.map((doc) => doc.data()).toList();
 
                                 setState(() {
-                                  BatchName = [];
+                                  selectedTeachersAcademyValue = value;
+                                  BatchName.clear();
 
                                   List AllBatchInfo = [];
 
@@ -287,9 +301,9 @@ class _ExamMarksState extends State<ExamMarks> {
                                   ;
                                 });
 
-                                setState(() {
-                                  selectedTeachersAcademyValue = value;
-                                });
+                                // setState(() {
+                                //   selectedTeachersAcademyValue = value;
+                                // });
                               },
                               buttonStyleData: const ButtonStyleData(
                                 padding: EdgeInsets.symmetric(horizontal: 16),
@@ -362,7 +376,7 @@ class _ExamMarksState extends State<ExamMarks> {
                 ],
               ),
             ),
-            body: GridView.count(
+            body:!DataLoad?SingleChildScrollView(child: Center(child: Text("No Data Available"),),):GridView.count(
               crossAxisCount: 1,
               crossAxisSpacing: 20,
               mainAxisSpacing: 20,
@@ -414,23 +428,23 @@ class _ExamMarksState extends State<ExamMarks> {
                             AllStudentInfo.length,
                             (index) => DataRow(cells: [
                                   DataCell(Text('${index + 1}')),
-                                  DataCell(Text(AllStudentInfo[index]
-                                          ["SIDNo"]
+                                  DataCell(Text(AllStudentInfo[index]["SIDNo"]
                                       .toString()
                                       .toUpperCase())),
                                   DataCell(Text(AllStudentInfo[index]
                                           ["StudentName"]
                                       .toString()
                                       .toUpperCase())),
-                                  DataCell(Text(AllStudentInfo[index]["StudentPhoneNumber"]
+                                  DataCell(Text(AllStudentInfo[index]
+                                          ["StudentPhoneNumber"]
                                       .toString()
                                       .toUpperCase())),
-                                 
                                   DataCell(Text(
                                       "${AllStudentInfo[index]["TeacherAcademyName"].toString().toUpperCase()}")),
                                   DataCell(Text(
                                       "${AllStudentInfo[index]["BatchName"].toString().toUpperCase()}")),
-                                  DataCell(Text("${AllStudentInfo[index]["PrivateDay"].toString().toUpperCase()}")),
+                                  DataCell(Text(
+                                      "${AllStudentInfo[index]["PrivateDay"].toString().toUpperCase()}")),
                                   DataCell(
                                     Container(
                                       width: 100,
