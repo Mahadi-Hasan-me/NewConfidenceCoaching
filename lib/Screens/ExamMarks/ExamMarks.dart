@@ -69,96 +69,20 @@ class _ExamMarksState extends State<ExamMarks> {
 
   List AllStudentInfo = [];
 
-  Future<void> getProductInfo() async {
-    // CollectionReference _collectionDueCustomerRef =
-    //   FirebaseFirestore.instance.collection('ProductInfo');
+  Future<void> getAllStudentInfo() async {
+    CollectionReference _collectionStudentInfoRef =
+        FirebaseFirestore.instance.collection('PerTeacherStudentInfo');
 
-    //   QuerySnapshot DueCustomerquerySnapshot = await _collectionDueCustomerRef.get();
+    Query StudentInfoquery = _collectionStudentInfoRef
+        .where("TeacherAcademyName", isEqualTo: "Rezuan Math Care");
 
-    //   // Get data from docs and convert map to List
-    //    AllStudentInfo = DueCustomerquerySnapshot.docs.map((doc) => doc.data()).toList();
-
-    setState(() {
-      //  AllStudentInfo = DueCustomerquerySnapshot.docs.map((doc) => doc.data()).toList();
-
-      AllStudentInfo = [
-        {
-          "StudentName": "Mahadi",
-          "StudentID": "3435",
-          "PhoneNo": "43543465",
-          "InstitutionName": "Msjdf",
-          "FatherPhoneNo": "454546",
-          "AcademyName": "Rezuan Math Care",
-          "BatchName": "HSC261"
-        },
-        {
-          "StudentName": "Mahadi",
-          "StudentID": "3435",
-          "PhoneNo": "43543465",
-          "InstitutionName": "Msjdf",
-          "FatherPhoneNo": "454546",
-          "AcademyName": "Rezuan Math Care",
-          "BatchName": "HSC261"
-        },
-        {
-          "StudentName": "Mahadi",
-          "StudentID": "3435",
-          "PhoneNo": "43543465",
-          "InstitutionName": "Msjdf",
-          "FatherPhoneNo": "454546",
-          "AcademyName": "Rezuan Math Care",
-          "BatchName": "HSC261"
-        },
-        {
-          "StudentName": "Mahadi",
-          "StudentID": "3435",
-          "PhoneNo": "43543465",
-          "InstitutionName": "Msjdf",
-          "FatherPhoneNo": "454546",
-          "AcademyName": "Rezuan Math Care",
-          "BatchName": "HSC261"
-        },
-        {
-          "StudentName": "Mahadi",
-          "StudentID": "3435",
-          "PhoneNo": "43543465",
-          "InstitutionName": "Msjdf",
-          "FatherPhoneNo": "454546",
-          "AcademyName": "Rezuan Math Care",
-          "BatchName": "HSC261"
-        },
-        {
-          "StudentName": "Mahadi",
-          "StudentID": "3435",
-          "PhoneNo": "43543465",
-          "InstitutionName": "Msjdf",
-          "FatherPhoneNo": "454546",
-          "AcademyName": "Rezuan Math Care",
-          "BatchName": "HSC261"
-        },
-      ];
-    });
-
-    // print(AllData);
-  }
-
-  Future<void> getSearchProductInfo(String ProductVisibleID) async {
-    CollectionReference _collectionDueCustomerRef =
-        FirebaseFirestore.instance.collection('ProductInfo');
-
-    Query DueCustomerquery = _collectionDueCustomerRef.where("ProductVisibleID",
-        isEqualTo: ProductVisibleID);
-
-    QuerySnapshot DueCustomerquerySnapshot = await DueCustomerquery.get();
-
-    // Get data from docs and convert map to List
-    AllStudentInfo =
-        DueCustomerquerySnapshot.docs.map((doc) => doc.data()).toList();
+    QuerySnapshot StudentInfoquerySnapshot =
+        await _collectionStudentInfoRef.get();
 
     setState(() {
+      AllStudentInfo = [];
       AllStudentInfo =
-          DueCustomerquerySnapshot.docs.map((doc) => doc.data()).toList();
-      SearchByStudentIDController.clear();
+          StudentInfoquerySnapshot.docs.map((doc) => doc.data()).toList();
     });
 
     // print(AllData);
@@ -172,7 +96,7 @@ class _ExamMarksState extends State<ExamMarks> {
   ];
   String? selectedTeachersAcademyValue;
 
-  final List<String> BatchName = [
+  List<String> BatchName = [
     'HSC261',
     'HSC262',
     'HSC263',
@@ -184,7 +108,7 @@ class _ExamMarksState extends State<ExamMarks> {
   void initState() {
     // FlutterNativeSplash.remove();
 
-    getProductInfo();
+    getAllStudentInfo();
 
     createControllers();
 
@@ -195,6 +119,35 @@ class _ExamMarksState extends State<ExamMarks> {
     // TODO: implement initState
     super.initState();
   }
+
+
+
+
+    Future<void> getSearchAllStudentInfo(
+      String AcademyName, String HSCBatchYear) async {
+    CollectionReference _collectionStudentInfoRef =
+        FirebaseFirestore.instance.collection('PerTeacherStudentInfo');
+
+    Query StudentInfoquery = _collectionStudentInfoRef
+        .where("TeacherAcademyName", isEqualTo: AcademyName)
+        .where("HSCBatchYear", isEqualTo: HSCBatchYear);
+
+    QuerySnapshot StudentInfoquerySnapshot =
+        await _collectionStudentInfoRef.get();
+
+    setState(() {
+      AllStudentInfo = [];
+      AllStudentInfo =
+          StudentInfoquerySnapshot.docs.map((doc) => doc.data()).toList();
+    });
+
+    // print(AllData);
+  }
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -269,1034 +222,8 @@ class _ExamMarksState extends State<ExamMarks> {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  PopupMenuButton(
-                    onSelected: (value) {
-                      // your logic
-                    },
-                    itemBuilder: (BuildContext bc) {
-                      return [
-                        PopupMenuItem(
-                          child: Text(
-                            "Add Registered Student",
-                            style: TextStyle(
-                                fontFamily: "Josefin Sans",
-                                fontWeight: FontWeight.bold),
-                          ),
-                          value: '/about',
-                          onTap: () async {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                String SelectedStudentStatus = "";
-                                String Title =
-                                    "নিচে নতুন রেজিস্ট্রেশন করা স্টুডেন্ট যুক্ত করুন";
 
-                                bool loading = false;
-
-                                final List<String> TeachersBatch = [
-                                  'Rezuan Math Care',
-                                  'Sazzad ICT',
-                                  'MediCrack',
-                                  'Protick Physics',
-                                ];
-                                String? selectedTeachersBatchValue;
-
-                                // String LabelText ="আয়ের খাত লিখবেন";
-
-                                return StatefulBuilder(
-                                  builder: (context, setState) {
-                                    return AlertDialog(
-                                      title: Column(
-                                        children: [
-                                          Center(
-                                            child: Text(
-                                              "${Title}",
-                                              style: TextStyle(
-                                                  fontFamily: "Josefin Sans",
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      content: loading
-                                          ? Center(
-                                              child:
-                                                  CircularProgressIndicator(),
-                                            )
-                                          : SingleChildScrollView(
-                                              child: Column(
-                                                children: [
-                                                  Container(
-                                                    width: 300,
-                                                    child:
-                                                        DropdownButtonHideUnderline(
-                                                      child: DropdownButton2<
-                                                          String>(
-                                                        isExpanded: true,
-                                                        hint: Text(
-                                                          'Select Teacher',
-                                                          style: TextStyle(
-                                                            fontSize: 14,
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .hintColor,
-                                                          ),
-                                                        ),
-                                                        items: TeachersAcademy
-                                                            .map((String
-                                                                    item) =>
-                                                                DropdownMenuItem<
-                                                                    String>(
-                                                                  value: item,
-                                                                  child: Text(
-                                                                    item,
-                                                                    style:
-                                                                        const TextStyle(
-                                                                      fontSize:
-                                                                          14,
-                                                                    ),
-                                                                  ),
-                                                                )).toList(),
-                                                        value:
-                                                            selectedTeachersAcademyValue,
-                                                        onChanged:
-                                                            (String? value) {
-                                                          setState(() {
-                                                            selectedTeachersAcademyValue =
-                                                                value;
-                                                          });
-                                                        },
-                                                        buttonStyleData:
-                                                            const ButtonStyleData(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                                  horizontal:
-                                                                      16),
-                                                          height: 40,
-                                                          width: 140,
-                                                        ),
-                                                        menuItemStyleData:
-                                                            const MenuItemStyleData(
-                                                          height: 40,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  Container(
-                                                    width: 300,
-                                                    child:
-                                                        DropdownButtonHideUnderline(
-                                                      child: DropdownButton2<
-                                                          String>(
-                                                        isExpanded: true,
-                                                        hint: Text(
-                                                          'Select Batch',
-                                                          style: TextStyle(
-                                                            fontSize: 14,
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .hintColor,
-                                                          ),
-                                                        ),
-                                                        items: TeachersBatch
-                                                            .map((String
-                                                                    item) =>
-                                                                DropdownMenuItem<
-                                                                    String>(
-                                                                  value: item,
-                                                                  child: Text(
-                                                                    item,
-                                                                    style:
-                                                                        const TextStyle(
-                                                                      fontSize:
-                                                                          14,
-                                                                    ),
-                                                                  ),
-                                                                )).toList(),
-                                                        value:
-                                                            selectedTeachersBatchValue,
-                                                        onChanged:
-                                                            (String? value) {
-                                                          setState(() {
-                                                            selectedTeachersBatchValue =
-                                                                value;
-                                                          });
-                                                        },
-                                                        buttonStyleData:
-                                                            const ButtonStyleData(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                                  horizontal:
-                                                                      16),
-                                                          height: 40,
-                                                          width: 140,
-                                                        ),
-                                                        menuItemStyleData:
-                                                            const MenuItemStyleData(
-                                                          height: 40,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  Container(
-                                                    width: 300,
-                                                    child: TextField(
-                                                      onChanged: (value) {},
-                                                      keyboardType:
-                                                          TextInputType.number,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        border:
-                                                            OutlineInputBorder(),
-                                                        labelText:
-                                                            'Enter Student ID',
-
-                                                        hintText:
-                                                            'Enter Student ID',
-
-                                                        //  enabledBorder: OutlineInputBorder(
-                                                        //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                        //     ),
-                                                        focusedBorder:
-                                                            OutlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              width: 3,
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .primaryColor),
-                                                        ),
-                                                        errorBorder:
-                                                            const OutlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                                  width: 3,
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          66,
-                                                                          125,
-                                                                          145)),
-                                                        ),
-                                                      ),
-                                                      controller:
-                                                          StudentIDController,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  Container(
-                                                    width: 300,
-                                                    child: TextField(
-                                                      onChanged: (value) {},
-                                                      keyboardType:
-                                                          TextInputType.number,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        border:
-                                                            OutlineInputBorder(),
-                                                        labelText:
-                                                            'Enter Teacher ID',
-
-                                                        hintText:
-                                                            'Enter Teacher ID',
-
-                                                        //  enabledBorder: OutlineInputBorder(
-                                                        //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                        //     ),
-                                                        focusedBorder:
-                                                            OutlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              width: 3,
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .primaryColor),
-                                                        ),
-                                                        errorBorder:
-                                                            const OutlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                                  width: 3,
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          66,
-                                                                          125,
-                                                                          145)),
-                                                        ),
-                                                      ),
-                                                      controller:
-                                                          TeacherIDController,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context),
-                                          child: Text("Cancel"),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () async {
-                                            setState(() {
-                                              loading = true;
-                                            });
-
-                                            var id = getRandomString(7);
-
-                                            var updateData = {
-                                              "TeacherAcademyName":
-                                                  selectedTeachersAcademyValue
-                                                      .toString(),
-                                              "TeacherBatchName":
-                                                  selectedBatchNameValue
-                                                      .toString(),
-                                              "TeacherID": TeacherIDController
-                                                  .text
-                                                  .trim(),
-                                              "StudentID": TeacherIDController
-                                                  .text
-                                                  .trim(),
-                                              "Status": "open",
-                                              "year": "${DateTime.now().year}",
-                                              "month":
-                                                  "${DateTime.now().month}/${DateTime.now().year}",
-                                              "Date":
-                                                  "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
-                                              "DateTime": DateTime.now()
-                                                  .toIso8601String(),
-                                            };
-
-                                            final StudentInfo =
-                                                FirebaseFirestore.instance
-                                                    .collection(
-                                                        'PerTeacherStudentInfo')
-                                                    .doc(ProductUniqueID);
-
-                                            StudentInfo.set(updateData)
-                                                .then((value) => setState(() {
-                                                      // Navigator.pop(context);
-
-                                                      AwesomeDialog(
-                                                        width: 500,
-                                                        context: context,
-                                                        animType:
-                                                            AnimType.scale,
-                                                        dialogType:
-                                                            DialogType.success,
-                                                        body: const Center(
-                                                            child: Text(
-                                                          "ব্যাচের স্টুডেন্ট সফলভাবে যুক্ত হয়েছে",
-                                                          style: TextStyle(
-                                                              fontFamily:
-                                                                  "Josefin Sans",
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        )),
-                                                        title:
-                                                            'ব্যাচের স্টুডেন্ট সফলভাবে যুক্ত হয়েছে',
-                                                        desc:
-                                                            'ব্যাচের স্টুডেন্ট সফলভাবে যুক্ত হয়েছে',
-                                                        btnOkOnPress: () {
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
-                                                      ).show();
-
-                                                      final snackBar = SnackBar(
-                                                        elevation: 0,
-                                                        behavior:
-                                                            SnackBarBehavior
-                                                                .floating,
-                                                        backgroundColor:
-                                                            Colors.transparent,
-                                                        content:
-                                                            AwesomeSnackbarContent(
-                                                          titleFontSize: 12,
-                                                          title: 'successfull',
-                                                          message:
-                                                              'Hey Thank You. Good Job',
-
-                                                          /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                          contentType:
-                                                              ContentType
-                                                                  .success,
-                                                        ),
-                                                      );
-
-                                                      ScaffoldMessenger.of(
-                                                          context)
-                                                        ..hideCurrentSnackBar()
-                                                        ..showSnackBar(
-                                                            snackBar);
-
-                                                      setState(() {
-                                                        loading = false;
-                                                      });
-                                                    }))
-                                                .onError((error, stackTrace) =>
-                                                    setState(() {
-                                                      final snackBar = SnackBar(
-                                                        /// need to set following properties for best effect of awesome_snackbar_content
-                                                        elevation: 0,
-
-                                                        behavior:
-                                                            SnackBarBehavior
-                                                                .floating,
-                                                        backgroundColor:
-                                                            Colors.transparent,
-                                                        content:
-                                                            AwesomeSnackbarContent(
-                                                          title:
-                                                              'Something Wrong!!!!',
-                                                          message:
-                                                              'Try again later...',
-
-                                                          /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                          contentType:
-                                                              ContentType
-                                                                  .failure,
-                                                        ),
-                                                      );
-
-                                                      ScaffoldMessenger.of(
-                                                          context)
-                                                        ..hideCurrentSnackBar()
-                                                        ..showSnackBar(
-                                                            snackBar);
-
-                                                      setState(() {
-                                                        loading = false;
-                                                      });
-                                                    }));
-                                          },
-                                          child: const Text("Save"),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                            );
-                          },
-                        ),
-
-                        PopupMenuItem(
-                          child: Text(
-                            "Create Batch Name",
-                            style: TextStyle(
-                                fontFamily: "Josefin Sans",
-                                fontWeight: FontWeight.bold),
-                          ),
-                          value: '/about',
-                          onTap: () async {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                String SelectedStudentStatus = "";
-                                String Title = "নিচে নতুন ব্যাচের নাম লিখুন";
-
-                                bool loading = false;
-                                String ClassStartHour = "";
-                                String ClassStartMinute = "";
-                                String ClassEndHour = "";
-                                String ClassEndMinute = "";
-
-                                // String LabelText ="আয়ের খাত লিখবেন";
-
-                                return StatefulBuilder(
-                                  builder: (context, setState) {
-                                    return AlertDialog(
-                                      title: Column(
-                                        children: [
-                                          Center(
-                                            child: Text(
-                                              "${Title}",
-                                              style: TextStyle(
-                                                  fontFamily: "Josefin Sans",
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      content: loading
-                                          ? Center(
-                                              child:
-                                                  CircularProgressIndicator(),
-                                            )
-                                          : SingleChildScrollView(
-                                              child: Column(
-                                                children: [
-                                                  Container(
-                                                    width: 300,
-                                                    child: TextField(
-                                                      onChanged: (value) {},
-                                                      keyboardType:
-                                                          TextInputType.name,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        border:
-                                                            OutlineInputBorder(),
-                                                        labelText: 'Teacher ID',
-
-                                                        hintText: 'Teacher ID',
-
-                                                        //  enabledBorder: OutlineInputBorder(
-                                                        //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                        //     ),
-                                                        focusedBorder:
-                                                            OutlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              width: 3,
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .primaryColor),
-                                                        ),
-                                                        errorBorder:
-                                                            OutlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                                  width: 3,
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          66,
-                                                                          125,
-                                                                          145)),
-                                                        ),
-                                                      ),
-                                                      controller:
-                                                          TeacherIDController,
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  Container(
-                                                    width: 300,
-                                                    child: TextField(
-                                                      onChanged: (value) {},
-                                                      keyboardType:
-                                                          TextInputType.name,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        border:
-                                                            OutlineInputBorder(),
-                                                        labelText:
-                                                            'New Batch Name',
-
-                                                        hintText:
-                                                            'New Batch Name',
-
-                                                        //  enabledBorder: OutlineInputBorder(
-                                                        //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                        //     ),
-                                                        focusedBorder:
-                                                            OutlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              width: 3,
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .primaryColor),
-                                                        ),
-                                                        errorBorder:
-                                                            OutlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                                  width: 3,
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          66,
-                                                                          125,
-                                                                          145)),
-                                                        ),
-                                                      ),
-                                                      controller:
-                                                          BatchNameController,
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  Container(
-                                                    width: 300,
-                                                    child: TextField(
-                                                      onChanged: (value) {},
-                                                      keyboardType:
-                                                          TextInputType.number,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        border:
-                                                            OutlineInputBorder(),
-                                                        labelText:
-                                                            'Batch Description',
-
-                                                        hintText:
-                                                            'Batch Description',
-
-                                                        //  enabledBorder: OutlineInputBorder(
-                                                        //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                        //     ),
-                                                        focusedBorder:
-                                                            OutlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              width: 3,
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .primaryColor),
-                                                        ),
-                                                        errorBorder:
-                                                            const OutlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                                  width: 3,
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          66,
-                                                                          125,
-                                                                          145)),
-                                                        ),
-                                                      ),
-                                                      controller:
-                                                          BatchDescriptionController,
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  Container(
-                                                    width: 300,
-                                                    child: TextField(
-                                                      onChanged: (value) {},
-                                                      keyboardType:
-                                                          TextInputType.number,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        border:
-                                                            OutlineInputBorder(),
-                                                        labelText:
-                                                            'Per Student Fee',
-
-                                                        hintText:
-                                                            'Per Student Fee',
-
-                                                        //  enabledBorder: OutlineInputBorder(
-                                                        //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                        //     ),
-                                                        focusedBorder:
-                                                            OutlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              width: 3,
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .primaryColor),
-                                                        ),
-                                                        errorBorder:
-                                                            OutlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                                  width: 3,
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          66,
-                                                                          125,
-                                                                          145)),
-                                                        ),
-                                                      ),
-                                                      controller:
-                                                          PerStudentFeeController,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          Text("Class Start: "),
-                                                          TextButton(
-                                                              style:
-                                                                  ButtonStyle(
-                                                                foregroundColor:
-                                                                    WidgetStateProperty.all<
-                                                                            Color>(
-                                                                        Colors
-                                                                            .blue),
-                                                                overlayColor:
-                                                                    WidgetStateProperty
-                                                                        .resolveWith<
-                                                                            Color?>(
-                                                                  (Set<WidgetState>
-                                                                      states) {
-                                                                    if (states.contains(
-                                                                        WidgetState
-                                                                            .hovered))
-                                                                      return Colors
-                                                                          .blue
-                                                                          .withOpacity(
-                                                                              0.04);
-                                                                    if (states.contains(WidgetState
-                                                                            .focused) ||
-                                                                        states.contains(
-                                                                            WidgetState.pressed))
-                                                                      return Colors
-                                                                          .blue
-                                                                          .withOpacity(
-                                                                              0.12);
-                                                                    return null; // Defer to the widget's default.
-                                                                  },
-                                                                ),
-                                                              ),
-                                                              onPressed:
-                                                                  () async {
-                                                                final TimeOfDay?
-                                                                    newTime =
-                                                                    await showTimePicker(
-                                                                  context:
-                                                                      context,
-                                                                  initialTime:
-                                                                      TimeOfDay(
-                                                                          hour:
-                                                                              7,
-                                                                          minute:
-                                                                              15),
-                                                                  initialEntryMode:
-                                                                      TimePickerEntryMode
-                                                                          .input,
-                                                                );
-
-                                                                setState(() {
-                                                                  ClassStartHour =
-                                                                      newTime!
-                                                                          .hour
-                                                                          .toString();
-                                                                  ClassStartMinute =
-                                                                      newTime
-                                                                          .minute
-                                                                          .toString();
-                                                                });
-                                                              },
-                                                              child: Text(
-                                                                  'Start Time'))
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Text("Class End: "),
-                                                          TextButton(
-                                                              style:
-                                                                  ButtonStyle(
-                                                                foregroundColor:
-                                                                    WidgetStateProperty.all<
-                                                                            Color>(
-                                                                        Colors
-                                                                            .blue),
-                                                                overlayColor:
-                                                                    WidgetStateProperty
-                                                                        .resolveWith<
-                                                                            Color?>(
-                                                                  (Set<WidgetState>
-                                                                      states) {
-                                                                    if (states.contains(
-                                                                        WidgetState
-                                                                            .hovered))
-                                                                      return Colors
-                                                                          .blue
-                                                                          .withOpacity(
-                                                                              0.04);
-                                                                    if (states.contains(WidgetState
-                                                                            .focused) ||
-                                                                        states.contains(
-                                                                            WidgetState.pressed))
-                                                                      return Colors
-                                                                          .blue
-                                                                          .withOpacity(
-                                                                              0.12);
-                                                                    return null; // Defer to the widget's default.
-                                                                  },
-                                                                ),
-                                                              ),
-                                                              onPressed:
-                                                                  () async {
-                                                                final TimeOfDay?
-                                                                    newTime =
-                                                                    await showTimePicker(
-                                                                  context:
-                                                                      context,
-                                                                  initialTime:
-                                                                      TimeOfDay(
-                                                                          hour:
-                                                                              7,
-                                                                          minute:
-                                                                              15),
-                                                                  initialEntryMode:
-                                                                      TimePickerEntryMode
-                                                                          .input,
-                                                                );
-
-                                                                setState(() {
-                                                                  ClassEndHour =
-                                                                      newTime!
-                                                                          .hour
-                                                                          .toString();
-                                                                  ClassEndMinute =
-                                                                      newTime
-                                                                          .minute
-                                                                          .toString();
-                                                                });
-                                                              },
-                                                              child: Text(
-                                                                  'Start End'))
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context),
-                                          child: Text("Cancel"),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () async {
-                                            setState(() {
-                                              loading = true;
-                                            });
-
-                                            var id = getRandomString(7);
-
-                                            var updateData = {
-                                              "BatchName": BatchNameController
-                                                  .text
-                                                  .trim()
-                                                  .toString(),
-                                              "BatchDescription":
-                                                  BatchDescriptionController
-                                                      .text
-                                                      .trim()
-                                                      .toString(),
-                                              "PerStudentFee":
-                                                  PerStudentFeeController.text
-                                                      .trim()
-                                                      .toString(),
-                                              "TeacherID": TeacherIDController
-                                                  .text
-                                                  .trim(),
-                                              "ClassStartHour": ClassStartHour,
-                                              "ClassStartMinute":
-                                                  ClassStartMinute,
-                                              "ClassEndHour": ClassEndHour,
-                                              "ClassEndMinute": ClassEndMinute,
-                                              "year": "${DateTime.now().year}",
-                                              "month":
-                                                  "${DateTime.now().month}/${DateTime.now().year}",
-                                              "Date":
-                                                  "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
-                                              "DateTime": DateTime.now()
-                                                  .toIso8601String(),
-                                            };
-
-                                            final StudentInfo =
-                                                FirebaseFirestore.instance
-                                                    .collection('AllBatchInfo')
-                                                    .doc(ProductUniqueID);
-
-                                            StudentInfo.set(updateData)
-                                                .then((value) => setState(() {
-                                                      // Navigator.pop(context);
-
-                                                      AwesomeDialog(
-                                                        width: 500,
-                                                        context: context,
-                                                        animType:
-                                                            AnimType.scale,
-                                                        dialogType:
-                                                            DialogType.success,
-                                                        body: const Center(
-                                                            child: Text(
-                                                          "ব্যাচের নাম সফলভাবে যুক্ত হয়েছে",
-                                                          style: TextStyle(
-                                                              fontFamily:
-                                                                  "Josefin Sans",
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        )),
-                                                        title:
-                                                            'ব্যাচের নাম সফলভাবে যুক্ত হয়েছে',
-                                                        desc:
-                                                            'ব্যাচের নাম সফলভাবে যুক্ত হয়েছে',
-                                                        btnOkOnPress: () {
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
-                                                      ).show();
-
-                                                      final snackBar = SnackBar(
-                                                        elevation: 0,
-                                                        behavior:
-                                                            SnackBarBehavior
-                                                                .floating,
-                                                        backgroundColor:
-                                                            Colors.transparent,
-                                                        content:
-                                                            AwesomeSnackbarContent(
-                                                          titleFontSize: 12,
-                                                          title: 'successfull',
-                                                          message:
-                                                              'Hey Thank You. Good Job',
-
-                                                          /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                          contentType:
-                                                              ContentType
-                                                                  .success,
-                                                        ),
-                                                      );
-
-                                                      ScaffoldMessenger.of(
-                                                          context)
-                                                        ..hideCurrentSnackBar()
-                                                        ..showSnackBar(
-                                                            snackBar);
-
-                                                      setState(() {
-                                                        loading = false;
-                                                      });
-                                                    }))
-                                                .onError((error, stackTrace) =>
-                                                    setState(() {
-                                                      final snackBar = SnackBar(
-                                                        /// need to set following properties for best effect of awesome_snackbar_content
-                                                        elevation: 0,
-
-                                                        behavior:
-                                                            SnackBarBehavior
-                                                                .floating,
-                                                        backgroundColor:
-                                                            Colors.transparent,
-                                                        content:
-                                                            AwesomeSnackbarContent(
-                                                          title:
-                                                              'Something Wrong!!!!',
-                                                          message:
-                                                              'Try again later...',
-
-                                                          /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                          contentType:
-                                                              ContentType
-                                                                  .failure,
-                                                        ),
-                                                      );
-
-                                                      ScaffoldMessenger.of(
-                                                          context)
-                                                        ..hideCurrentSnackBar()
-                                                        ..showSnackBar(
-                                                            snackBar);
-
-                                                      setState(() {
-                                                        loading = false;
-                                                      });
-                                                    }));
-                                          },
-                                          child: const Text("Save"),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                            );
-                          },
-                        ),
-
-                        PopupMenuItem(
-                          value: '/hello',
-                          child: Text(
-                            "Send SMS for Class Off",
-                            style: TextStyle(
-                                fontFamily: "Josefin Sans",
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        PopupMenuItem(
-                          value: '/hello',
-                          child: Text(
-                            "Send SMS to All Student",
-                            style: TextStyle(
-                                fontFamily: "Josefin Sans",
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-
-                        PopupMenuItem(
-                          value: '/hello',
-                          child: Text(
-                            "Search By ID",
-                            style: TextStyle(
-                                fontFamily: "Josefin Sans",
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-
-                        PopupMenuItem(
-                          value: '/hello',
-                          child: Text(
-                            "Search By Phone No",
-                            style: TextStyle(
-                                fontFamily: "Josefin Sans",
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-
-                        PopupMenuItem(
-                          value: '/hello',
-                          child: Text(
-                            "Set Due for All Student",
-                            style: TextStyle(
-                                fontFamily: "Josefin Sans",
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-
-                        //      PopupMenuItem(
-                        //       onTap: () {
-                        //            Navigator.push(
-                        //   context,MaterialPageRoute(builder: (context) => PerDayDuePaymentAddHistory()),
-                        // );
-                        //       },
-                        //       value: '/hello',
-                        //       child: Text("প্রতিদিন বকেয়া উত্তোলনের History", style: TextStyle(fontFamily: "Josefin Sans", fontWeight: FontWeight.bold),),
-                        //     ),
-                      ];
-                    },
-                  ),
-                  Text("Add Student Exam Marks"),
+                  Text("Add Student Exam Marks ${selectedTeachersAcademyValue} ${selectedBatchNameValue}"),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -1325,7 +252,41 @@ class _ExamMarksState extends State<ExamMarks> {
                                         ),
                                       )).toList(),
                               value: selectedTeachersAcademyValue,
-                              onChanged: (String? value) {
+                              onChanged: (String? value) async {
+                                CollectionReference _collectionBatchInfoRef =
+                                    FirebaseFirestore.instance
+                                        .collection('AllBatchInfo');
+
+                                Query BatchInfoRefquery =
+                                    _collectionBatchInfoRef.where(
+                                        "TeacherAcademyName",
+                                        isEqualTo:
+                                            selectedTeachersAcademyValue);
+
+                                QuerySnapshot BatchInfoRefquerySnapshot =
+                                    await BatchInfoRefquery.get();
+
+                                // Get data from docs and convert map to List
+                                // AllStudentInfo =
+                                //     StudentInfoquerySnapshot.docs.map((doc) => doc.data()).toList();
+
+                                setState(() {
+                                  BatchName = [];
+
+                                  List AllBatchInfo = [];
+
+                                  AllBatchInfo = BatchInfoRefquerySnapshot.docs
+                                      .map((doc) => doc.data())
+                                      .toList();
+
+                                  for (var i = 0;
+                                      i < AllBatchInfo.length;
+                                      i++) {
+                                    BatchName.add(AllBatchInfo[i]["BatchName"]);
+                                  }
+                                  ;
+                                });
+
                                 setState(() {
                                   selectedTeachersAcademyValue = value;
                                 });
@@ -1369,7 +330,7 @@ class _ExamMarksState extends State<ExamMarks> {
                               value: selectedBatchNameValue,
                               onChanged: (String? value) {
                                 setState(() {
-                                  selectedTeachersAcademyValue = value;
+                                  selectedBatchNameValue = value;
                                 });
                               },
                               buttonStyleData: const ButtonStyleData(
@@ -1386,10 +347,14 @@ class _ExamMarksState extends State<ExamMarks> {
                       ),
                       ElevatedButton(
                           onPressed: () async {
-                            getSearchProductInfo(SearchByStudentIDController
-                                .text
-                                .trim()
-                                .toLowerCase());
+                            // getSearchProductInfo(SearchByStudentIDController
+                            //     .text
+                            //     .trim()
+                            //     .toLowerCase());
+
+                            getSearchAllStudentInfo(
+                                selectedTeachersAcademyValue!,
+                                selectedBatchNameValue!);
                           },
                           child: Text("Search")),
                     ],
@@ -1410,7 +375,7 @@ class _ExamMarksState extends State<ExamMarks> {
                   child: Padding(
                     padding: const EdgeInsets.all(16),
                     child: DataTable2(
-                        headingTextStyle: TextStyle(
+                        headingTextStyle: const TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.white),
                         columnSpacing: 12,
                         headingRowColor: WidgetStatePropertyAll(Colors.pink),
@@ -1432,19 +397,13 @@ class _ExamMarksState extends State<ExamMarks> {
                             label: Text('Phone No'),
                           ),
                           DataColumn(
-                            label: Text('Institution Name'),
-                          ),
-                          DataColumn(
-                            label: Text('Father Phone No'),
-                          ),
-                          DataColumn(
                             label: Text('Academy Name'),
                           ),
                           DataColumn(
                             label: Text('Batch Name'),
                           ),
                           DataColumn(
-                            label: Text('Batch Time'),
+                            label: Text('Batch Day'),
                           ),
                           DataColumn(
                             label: Text('Add Marks'),
@@ -1456,25 +415,22 @@ class _ExamMarksState extends State<ExamMarks> {
                             (index) => DataRow(cells: [
                                   DataCell(Text('${index + 1}')),
                                   DataCell(Text(AllStudentInfo[index]
-                                          ["StudentID"]
+                                          ["SIDNo"]
                                       .toString()
                                       .toUpperCase())),
                                   DataCell(Text(AllStudentInfo[index]
                                           ["StudentName"]
                                       .toString()
                                       .toUpperCase())),
-                                  DataCell(Text(AllStudentInfo[index]["PhoneNo"]
+                                  DataCell(Text(AllStudentInfo[index]["StudentPhoneNumber"]
                                       .toString()
                                       .toUpperCase())),
+                                 
                                   DataCell(Text(
-                                      "${AllStudentInfo[index]["InstitutionName"].toString().toUpperCase()}")),
-                                  DataCell(Text(
-                                      "${AllStudentInfo[index]["FatherPhoneNo"].toString().toUpperCase()}")),
-                                  DataCell(Text(
-                                      "${AllStudentInfo[index]["AcademyName"].toString().toUpperCase()}")),
+                                      "${AllStudentInfo[index]["TeacherAcademyName"].toString().toUpperCase()}")),
                                   DataCell(Text(
                                       "${AllStudentInfo[index]["BatchName"].toString().toUpperCase()}")),
-                                  DataCell(Text("")),
+                                  DataCell(Text("${AllStudentInfo[index]["PrivateDay"].toString().toUpperCase()}")),
                                   DataCell(
                                     Container(
                                       width: 100,
@@ -1734,10 +690,11 @@ class _ExamMarksState extends State<ExamMarks> {
                                                 i < AllStudentMarks.length;
                                                 i++) {
                                               var perStudentInfoWithMarks = {
-                                                "StudentID": AllStudentInfo[i]
-                                                    ["StudentID"],
-                                                "AcademyName": AllStudentInfo[i]
-                                                    ["AcademyName"],
+                                                "SIDNo": AllStudentInfo[i]
+                                                    ["SIDNo"],
+                                                "TeacherAcademyName":
+                                                    AllStudentInfo[i]
+                                                        ["TeacherAcademyName"],
                                                 "BatchName": AllStudentInfo[i]
                                                     ["BatchName"],
                                                 "TotalMarks": AllStudentMarks[i]
@@ -1795,7 +752,7 @@ class _ExamMarksState extends State<ExamMarks> {
                                                         // Navigator.pop(context);
 
                                                         var Msg =
-                                                            "SID:${StudentMarksWithInfo[i]["StudentID"]},TN:${StudentMarksWithInfo[i]["TopicName"].toString()}, M:${StudentMarksWithInfo[i]["TotalMarks"].toString()} HM:${StudentMarksWithInfo[i]["HighestMarks"].toString()}, P:${StudentMarksWithInfo[i]["Position"].toString()}, ${StudentMarksWithInfo[i]["AcademyName"].toString()}";
+                                                            "SID:${StudentMarksWithInfo[i]["SIDNo"]},TN:${StudentMarksWithInfo[i]["TopicName"].toString()}, M:${StudentMarksWithInfo[i]["TotalMarks"].toString()} HM:${StudentMarksWithInfo[i]["HighestMarks"].toString()}, P:${StudentMarksWithInfo[i]["Position"].toString()}, ${StudentMarksWithInfo[i]["TeacherAcademyName"].toString()}";
 
                                                         try {
                                                           final response =
