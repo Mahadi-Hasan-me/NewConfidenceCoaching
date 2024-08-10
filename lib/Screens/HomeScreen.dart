@@ -972,7 +972,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
-
                         PopupMenuItem(
                           value: '/hello',
                           child: InkWell(
@@ -1244,7 +1243,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
-
                         PopupMenuItem(
                           value: '/hello',
                           child: InkWell(
@@ -1375,7 +1373,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
-
                         PopupMenuItem(
                           value: '/hello',
                           child: InkWell(
@@ -1509,7 +1506,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
-
                         PopupMenuItem(
                           value: '/hello',
                           child: InkWell(
@@ -1646,7 +1642,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         .doc(AllStudentInfo[i]
                                                             ["id"]);
 
-                                                PerTeacherStudentInfo.update(MsgData)
+                                                PerTeacherStudentInfo.update(
+                                                        MsgData)
                                                     .then((value) =>
                                                         setState(() async {
                                                           var AdminMsg =
@@ -1780,20 +1777,99 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
+                        PopupMenuItem(
+                          onTap: () async {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                String SelectedStudentStatus = "";
+                                String Title = "কাজের জন্য নির্বাচন করুন";
 
-                        //      PopupMenuItem(
-                        //       onTap: () {
-                        //            Navigator.push(
-                        //   context,MaterialPageRoute(builder: (context) => PerDayDuePaymentAddHistory()),
-                        // );
-                        //       },
-                        //       value: '/hello',
-                        //       child: Text("প্রতিদিন বকেয়া উত্তোলনের History", style: TextStyle(fontFamily: "Josefin Sans", fontWeight: FontWeight.bold),),
-                        //     ),
+                                bool loading = false;
+
+                                // String LabelText ="আয়ের খাত লিখবেন";
+
+                                return StatefulBuilder(
+                                  builder: (context, setState) {
+                                    return AlertDialog(
+                                      title: Column(
+                                        children: [
+                                          Center(
+                                            child: Text(
+                                              Title,
+                                              style: const TextStyle(
+                                                  fontFamily: "Josefin Sans",
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      content: loading
+                                          ? const Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            )
+                                          : SingleChildScrollView(
+                                              child: Column(
+                                                children: [
+                                                  const SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: const Text("Cancel"),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () async {
+                                            setState(() {
+                                              loading = true;
+                                            });
+
+                                            List AllWorkStudent = [];
+
+                                            for (var i = 0;
+                                                i < AllStudentInfo.length;
+                                                i++) {
+                                              var perWorkStudent = {
+
+                                                "StudentName": AllStudentInfo[i]["StudentName"],
+                                                "StudentPhoneNumber": AllStudentInfo[i]["StudentPhoneNumber"],
+                                                "FatherPhoneNo": AllStudentInfo[i]["FatherPhoneNo"],
+                                                "FutureAim": AllStudentInfo[i]["FutureAim"],
+                                                "SIDNo": AllStudentInfo[i]["SIDNo"],
+                                                "StudentImageUrl": AllStudentInfo[i]["StudentImageUrl"],
+                                                "Comment":"",
+                                                "CallDone": false,
+
+                                              };
+                                            }
+                                          },
+                                          child: const Text("Save"),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          },
+                          value: '/hello',
+                          child: const Text(
+                            "Make Work",
+                            style: TextStyle(
+                                fontFamily: "Josefin Sans",
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       ];
                     },
                   ),
-                  Text(" Confidence Dashboard"),
+                  const Text(" Confidence Dashboard"),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -2000,16 +2076,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             // numeric: true,
                           ),
 
-                   
-
-
-
                           DataColumn(
                             label: Text('Details'),
                             // numeric: true,
                           ),
-
-
 
                           DataColumn(
                             label: Text('Attendance'),
@@ -3077,55 +3147,58 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 TextStyle(color: Colors.green),
                                           ))),
 
-                                  DataCell(ElevatedButton(onPressed: (){
-
-                                  }, child: Text("Edit"))),
+                                  DataCell(ElevatedButton(
+                                      onPressed: () {}, child: Text("Edit"))),
 
                                   DataCell(ElevatedButton(
                                       onPressed: () {
-
-
-                                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => StudentProfile(SIDNo: AllStudentInfo[index]["SIDNo"])));
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    StudentProfile(
+                                                        SIDNo: AllStudentInfo[
+                                                            index]["SIDNo"])));
                                       },
                                       child: Text("Detail"))),
 
-
-                                      DataCell(ElevatedButton(
+                                  DataCell(ElevatedButton(
                                       onPressed: () {
-
-
-                                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowStudentAttendance(SIDNo: AllStudentInfo[index]["SIDNo"], TeacherAcademyName: AllStudentInfo[index]["TeacherAcademyName"])));
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ShowStudentAttendance(
+                                                        SIDNo: AllStudentInfo[
+                                                            index]["SIDNo"],
+                                                        TeacherAcademyName:
+                                                            AllStudentInfo[
+                                                                    index][
+                                                                "TeacherAcademyName"])));
                                       },
                                       child: Text("Attendance"))),
 
-
-                                      DataCell(ElevatedButton(
+                                  DataCell(ElevatedButton(
                                       onPressed: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    StudentProfile(
+                                                        SIDNo: AllStudentInfo[
+                                                            index]["SIDNo"])));
 
-
-                                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => StudentProfile(SIDNo: AllStudentInfo[index]["SIDNo"])));
-
-
-
-                                        
                                         showDialog(
                                             context: context,
                                             builder: (context) {
-
-
-                                              
                                               return StatefulBuilder(
-
-                                                
                                                   builder: (context, setState) {
-
-                                                      final List<String> TeachersAcademy = [
-                                                            'Rezuan Math Care',
-                                                            'Sazzad ICT',
-                                                            'MediCrack',
-                                                            'Protick Physics',
-                                                          ];
-                                                          String? selectedTeachersAcademyValue;
+                                                final List<String>
+                                                    TeachersAcademy = [
+                                                  'Rezuan Math Care',
+                                                  'Sazzad ICT',
+                                                  'MediCrack',
+                                                  'Protick Physics',
+                                                ];
+                                                String?
+                                                    selectedTeachersAcademyValue;
                                                 return AlertDialog(
                                                   title: Text(
                                                       'Payment Info ${AllStudentInfo[index]["SIDNo"].toString().toUpperCase()}'),
@@ -3139,55 +3212,80 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           CrossAxisAlignment
                                                               .start,
                                                       children: [
-
-
-                                                         Card(
-                                                              elevation: 20,
-                                                              child: Container(
-                                                                width: 200,
-                                                                child: DropdownButtonHideUnderline(
-                                                                  child: DropdownButton2<String>(
-                                                                    isExpanded: true,
-                                                                    hint: Text(
-                                                                      'Select Academy Name',
-                                                                      style: TextStyle(
-                                                                        fontSize: 14,
-                                                                        color: Theme.of(context).hintColor,
-                                                                      ),
-                                                                    ),
-                                                                    items: TeachersAcademy.map(
-                                                                        (String item) => DropdownMenuItem<String>(
-                                                                              value: item,
-                                                                              child: Text(
-                                                                                item,
-                                                                                style: const TextStyle(
-                                                                                  fontSize: 14,
-                                                                                ),
-                                                                              ),
-                                                                            )).toList(),
-                                                                    value: selectedTeachersAcademyValue,
-                                                                    onChanged: (String? value) {
-                                                                      setState(() {
-                                                                        selectedTeachersAcademyValue = value;
-
-                                                                                    Navigator.push(
-                                                                                                  context,MaterialPageRoute(builder: (context) =>StudentAllPayment(TeacherAcademyName: value, SIDNo: AllStudentInfo[index]["SIDNo"])),
-                                                                                                );
-                                                                      });
-                                                                    },
-                                                                    buttonStyleData: const ButtonStyleData(
-                                                                      padding: EdgeInsets.symmetric(horizontal: 16),
-                                                                      height: 40,
-                                                                      width: 140,
-                                                                    ),
-                                                                    menuItemStyleData: const MenuItemStyleData(
-                                                                      height: 40,
-                                                                    ),
+                                                        Card(
+                                                          elevation: 20,
+                                                          child: Container(
+                                                            width: 200,
+                                                            child:
+                                                                DropdownButtonHideUnderline(
+                                                              child:
+                                                                  DropdownButton2<
+                                                                      String>(
+                                                                isExpanded:
+                                                                    true,
+                                                                hint: Text(
+                                                                  'Select Academy Name',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        14,
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .hintColor,
                                                                   ),
+                                                                ),
+                                                                items: TeachersAcademy.map((String
+                                                                        item) =>
+                                                                    DropdownMenuItem<
+                                                                        String>(
+                                                                      value:
+                                                                          item,
+                                                                      child:
+                                                                          Text(
+                                                                        item,
+                                                                        style:
+                                                                            const TextStyle(
+                                                                          fontSize:
+                                                                              14,
+                                                                        ),
+                                                                      ),
+                                                                    )).toList(),
+                                                                value:
+                                                                    selectedTeachersAcademyValue,
+                                                                onChanged:
+                                                                    (String?
+                                                                        value) {
+                                                                  setState(() {
+                                                                    selectedTeachersAcademyValue =
+                                                                        value;
+
+                                                                    Navigator
+                                                                        .push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) => StudentAllPayment(
+                                                                              TeacherAcademyName: value,
+                                                                              SIDNo: AllStudentInfo[index]["SIDNo"])),
+                                                                    );
+                                                                  });
+                                                                },
+                                                                buttonStyleData:
+                                                                    const ButtonStyleData(
+                                                                  padding: EdgeInsets
+                                                                      .symmetric(
+                                                                          horizontal:
+                                                                              16),
+                                                                  height: 40,
+                                                                  width: 140,
+                                                                ),
+                                                                menuItemStyleData:
+                                                                    const MenuItemStyleData(
+                                                                  height: 40,
                                                                 ),
                                                               ),
                                                             ),
-                                                   
+                                                          ),
+                                                        ),
                                                       ],
                                                     ),
                                                   ),

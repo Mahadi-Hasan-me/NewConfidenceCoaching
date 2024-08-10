@@ -1,4 +1,5 @@
 import 'package:confidence/Screens/HomeScreen.dart';
+import 'package:confidence/Screens/StaffWork/StaffWork.dart';
 import 'package:confidence/Screens/Students/AllStudent.dart';
 import 'package:confidence/Screens/Students/StudentsRegistration.dart';
 import 'package:confidence/Screens/Teachers/TeacherRegistration.dart';
@@ -56,7 +57,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: HomeScreen(),
+      home: StaffWork(),
     );
   }
 }
