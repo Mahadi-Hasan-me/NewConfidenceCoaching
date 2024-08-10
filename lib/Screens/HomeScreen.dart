@@ -1836,17 +1836,36 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 i < AllStudentInfo.length;
                                                 i++) {
                                               var perWorkStudent = {
-
-                                                "StudentName": AllStudentInfo[i]["StudentName"],
-                                                "StudentPhoneNumber": AllStudentInfo[i]["StudentPhoneNumber"],
-                                                "FatherPhoneNo": AllStudentInfo[i]["FatherPhoneNo"],
-                                                "FutureAim": AllStudentInfo[i]["FutureAim"],
-                                                "SIDNo": AllStudentInfo[i]["SIDNo"],
-                                                "StudentImageUrl": AllStudentInfo[i]["StudentImageUrl"],
-                                                "Comment":"",
-                                                "CallDone": false,
-
+                                                "StudentName": AllStudentInfo[i]
+                                                    ["StudentName"],
+                                                "StudentPhoneNumber":
+                                                    AllStudentInfo[i]
+                                                        ["StudentPhoneNumber"],
+                                                "FatherPhoneNo":
+                                                    AllStudentInfo[i]
+                                                        ["FatherPhoneNo"],
+                                                "FutureAim": AllStudentInfo[i]
+                                                    ["FutureAim"],
+                                                "SIDNo": AllStudentInfo[i]
+                                                    ["SIDNo"],
+                                                "StudentImageUrl":
+                                                    AllStudentInfo[i]
+                                                        ["StudentImageUrl"],
+                                                "Comment": "",
+                                                "CallDone": "false",
+                                                "FileUrl": "",
+                                                "HSCBatchYear":
+                                                    AllStudentInfo[i]
+                                                        ["HSCBatchYear"],
+                                                "SSCBatchYear":
+                                                    AllStudentInfo[i]
+                                                        ["SSCBatchYear"],
+                                                "Department": AllStudentInfo[i]
+                                                    ["Department"],
                                               };
+
+                                              AllWorkStudent.add(
+                                                  perWorkStudent);
                                             }
                                           },
                                           child: const Text("Save"),
