@@ -368,29 +368,34 @@ class _AllBatchInfoState extends State<AllBatchInfo> {
                                     );
                                   },
                                   child: Text("Details")),
-
-                                                ElevatedButton(
+                              ElevatedButton(
                                   onPressed: () {
-
-
-                        Navigator.push(
-                            context,MaterialPageRoute(builder: (context) => PerDayPaymentHistory(TeacherAcademyName: AllData[i]["TeacherAcademyName"], BatchName: AllData[i]["BatchName"])),
-                          );
-
-
-                                  }, child: Text("Daily Payment")),
-
-
-                          
-
-                    ElevatedButton(
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              PerDayPaymentHistory(
+                                                  TeacherAcademyName: AllData[i]
+                                                      ["TeacherAcademyName"],
+                                                  BatchName: AllData[i]
+                                                      ["BatchName"])),
+                                    );
+                                  },
+                                  child: Text("Daily Payment")),
+                              ElevatedButton(
                                   onPressed: () {
-                        Navigator.push(
-                            context,MaterialPageRoute(builder: (context) => Permonthstudentpaymenthistory(TeacherAcademyName: AllData[i]["TeacherAcademyName"], BatchName: AllData[i]["BatchName"])),
-                          );
-
-
-                                  }, child: Text("Monthly Payment")),
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              Permonthstudentpaymenthistory(
+                                                  TeacherAcademyName: AllData[i]
+                                                      ["TeacherAcademyName"],
+                                                  BatchName: AllData[i]
+                                                      ["BatchName"])),
+                                    );
+                                  },
+                                  child: Text("Monthly Payment")),
                             ],
                           ),
                           ButtonBar(
@@ -587,8 +592,7 @@ class _AllBatchInfoState extends State<AllBatchInfo> {
                                                                             .transparent,
                                                                     content:
                                                                         AwesomeSnackbarContent(
-                                                                      titleFontSize:
-                                                                          12,
+                                                                    
                                                                       title:
                                                                           'successfull',
                                                                       message:
@@ -964,7 +968,6 @@ class _AllBatchInfoState extends State<AllBatchInfo> {
                                                                                 behavior: SnackBarBehavior.floating,
                                                                                 backgroundColor: Colors.transparent,
                                                                                 content: AwesomeSnackbarContent(
-                                                                                  titleFontSize: 12,
                                                                                   title: 'successfull',
                                                                                   message: 'Hey Thank You. Good Job',
 
@@ -1051,8 +1054,7 @@ class _AllBatchInfoState extends State<AllBatchInfo> {
                                                                               .transparent,
                                                                       content:
                                                                           AwesomeSnackbarContent(
-                                                                        titleFontSize:
-                                                                            12,
+                                                                      
                                                                         title:
                                                                             'successfull',
                                                                         message:
@@ -1127,8 +1129,6 @@ class _AllBatchInfoState extends State<AllBatchInfo> {
                                     );
                                   },
                                   child: Text("Add Student")),
-
-                
                             ],
                           )
                         ],

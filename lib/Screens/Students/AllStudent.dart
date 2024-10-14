@@ -666,8 +666,7 @@ class _AllStudentInfoState extends State<AllStudentInfo> {
                                                                             Colors.transparent,
                                                                         content:
                                                                             AwesomeSnackbarContent(
-                                                                          titleFontSize:
-                                                                              12,
+                                                                         
                                                                           title:
                                                                               'successfull',
                                                                           message:
@@ -853,8 +852,7 @@ class _AllStudentInfoState extends State<AllStudentInfo> {
                                                                             Colors.transparent,
                                                                         content:
                                                                             AwesomeSnackbarContent(
-                                                                          titleFontSize:
-                                                                              12,
+                                                                        
                                                                           title:
                                                                               'successfull',
                                                                           message:

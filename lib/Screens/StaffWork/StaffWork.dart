@@ -164,17 +164,13 @@ class _StaffWorkState extends State<StaffWork> {
     final textTheme = theme.textTheme;
     var ProductUniqueID = uuid.v4();
 
-
-
     return Row(
       children: [
         Drawer(
           child: ListView(
             // Important: Remove any padding from the ListView.
             padding: EdgeInsets.zero,
-            children: <Widget>[
-
-            ],
+            children: <Widget>[],
           ),
         ),
         VerticalDivider(
@@ -188,7 +184,6 @@ class _StaffWorkState extends State<StaffWork> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Calling Work"),
-
                 ],
               ),
             ),
@@ -277,202 +272,251 @@ class _StaffWorkState extends State<StaffWork> {
                                             .toUpperCase())),
                                         DataCell(ElevatedButton(
                                             onPressed: () async {
-                                             
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  String SelectedStudentStatus =
+                                                      "";
+                                                  String Title =
+                                                      "Comment যুক্ত করুন";
 
+                                                  bool loading = false;
 
+                                                  // String LabelText ="আয়ের খাত লিখবেন";
 
-
-                                                    showDialog(
-                                                      context: context,
-                                                      builder: (context) {
-                                                        String
-                                                            SelectedStudentStatus =
-                                                            "";
-                                                        String Title =
-                                                            "Comment যুক্ত করুন";
-                                                                                            
-                                                        bool loading =
-                                                            false;
-                                                                                            
-                                                        // String LabelText ="আয়ের খাত লিখবেন";
-                                                                                            
-                                                        return StatefulBuilder(
-                                                          builder: (context,
-                                                              setState) {
-                                                            return AlertDialog(
-                                                              title:
-                                                                  Column(
-                                                                children: [
-                                                                  Center(
-                                                                    child:
-                                                                        Text(
-                                                                      "${Title}",
-                                                                      style:
-                                                                          const TextStyle(fontFamily: "Josefin Sans", fontWeight: FontWeight.bold),
-                                                                    ),
-                                                                  ),
-                                                                ],
+                                                  return StatefulBuilder(
+                                                    builder:
+                                                        (context, setState) {
+                                                      return AlertDialog(
+                                                        title: Column(
+                                                          children: [
+                                                            Center(
+                                                              child: Text(
+                                                                "${Title}",
+                                                                style: const TextStyle(
+                                                                    fontFamily:
+                                                                        "Josefin Sans",
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
                                                               ),
-                                                              content: loading
-                                                                  ? const Center(
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        content: loading
+                                                            ? const Center(
+                                                                child:
+                                                                    CircularProgressIndicator(),
+                                                              )
+                                                            : SingleChildScrollView(
+                                                                child: Column(
+                                                                  children: [
+                                                                    const SizedBox(
+                                                                      height:
+                                                                          20,
+                                                                    ),
+                                                                    Container(
+                                                                      width:
+                                                                          300,
                                                                       child:
-                                                                          CircularProgressIndicator(),
-                                                                    )
-                                                                  : SingleChildScrollView(
-                                                                      child:
-                                                                          Column(
-                                                                        children: [
-                                                                          const SizedBox(
-                                                                            height: 20,
+                                                                          TextField(
+                                                                        maxLines:
+                                                                            10,
+                                                                        onChanged:
+                                                                            (value) {},
+                                                                        keyboardType:
+                                                                            TextInputType.multiline,
+                                                                        decoration:
+                                                                            InputDecoration(
+                                                                          border:
+                                                                              OutlineInputBorder(),
+                                                                          labelText:
+                                                                              'Comment',
+
+                                                                          hintText:
+                                                                              'Comment',
+
+                                                                          //  enabledBorder: OutlineInputBorder(
+                                                                          //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                                          //     ),
+                                                                          focusedBorder:
+                                                                              OutlineInputBorder(
+                                                                            borderSide:
+                                                                                BorderSide(width: 3, color: Theme.of(context).primaryColor),
                                                                           ),
-                                                                          Container(
-                                                                            width: 300,
-                                                                            child: TextField(
-                                                                              maxLines: 10,
-                                                                              onChanged: (value) {},
-                                                                              keyboardType: TextInputType.multiline,
-                                                                              decoration: InputDecoration(
-                                                                                border: OutlineInputBorder(),
-                                                                                labelText: 'Comment',
-                                                                                            
-                                                                                hintText: 'Comment',
-                                                                                            
-                                                                                //  enabledBorder: OutlineInputBorder(
-                                                                                //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                                                //     ),
-                                                                                focusedBorder: OutlineInputBorder(
-                                                                                  borderSide: BorderSide(width: 3, color: Theme.of(context).primaryColor),
-                                                                                ),
-                                                                                errorBorder: const OutlineInputBorder(
-                                                                                  borderSide: BorderSide(width: 3, color: Color.fromARGB(255, 66, 125, 145)),
-                                                                                ),
-                                                                              ),
-                                                                              controller: CommentController[index],
-                                                                            ),
+                                                                          errorBorder:
+                                                                              const OutlineInputBorder(
+                                                                            borderSide:
+                                                                                BorderSide(width: 3, color: Color.fromARGB(255, 66, 125, 145)),
                                                                           ),
-                                                                          const SizedBox(
-                                                                            height: 20,
-                                                                          ),
-                                                                        ],
+                                                                        ),
+                                                                        controller:
+                                                                            CommentController[index],
                                                                       ),
                                                                     ),
-                                                              actions: <Widget>[
-                                                                TextButton(
-                                                                  onPressed:
-                                                                      () =>
-                                                                          Navigator.pop(context),
-                                                                  child: const Text(
-                                                                      "Cancel"),
+                                                                    const SizedBox(
+                                                                      height:
+                                                                          20,
+                                                                    ),
+                                                                  ],
                                                                 ),
-                                                                ElevatedButton(
-                                                                  onPressed:
-                                                                      () async {
-                                                                    setState(
-                                                                        () {
-                                                                      loading =
-                                                                          true;
-                                                                    });
-                                                                                            
-                                                                    var perStudentInfoWithComment =
-                                                                        {
-                                                                      "year":
-                                                                          "${DateTime.now().year}",
-                                                                      "month":
-                                                                          "${DateTime.now().month}/${DateTime.now().year}",
-                                                                      "Date":
-                                                                          "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
-                                                                      "DateTime":
-                                                                          DateTime.now().toIso8601String(),
-                                                                    };
-                                                                                            
-                                                                    print(
-                                                                        perStudentInfoWithComment);
-                                                                                            
-                                                                    // var id = getRandomString(7);
-                                                                                            
-                                                                    final ResultInfo = FirebaseFirestore
-                                                                        .instance
-                                                                        .collection('StaffWork')
-                                                                        .doc(AllStudentInfo[index]["SIDNo"]);
-                                                                                            
-                                                                    ResultInfo.update(perStudentInfoWithComment)
-                                                                        .then((value) => setState(() async {
-                                                                              // Navigator.pop(context);
-                                                                                            
-                                                                              AwesomeDialog(
-                                                                                width: 500,
-                                                                                context: context,
-                                                                                animType: AnimType.scale,
-                                                                                dialogType: DialogType.success,
-                                                                                body: const Center(
-                                                                                    child: Text(
-                                                                                  "Comment যুক্ত হয়েছে",
-                                                                                  style: TextStyle(fontFamily: "Josefin Sans", fontWeight: FontWeight.bold),
-                                                                                )),
-                                                                                title: 'Comment  যুক্ত হয়েছে',
-                                                                                desc: 'Comment যুক্ত হয়েছে',
-                                                                                btnOkOnPress: () {
-                                                                                  Navigator.pop(context);
-                                                                                },
-                                                                              ).show();
-                                                                                            
-                                                                              final snackBar = SnackBar(
-                                                                                elevation: 0,
-                                                                                behavior: SnackBarBehavior.floating,
-                                                                                backgroundColor: Colors.transparent,
-                                                                                content: AwesomeSnackbarContent(
-                                                                                  titleFontSize: 12,
-                                                                                  title: 'successfull',
-                                                                                  message: 'Hey Thank You. Good Job',
-                                                                                            
-                                                                                  /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                                                  contentType: ContentType.success,
-                                                                                ),
-                                                                              );
-                                                                                            
-                                                                              ScaffoldMessenger.of(context)
-                                                                                ..hideCurrentSnackBar()
-                                                                                ..showSnackBar(snackBar);
-                                                                                            
-                                                                              setState(() {
-                                                                                loading = false;
-                                                                              });
-                                                                            }))
-                                                                        .onError((error, stackTrace) => setState(() {
-                                                                              final snackBar = SnackBar(
-                                                                                /// need to set following properties for best effect of awesome_snackbar_content
-                                                                                elevation: 0,
-                                                                                            
-                                                                                behavior: SnackBarBehavior.floating,
-                                                                                backgroundColor: Colors.transparent,
-                                                                                content: AwesomeSnackbarContent(
-                                                                                  title: 'Something Wrong!!!!',
-                                                                                  message: 'Try again later...',
-                                                                                            
-                                                                                  /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                                                  contentType: ContentType.failure,
-                                                                                ),
-                                                                              );
-                                                                                            
-                                                                              ScaffoldMessenger.of(context)
-                                                                                ..hideCurrentSnackBar()
-                                                                                ..showSnackBar(snackBar);
-                                                                                            
-                                                                              setState(() {
-                                                                                loading = false;
-                                                                              });
-                                                                            }));
-                                                                  },
-                                                                  child: const Text(
-                                                                      "Save"),
-                                                                ),
-                                                              ],
-                                                            );
-                                                          },
-                                                        );
-                                                      },
-                                                    );
-                                                 
+                                                              ),
+                                                        actions: <Widget>[
+                                                          TextButton(
+                                                            onPressed: () =>
+                                                                Navigator.pop(
+                                                                    context),
+                                                            child: const Text(
+                                                                "Cancel"),
+                                                          ),
+                                                          ElevatedButton(
+                                                            onPressed:
+                                                                () async {
+                                                              setState(() {
+                                                                loading = true;
+                                                              });
+
+                                                              var perStudentInfoWithComment =
+                                                                  {
+                                                                "year":
+                                                                    "${DateTime.now().year}",
+                                                                "month":
+                                                                    "${DateTime.now().month}/${DateTime.now().year}",
+                                                                "Date":
+                                                                    "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
+                                                                "DateTime": DateTime
+                                                                        .now()
+                                                                    .toIso8601String(),
+                                                              };
+
+                                                              print(
+                                                                  perStudentInfoWithComment);
+
+                                                              // var id = getRandomString(7);
+
+                                                              final ResultInfo = FirebaseFirestore
+                                                                  .instance
+                                                                  .collection(
+                                                                      'StaffWork')
+                                                                  .doc(AllStudentInfo[
+                                                                          index]
+                                                                      [
+                                                                      "SIDNo"]);
+
+                                                              ResultInfo.update(
+                                                                      perStudentInfoWithComment)
+                                                                  .then((value) =>
+                                                                      setState(
+                                                                          () async {
+                                                                        // Navigator.pop(context);
+
+                                                                        AwesomeDialog(
+                                                                          width:
+                                                                              500,
+                                                                          context:
+                                                                              context,
+                                                                          animType:
+                                                                              AnimType.scale,
+                                                                          dialogType:
+                                                                              DialogType.success,
+                                                                          body: const Center(
+                                                                              child: Text(
+                                                                            "Comment যুক্ত হয়েছে",
+                                                                            style:
+                                                                                TextStyle(fontFamily: "Josefin Sans", fontWeight: FontWeight.bold),
+                                                                          )),
+                                                                          title:
+                                                                              'Comment  যুক্ত হয়েছে',
+                                                                          desc:
+                                                                              'Comment যুক্ত হয়েছে',
+                                                                          btnOkOnPress:
+                                                                              () {
+                                                                            Navigator.pop(context);
+                                                                          },
+                                                                        ).show();
+
+                                                                        final snackBar =
+                                                                            SnackBar(
+                                                                          elevation:
+                                                                              0,
+                                                                          behavior:
+                                                                              SnackBarBehavior.floating,
+                                                                          backgroundColor:
+                                                                              Colors.transparent,
+                                                                          content:
+                                                                              AwesomeSnackbarContent(
+                                                                            title:
+                                                                                'successfull',
+                                                                            message:
+                                                                                'Hey Thank You. Good Job',
+
+                                                                            /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                            contentType:
+                                                                                ContentType.success,
+                                                                          ),
+                                                                        );
+
+                                                                        ScaffoldMessenger.of(
+                                                                            context)
+                                                                          ..hideCurrentSnackBar()
+                                                                          ..showSnackBar(
+                                                                              snackBar);
+
+                                                                        setState(
+                                                                            () {
+                                                                          loading =
+                                                                              false;
+                                                                        });
+                                                                      }))
+                                                                  .onError((error,
+                                                                          stackTrace) =>
+                                                                      setState(
+                                                                          () {
+                                                                        final snackBar =
+                                                                            SnackBar(
+                                                                          /// need to set following properties for best effect of awesome_snackbar_content
+                                                                          elevation:
+                                                                              0,
+
+                                                                          behavior:
+                                                                              SnackBarBehavior.floating,
+                                                                          backgroundColor:
+                                                                              Colors.transparent,
+                                                                          content:
+                                                                              AwesomeSnackbarContent(
+                                                                            title:
+                                                                                'Something Wrong!!!!',
+                                                                            message:
+                                                                                'Try again later...',
+
+                                                                            /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                            contentType:
+                                                                                ContentType.failure,
+                                                                          ),
+                                                                        );
+
+                                                                        ScaffoldMessenger.of(
+                                                                            context)
+                                                                          ..hideCurrentSnackBar()
+                                                                          ..showSnackBar(
+                                                                              snackBar);
+
+                                                                        setState(
+                                                                            () {
+                                                                          loading =
+                                                                              false;
+                                                                        });
+                                                                      }));
+                                                            },
+                                                            child: const Text(
+                                                                "Save"),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                              );
                                             },
                                             child: Text("Add Comment"))),
                                       ]))),

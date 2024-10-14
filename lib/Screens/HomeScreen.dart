@@ -898,7 +898,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             Colors.transparent,
                                                         content:
                                                             AwesomeSnackbarContent(
-                                                          titleFontSize: 12,
                                                           title: 'successfull',
                                                           message:
                                                               'Hey Thank You. Good Job',
@@ -1164,7 +1163,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   .transparent,
                                                           content:
                                                               AwesomeSnackbarContent(
-                                                            titleFontSize: 12,
                                                             title:
                                                                 'successfull',
                                                             message:
@@ -1694,7 +1692,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                     .transparent,
                                                             content:
                                                                 AwesomeSnackbarContent(
-                                                              titleFontSize: 12,
                                                               title:
                                                                   'successfull',
                                                               message:
@@ -1733,7 +1730,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                     .transparent,
                                                             content:
                                                                 AwesomeSnackbarContent(
-                                                              titleFontSize: 12,
                                                               title:
                                                                   'Something Wrong!!!!',
                                                               message:
@@ -2559,7 +2555,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                                       behavior: SnackBarBehavior.floating,
                                                                                       backgroundColor: Colors.transparent,
                                                                                       content: AwesomeSnackbarContent(
-                                                                                        titleFontSize: 12,
                                                                                         title: 'successfull',
                                                                                         message: 'Hey Thank You. Good Job',
 
@@ -2584,7 +2579,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                                       behavior: SnackBarBehavior.floating,
                                                                                       backgroundColor: Colors.transparent,
                                                                                       content: AwesomeSnackbarContent(
-                                                                                        titleFontSize: 12,
                                                                                         title: 'Something Wrong!!!!',
                                                                                         message: 'Try again later...',
 
@@ -2638,7 +2632,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                                 Colors.transparent,
                                                                             content:
                                                                                 AwesomeSnackbarContent(
-                                                                              titleFontSize: 12,
                                                                               title: 'successfull',
                                                                               message: 'Hey Thank You. Good Job',
 
@@ -2674,7 +2667,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                                 Colors.transparent,
                                                                             content:
                                                                                 AwesomeSnackbarContent(
-                                                                              titleFontSize: 12,
                                                                               title: 'Something Wrong!!!!',
                                                                               message: 'Try again later...',
 
@@ -2888,8 +2880,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                             .transparent,
                                                                     content:
                                                                         AwesomeSnackbarContent(
-                                                                      titleFontSize:
-                                                                          12,
+                                                                 
                                                                       title:
                                                                           'successfull',
                                                                       message:
@@ -3006,7 +2997,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             Colors.transparent,
                                                         content:
                                                             AwesomeSnackbarContent(
-                                                          titleFontSize: 12,
                                                           title: 'successfull',
                                                           message:
                                                               'Hey Thank You. Good Job',
@@ -3042,7 +3032,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             Colors.transparent,
                                                         content:
                                                             AwesomeSnackbarContent(
-                                                          titleFontSize: 12,
                                                           title:
                                                               'Something Wrong!!!!',
                                                           message:
@@ -3099,7 +3088,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             Colors.transparent,
                                                         content:
                                                             AwesomeSnackbarContent(
-                                                          titleFontSize: 12,
                                                           title: 'successfull',
                                                           message:
                                                               'Hey Thank You. Good Job',
@@ -3135,7 +3123,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             Colors.transparent,
                                                         content:
                                                             AwesomeSnackbarContent(
-                                                          titleFontSize: 12,
                                                           title:
                                                               'Something Wrong!!!!',
                                                           message:

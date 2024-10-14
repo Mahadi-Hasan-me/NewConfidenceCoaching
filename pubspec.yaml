@@ -47,14 +47,14 @@ dependencies:
   lottie: ^3.1.2
   shared_preferences: ^2.2.0
   circular_profile_avatar: ^2.0.5
-  syncfusion_flutter_datepicker: ^26.1.40 
+  syncfusion_flutter_datepicker: ^27.1.52 
   flutter_slidable: ^3.0.0
   loading_animation_widget: ^1.2.0+4
   firebase_auth: ^5.1.1
   firebase_core: ^3.1.1
   printing: ^5.11.0
   pdf: ^3.10.4
-  syncfusion_flutter_charts: ^26.1.40
+  syncfusion_flutter_charts: ^27.1.52
   image_picker: ^1.0.4
 
   # The following adds the Cupertino Icons font to your application.
@@ -72,8 +72,8 @@ dependencies:
   percent_indicator: ^4.2.3
   timezone: ^0.9.2
   flutter_local_notifications: ^17.2.1
-  rxdart: ^0.27.7
-  flutter_timezone: ^2.0.0
+  rxdart: ^0.28.0
+  flutter_timezone: ^3.0.1
   animated_text_kit: ^4.2.2
   upgrader: ^10.3.0
   dropdown_button2: ^2.3.9
