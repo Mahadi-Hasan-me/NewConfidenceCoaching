@@ -234,17 +234,21 @@ class _StaffWorkState extends State<StaffWork> {
                                 ),
 
                                 DataColumn(
-                                  label: Text('Dream'),
+                                  label: Text('Collage/School Name'),
+                                ),
+
+
+                                   DataColumn(
+                                  label: Text('Status'),
+                                 
                                 ),
 
                                 DataColumn(
                                   label: Text('Add Comment'),
                                 ),
 
-                                // DataColumn(
-                                //   label: Text('Save'),
-                                //   numeric: true,
-                                // ),
+                             
+
                               ],
                               rows: List<DataRow>.generate(
                                   AllStudentInfo.length,
@@ -270,6 +274,16 @@ class _StaffWorkState extends State<StaffWork> {
                                                 ["StudentPhoneNumber"]
                                             .toString()
                                             .toUpperCase())),
+
+
+                                        DataCell(Text(AllStudentInfo[index]
+                                                ["status"]
+                                            .toString()
+                                            .toUpperCase()=="DONE"?"Done":"Incomplete")),
+
+
+
+
                                         DataCell(ElevatedButton(
                                             onPressed: () async {
                                               showDialog(
@@ -278,7 +292,7 @@ class _StaffWorkState extends State<StaffWork> {
                                                   String SelectedStudentStatus =
                                                       "";
                                                   String Title =
-                                                      "Comment যুক্ত করুন";
+                                                      "ফোন কলের কথা গুলো shortly যুক্ত করুন।";
 
                                                   bool loading = false;
 
