@@ -2096,22 +2096,19 @@ class _HomeScreenState extends State<HomeScreen> {
                               Navigator.pop(context);
 
 
-                               AwesomeDialog(
-                                    width: 500,
-                                    context: context,
-                                    dialogType: DialogType.success,
-                                    animType: AnimType.rightSlide,
-                                    title: 'Work File Successfully Created',
-                                    desc: 'Good Job',
-                                    btnCancelOnPress: () {
+                                             final snackBar = SnackBar(
+                  /// need to set following properties for best effect of awesome_snackbar_content
+                  elevation: 0,
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Colors.transparent,
+                  content: AwesomeSnackbarContent(
+                    title: 'Created successfull',
+                    message: 'Created successfull',
 
-                                      Navigator.pop(context);
-                                    },
-                                    btnOkOnPress: () {
-
-                                      Navigator.pop(context);
-                                    },
-                                    ).show();
+                    /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                    contentType: ContentType.success,
+                  ),
+                );
 
                               // Navigator.push(
                               //   context,
@@ -2129,21 +2126,19 @@ class _HomeScreenState extends State<HomeScreen> {
                               });
 
 
-                              AwesomeDialog(
-                                    width: 500,
-                                    context: context,
-                                    dialogType: DialogType.error,
-                                    animType: AnimType.rightSlide,
-                                    title: 'Something Wrong!!!',
-                                    desc: 'Please Check Your Internet Connection or Check Field',
-                                    btnCancelOnPress: () {},
-                                    btnOkOnPress: () {
+             final snackBar = SnackBar(
+                  /// need to set following properties for best effect of awesome_snackbar_content
+                  elevation: 0,
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Colors.transparent,
+                  content: AwesomeSnackbarContent(
+                    title: 'Something Wrong!!!',
+                    message: 'Please Check your connection',
 
-
-                                      Navigator.pop(context);
-
-                                    },
-                                    ).show();
+                    /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                    contentType: ContentType.failure,
+                  ),
+                );
 
 
                               
