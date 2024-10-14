@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -193,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
-    var ProductUniqueID = uuid.v4();
+    var UniqueID = uuid.v4();
 
     ClassOfMsgController.text =
         "আগামীকাল ..... কারণে আমাদের ..... প্রতিষ্ঠান ক্লাস বন্ধ থাকবে।আমরা বিষয়টির জন্য আন্তরিকভাবে দুঃখিত।";
@@ -1091,7 +1090,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               });
 
                                               var MsgData = {
-                                                "MSGID": ProductUniqueID,
+                                                "MSGID": UniqueID,
                                                 "year":
                                                     "${DateTime.now().year}",
                                                 "month":
@@ -1108,7 +1107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   FirebaseFirestore.instance
                                                       .collection(
                                                           'CentralBoardSMS')
-                                                      .doc(ProductUniqueID);
+                                                      .doc(UniqueID);
 
                                               CentralBoardSMS.set(MsgData)
                                                   .then((value) =>
@@ -1816,260 +1815,239 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   const SizedBox(
                                                     height: 20,
                                                   ),
-
-
-
                                                   Container(
-                                                      width: 300,
-                                                      child: TextField(
-                                                        
-                                                        onChanged: (value) {},
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        decoration:
-                                                            InputDecoration(
-                                                          border:
-                                                              OutlineInputBorder(),
-                                                          labelText:
-                                                              'School/ College Name',
+                                                    width: 300,
+                                                    child: TextField(
+                                                      onChanged: (value) {},
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        border:
+                                                            OutlineInputBorder(),
+                                                        labelText:
+                                                            'School/ College Name',
 
-                                                          hintText:
-                                                              'School/ College Name',
+                                                        hintText:
+                                                            'School/ College Name',
 
-                                                          //  enabledBorder: OutlineInputBorder(
-                                                          //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                          //     ),
-                                                          focusedBorder:
-                                                              OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                width: 3,
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .primaryColor),
-                                                          ),
-                                                          errorBorder:
-                                                              const OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                width: 3,
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        66,
-                                                                        125,
-                                                                        145)),
-                                                          ),
+                                                        //  enabledBorder: OutlineInputBorder(
+                                                        //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                        //     ),
+                                                        focusedBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              width: 3,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .primaryColor),
                                                         ),
-                                                        controller:
-                                                            SchoolOrCollegeNameController,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 20,
-                                                    ),
-
-
-
-                                                    Container(
-                                                      width: 300,
-                                                      child: TextField(
-                                                        
-                                                        onChanged: (value) {},
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        decoration:
-                                                            InputDecoration(
-                                                          border:
-                                                              OutlineInputBorder(),
-                                                          labelText:
-                                                              'Department(Science)',
-
-                                                          hintText:
-                                                              'Department(Science)',
-
-                                                          //  enabledBorder: OutlineInputBorder(
-                                                          //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                          //     ),
-                                                          focusedBorder:
-                                                              OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                width: 3,
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .primaryColor),
-                                                          ),
-                                                          errorBorder:
-                                                              const OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                width: 3,
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        66,
-                                                                        125,
-                                                                        145)),
-                                                          ),
+                                                        errorBorder:
+                                                            const OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  width: 3,
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          66,
+                                                                          125,
+                                                                          145)),
                                                         ),
-                                                        controller:
-                                                            DepartmentController,
                                                       ),
+                                                      controller:
+                                                          SchoolOrCollegeNameController,
                                                     ),
-                                                    const SizedBox(
-                                                      height: 20,
-                                                    ),
-
-
-
-
-                                                    Container(
-                                                      width: 300,
-                                                      child: TextField(
-                                                        
-                                                        onChanged: (value) {},
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        decoration:
-                                                            InputDecoration(
-                                                          border:
-                                                              OutlineInputBorder(),
-                                                          labelText:
-                                                              'Total Student',
-
-                                                          hintText:
-                                                              'Total Student',
-
-                                                          //  enabledBorder: OutlineInputBorder(
-                                                          //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                          //     ),
-                                                          focusedBorder:
-                                                              OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                width: 3,
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .primaryColor),
-                                                          ),
-                                                          errorBorder:
-                                                              const OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                width: 3,
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        66,
-                                                                        125,
-                                                                        145)),
-                                                          ),
-                                                        ),
-                                                        controller:
-                                                            TotalStudentController,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 20,
-                                                    ),
-
-
-
-
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 20,
+                                                  ),
                                                   Container(
-                                                      width: 300,
-                                                      child: TextField(
-                                                        
-                                                        onChanged: (value) {},
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        decoration:
-                                                            InputDecoration(
-                                                          border:
-                                                              OutlineInputBorder(),
-                                                          labelText:
-                                                              'Year',
+                                                    width: 300,
+                                                    child: TextField(
+                                                      onChanged: (value) {},
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        border:
+                                                            OutlineInputBorder(),
+                                                        labelText:
+                                                            'Department(Science)',
 
-                                                          hintText:
-                                                              'Year',
+                                                        hintText:
+                                                            'Department(Science)',
 
-                                                          //  enabledBorder: OutlineInputBorder(
-                                                          //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                          //     ),
-                                                          focusedBorder:
-                                                              OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                width: 3,
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .primaryColor),
-                                                          ),
-                                                          errorBorder:
-                                                              const OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                width: 3,
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        66,
-                                                                        125,
-                                                                        145)),
-                                                          ),
+                                                        //  enabledBorder: OutlineInputBorder(
+                                                        //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                        //     ),
+                                                        focusedBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              width: 3,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .primaryColor),
                                                         ),
-                                                        controller:
-                                                            YearController,
+                                                        errorBorder:
+                                                            const OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  width: 3,
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          66,
+                                                                          125,
+                                                                          145)),
+                                                        ),
                                                       ),
+                                                      controller:
+                                                          DepartmentController,
                                                     ),
-                                                    const SizedBox(
-                                                      height: 20,
-                                                    ),
-
-
-
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 20,
+                                                  ),
                                                   Container(
-                                                      width: 300,
-                                                      child: TextField(
-                                                        
-                                                        onChanged: (value) {},
-                                                        keyboardType:
-                                                            TextInputType.text,
-                                                        decoration:
-                                                            InputDecoration(
-                                                          border:
-                                                              OutlineInputBorder(),
-                                                          labelText:
-                                                              'Recent Class(Nine/Ten/SSC/HSC)',
+                                                    width: 300,
+                                                    child: TextField(
+                                                      onChanged: (value) {},
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        border:
+                                                            OutlineInputBorder(),
+                                                        labelText:
+                                                            'Total Student',
 
-                                                          hintText:
-                                                              'Recent Class(Nine/Ten/SSC/HSC)',
+                                                        hintText:
+                                                            'Total Student',
 
-                                                          //  enabledBorder: OutlineInputBorder(
-                                                          //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                          //     ),
-                                                          focusedBorder:
-                                                              OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                width: 3,
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .primaryColor),
-                                                          ),
-                                                          errorBorder:
-                                                              const OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                width: 3,
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        66,
-                                                                        125,
-                                                                        145)),
-                                                          ),
+                                                        //  enabledBorder: OutlineInputBorder(
+                                                        //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                        //     ),
+                                                        focusedBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              width: 3,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .primaryColor),
                                                         ),
-                                                        controller:
-                                                            RecentClassController,
+                                                        errorBorder:
+                                                            const OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  width: 3,
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          66,
+                                                                          125,
+                                                                          145)),
+                                                        ),
                                                       ),
+                                                      controller:
+                                                          TotalStudentController,
                                                     ),
-                                                    const SizedBox(
-                                                      height: 20,
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Container(
+                                                    width: 300,
+                                                    child: TextField(
+                                                      onChanged: (value) {},
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        border:
+                                                            OutlineInputBorder(),
+                                                        labelText: 'Year',
+
+                                                        hintText: 'Year',
+
+                                                        //  enabledBorder: OutlineInputBorder(
+                                                        //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                        //     ),
+                                                        focusedBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              width: 3,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .primaryColor),
+                                                        ),
+                                                        errorBorder:
+                                                            const OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  width: 3,
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          66,
+                                                                          125,
+                                                                          145)),
+                                                        ),
+                                                      ),
+                                                      controller:
+                                                          YearController,
                                                     ),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Container(
+                                                    width: 300,
+                                                    child: TextField(
+                                                      onChanged: (value) {},
+                                                      keyboardType:
+                                                          TextInputType.text,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        border:
+                                                            OutlineInputBorder(),
+                                                        labelText:
+                                                            'Recent Class(Nine/Ten/SSC/HSC)',
 
+                                                        hintText:
+                                                            'Recent Class(Nine/Ten/SSC/HSC)',
 
+                                                        //  enabledBorder: OutlineInputBorder(
+                                                        //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                        //     ),
+                                                        focusedBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              width: 3,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .primaryColor),
+                                                        ),
+                                                        errorBorder:
+                                                            const OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  width: 3,
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          66,
+                                                                          125,
+                                                                          145)),
+                                                        ),
+                                                      ),
+                                                      controller:
+                                                          RecentClassController,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 20,
+                                                  ),
                                                 ],
                                               ),
                                             ),
@@ -2085,10 +2063,97 @@ class _HomeScreenState extends State<HomeScreen> {
                                               loading = true;
                                             });
 
+                                            var StaffCallingHeader = {
+
+                                              "SchoolOrCollegeName":SchoolOrCollegeNameController.text.trim(),
+                                              "Department":DepartmentController.text.trim(),
+                                              "TotalStudent":TotalStudentController.text.trim(),
+                                              "Year":YearController.text.trim(),
+                                              "RecentClass":RecentClassController.text.trim(),
+                                              "LastWork":DateTime.now().toIso8601String(),
+                                              "Incomplete":"0",
+                                              "FileID":UniqueID.toString(),
+                                              
+
+                                            };
 
 
+
+                    final docUser = FirebaseFirestore.instance
+                        .collection("StaffWorkHeader")
+                        .doc(UniqueID);
+
+
+
+                      docUser
+                        .set(StaffCallingHeader)
+                        .then((value) => setState(() {
+                              setState(() {
+                                loading = false;
+                              });
+
+                             
+                              Navigator.pop(context);
+
+
+                               AwesomeDialog(
+                                    width: 500,
+                                    context: context,
+                                    dialogType: DialogType.success,
+                                    animType: AnimType.rightSlide,
+                                    title: 'Work File Successfully Created',
+                                    desc: 'Good Job',
+                                    btnCancelOnPress: () {
+
+                                      Navigator.pop(context);
+                                    },
+                                    btnOkOnPress: () {
+
+                                      Navigator.pop(context);
+                                    },
+                                    ).show();
+
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //       builder: (context) => CustomerProfile(
+                              //           CustomerID: widget.CustomerID)),
+                              // );
+                            }))
+                        .onError((error, stackTrace) =>
+                               setState((){
+
+
+                            setState(() {
+                                loading = false;
+                              });
+
+
+                              AwesomeDialog(
+                                    width: 500,
+                                    context: context,
+                                    dialogType: DialogType.error,
+                                    animType: AnimType.rightSlide,
+                                    title: 'Something Wrong!!!',
+                                    desc: 'Please Check Your Internet Connection or Check Field',
+                                    btnCancelOnPress: () {},
+                                    btnOkOnPress: () {
+
+
+                                      Navigator.pop(context);
+
+                                    },
+                                    ).show();
+
+
+                              
+
+
+
+                                                        }));
 
                                             
+
 // q
 //                                             List AllWorkStudent = [];
 
@@ -2755,7 +2820,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                     .collection(
                                                                         'PerTeacherStudentPayment')
                                                                     .doc(
-                                                                        ProductUniqueID);
+                                                                        UniqueID);
 
                                                                 PerTeacherStudentPayment
                                                                         .set(
@@ -3093,7 +3158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 .collection(
                                                                     'ClassOffSMS')
                                                                 .doc(
-                                                                    ProductUniqueID);
+                                                                    UniqueID);
 
                                                         ClassOffSMS.set(MsgData)
                                                             .then((value) =>
@@ -3144,7 +3209,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                             .transparent,
                                                                     content:
                                                                         AwesomeSnackbarContent(
-                                                                 
                                                                       title:
                                                                           'successfull',
                                                                       message:
