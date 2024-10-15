@@ -51,13 +51,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'MediCrack',
+      title: 'Confidence',
       theme: ThemeData(
 
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: StaffWork(FileID: "", TotalStudent: '100', Incomplete: '100',),
+      home: StaffWork(FileID: "2f6ebe66-c24b-4794-84a5-2743dcf629ac", TotalStudent: '100', Incomplete: '100',),
     );
   }
 }

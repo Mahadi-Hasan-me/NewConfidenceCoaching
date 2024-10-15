@@ -128,6 +128,8 @@ class _StaffWorkState extends State<StaffWork> {
 
     getAllStudentInfo();
 
+    getFileHeaderInfo();
+
     // TODO: implement initState
     super.initState();
   }
@@ -395,7 +397,9 @@ class _StaffWorkState extends State<StaffWork> {
                                             "status": "incomplete",
                                             "Comment": [],
                                             "SID": ProductUniqueID.toString(),
-                                            "StudentName":StudentNameController.text.trim(),
+                                            "StudentName": StudentNameController
+                                                .text
+                                                .trim(),
                                             "StudentPhoneNo":
                                                 StudentPhoneNoController.text
                                                     .trim(),
@@ -463,10 +467,12 @@ class _StaffWorkState extends State<StaffWork> {
                   },
                 )
               ],
-              title: const Row(
+              title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Phone Call Work"),
+                  Text(
+                    "Phone Call Work    S/C: ${FileHeaderInfo[0]["SchoolOrCollegeName"]}    RC:${FileHeaderInfo[0]["RecentClass"]}     D:${FileHeaderInfo[0]["Department"]}  LW: ${FileHeaderInfo[0]["LastWork"]}  IC: ${FileHeaderInfo[0]["Incomplete"]}/${FileHeaderInfo[0]["TotalStudent"]}",
+                  ),
                 ],
               ),
             ),
