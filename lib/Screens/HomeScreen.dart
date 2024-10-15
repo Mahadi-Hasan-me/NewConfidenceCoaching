@@ -2071,7 +2071,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               "Year":YearController.text.trim(),
                                               "RecentClass":RecentClassController.text.trim(),
                                               "LastWork":DateTime.now().toIso8601String(),
-                                              "Incomplete":"0",
+                                              "Incomplete":TotalStudentController.text.trim(),
                                               "FileID":UniqueID.toString(),
                                               
 

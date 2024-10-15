@@ -16,7 +16,13 @@ import 'package:uuid/uuid.dart';
 
 class StaffWork extends StatefulWidget {
   final String FileID;
-  StaffWork({super.key, required this.FileID});
+  final String TotalStudent;
+  final String Incomplete;
+  StaffWork(
+      {super.key,
+      required this.FileID,
+      required this.TotalStudent,
+      required this.Incomplete});
 
   @override
   _StaffWorkState createState() => _StaffWorkState();
@@ -57,10 +63,10 @@ class _StaffWorkState extends State<StaffWork> {
 
   Future<void> getAllStudentInfo() async {
     CollectionReference _collectionStudentInfoRef =
-        FirebaseFirestore.instance.collection('PerTeacherStudentInfo');
+        FirebaseFirestore.instance.collection('PhoneCallStudentList');
 
-    Query StudentInfoquery = _collectionStudentInfoRef
-        .where("TeacherAcademyName", isEqualTo: "Rezuan Math Care");
+    Query StudentInfoquery =
+        _collectionStudentInfoRef.where("FileID", isEqualTo: widget.FileID);
 
     QuerySnapshot StudentInfoquerySnapshot = await StudentInfoquery.get();
     AllStudentInfo =
@@ -83,29 +89,29 @@ class _StaffWorkState extends State<StaffWork> {
     // print(AllData);
   }
 
-  Future<void> getSearchAllStudentInfo(
-      String AcademyName, String HSCBatchYear) async {
-    CollectionReference _collectionStudentInfoRef =
-        FirebaseFirestore.instance.collection('PerTeacherStudentInfo');
+  List FileHeaderInfo = [];
 
-    Query StudentInfoquery = _collectionStudentInfoRef
-        .where("TeacherAcademyName", isEqualTo: AcademyName)
-        .where("BatchName", isEqualTo: HSCBatchYear);
+  Future<void> getFileHeaderInfo() async {
+    CollectionReference _collectionFileInfoRef =
+        FirebaseFirestore.instance.collection('StaffWorkHeader');
 
-    QuerySnapshot StudentInfoquerySnapshot = await StudentInfoquery.get();
+    Query FileInfoquery =
+        _collectionFileInfoRef.where("FileID", isEqualTo: widget.FileID);
 
-    AllStudentInfo =
-        StudentInfoquerySnapshot.docs.map((doc) => doc.data()).toList();
+    QuerySnapshot FileInfoquerySnapshot = await FileInfoquery.get();
 
-    if (AllStudentInfo.isEmpty) {
+    FileHeaderInfo =
+        FileInfoquerySnapshot.docs.map((doc) => doc.data()).toList();
+
+    if (FileHeaderInfo.isEmpty) {
       setState(() {
         DataLoad = false;
       });
     } else {
       setState(() {
-        AllStudentInfo = [];
-        AllStudentInfo =
-            StudentInfoquerySnapshot.docs.map((doc) => doc.data()).toList();
+        FileHeaderInfo = [];
+        FileHeaderInfo =
+            FileInfoquerySnapshot.docs.map((doc) => doc.data()).toList();
         CommentController.clear();
         createControllers();
 
@@ -115,22 +121,6 @@ class _StaffWorkState extends State<StaffWork> {
 
     // print(AllData);
   }
-
-  final List<String> TeachersAcademy = [
-    'Rezuan Math Care',
-    'Sazzad ICT',
-    'MediCrack',
-    'Protick Physics',
-  ];
-  String? selectedTeachersAcademyValue;
-
-  List<String> BatchName = [
-    'HSC261',
-    'HSC262',
-    'HSC263',
-    'HSC263',
-  ];
-  String? selectedBatchNameValue;
 
   @override
   void initState() {
@@ -403,7 +393,7 @@ class _StaffWorkState extends State<StaffWork> {
                                           var PerStudentHistory = {
                                             "FileID": widget.FileID,
                                             "status": "incomplete",
-                                            "comment": "None",
+                                            "Comment": [],
                                             "SID": ProductUniqueID.toString(),
                                             "StudentPhoneNo":
                                                 StudentPhoneNoController.text
@@ -416,42 +406,25 @@ class _StaffWorkState extends State<StaffWork> {
                                                 AddressController.text.trim(),
                                             "LastCallingDate": "None",
                                             "Dream": "None",
-                                            "CallCount":"0",
+                                            "CallCount": "0",
                                           };
 
                                           final docUser = FirebaseFirestore
                                               .instance
-                                              .collection("PhoneCallStudentList")
+                                              .collection(
+                                                  "PhoneCallStudentList")
                                               .doc(ProductUniqueID);
 
                                           docUser
                                               .set(PerStudentHistory)
                                               .then((value) => setState(() {
+                                                    getAllStudentInfo();
+
                                                     setState(() {
                                                       loading = false;
                                                     });
 
                                                     Navigator.pop(context);
-
-                                                    final snackBar = SnackBar(
-                                                      /// need to set following properties for best effect of awesome_snackbar_content
-                                                      elevation: 0,
-                                                      behavior: SnackBarBehavior
-                                                          .floating,
-                                                      backgroundColor:
-                                                          Colors.transparent,
-                                                      content:
-                                                          AwesomeSnackbarContent(
-                                                        title:
-                                                            'Created successfull',
-                                                        message:
-                                                            'Created successfull',
-
-                                                        /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                        contentType:
-                                                            ContentType.success,
-                                                      ),
-                                                    );
 
                                                     // Navigator.push(
                                                     //   context,
@@ -465,66 +438,7 @@ class _StaffWorkState extends State<StaffWork> {
                                                     setState(() {
                                                       loading = false;
                                                     });
-
-                                                    final snackBar = SnackBar(
-                                                      /// need to set following properties for best effect of awesome_snackbar_content
-                                                      elevation: 0,
-                                                      behavior: SnackBarBehavior
-                                                          .floating,
-                                                      backgroundColor:
-                                                          Colors.transparent,
-                                                      content:
-                                                          AwesomeSnackbarContent(
-                                                        title:
-                                                            'Something Wrong!!!',
-                                                        message:
-                                                            'Please Check your connection',
-
-                                                        /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                        contentType:
-                                                            ContentType.failure,
-                                                      ),
-                                                    );
                                                   }));
-
-// q
-//                                             List AllWorkStudent = [];
-
-//                                             for (var i = 0;
-//                                                 i < AllStudentInfo.length;
-//                                                 i++) {
-//                                               var perWorkStudent = {
-//                                                 "StudentName": AllStudentInfo[i]
-//                                                     ["StudentName"],
-//                                                 "StudentPhoneNumber":
-//                                                     AllStudentInfo[i]
-//                                                         ["StudentPhoneNumber"],
-//                                                 "FatherPhoneNo":
-//                                                     AllStudentInfo[i]
-//                                                         ["FatherPhoneNo"],
-//                                                 "FutureAim": AllStudentInfo[i]
-//                                                     ["FutureAim"],
-//                                                 "SIDNo": AllStudentInfo[i]
-//                                                     ["SIDNo"],
-//                                                 "StudentImageUrl":
-//                                                     AllStudentInfo[i]
-//                                                         ["StudentImageUrl"],
-//                                                 "Comment": "",
-//                                                 "status": "done",
-//                                                 "FileUrl": "",
-//                                                 "HSCBatchYear":
-//                                                     AllStudentInfo[i]
-//                                                         ["HSCBatchYear"],
-//                                                 "SSCBatchYear":
-//                                                     AllStudentInfo[i]
-//                                                         ["SSCBatchYear"],
-//                                                 "Department": AllStudentInfo[i]
-//                                                     ["Department"],
-//                                               };
-
-//                                               AllWorkStudent.add(
-//                                                   perWorkStudent);
-//                                             }
                                         },
                                         child: const Text("Save"),
                                       ),
@@ -551,7 +465,7 @@ class _StaffWorkState extends State<StaffWork> {
               title: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Calling Work"),
+                  Text("Phone Call Work"),
                 ],
               ),
             ),
@@ -589,7 +503,7 @@ class _StaffWorkState extends State<StaffWork> {
                                   size: ColumnSize.L,
                                 ),
                                 DataColumn(
-                                  label: Text('Student ID'),
+                                  label: Text('SID'),
                                 ),
                                 DataColumn(
                                   label: Text('Student Name'),
@@ -607,6 +521,15 @@ class _StaffWorkState extends State<StaffWork> {
                                   label: Text('Status'),
                                 ),
                                 DataColumn(
+                                  label: Text('Dream'),
+                                ),
+                                DataColumn(
+                                  label: Text('Last Call'),
+                                ),
+                                DataColumn(
+                                  label: Text('Count'),
+                                ),
+                                DataColumn(
                                   label: Text('Add Comment'),
                                 ),
                               ],
@@ -615,7 +538,7 @@ class _StaffWorkState extends State<StaffWork> {
                                   (index) => DataRow(cells: [
                                         DataCell(Text('${index + 1}')),
                                         DataCell(Text(AllStudentInfo[index]
-                                                ["SIDNo"]
+                                                ["SID"]
                                             .toString()
                                             .toUpperCase())),
                                         DataCell(Text(AllStudentInfo[index]
@@ -635,12 +558,21 @@ class _StaffWorkState extends State<StaffWork> {
                                             .toString()
                                             .toUpperCase())),
                                         DataCell(Text(AllStudentInfo[index]
-                                                        ["status"]
-                                                    .toString()
-                                                    .toUpperCase() ==
-                                                "DONE"
-                                            ? "Done"
-                                            : "Incomplete")),
+                                                ["status"]
+                                            .toString()
+                                            .toUpperCase())),
+                                        DataCell(Text(AllStudentInfo[index]
+                                                ["Dream"]
+                                            .toString()
+                                            .toUpperCase())),
+                                        DataCell(Text(AllStudentInfo[index]
+                                                ["LastCallingDate"]
+                                            .toString()
+                                            .toUpperCase())),
+                                        DataCell(Text(AllStudentInfo[index]
+                                                ["CallCount"]
+                                            .toString()
+                                            .toUpperCase())),
                                         DataCell(ElevatedButton(
                                             onPressed: () async {
                                               showDialog(
@@ -682,6 +614,19 @@ class _StaffWorkState extends State<StaffWork> {
                                                             : SingleChildScrollView(
                                                                 child: Column(
                                                                   children: [
+                                                                    for (int i =
+                                                                            0;
+                                                                        i < AllStudentInfo[index]["Comment"].length;
+                                                                        i++)
+                                                                      Container(
+                                                                        child:
+                                                                            Text(
+                                                                          "${i + 1}. ${AllStudentInfo[index]["Comment"][i].toString()}",
+                                                                          style: const TextStyle(
+                                                                              fontFamily: "Josefin Sans",
+                                                                              fontWeight: FontWeight.bold),
+                                                                        ),
+                                                                      ),
                                                                     const SizedBox(
                                                                       height:
                                                                           20,
@@ -747,17 +692,33 @@ class _StaffWorkState extends State<StaffWork> {
                                                                 loading = true;
                                                               });
 
+                                                              List
+                                                                  PerStudentComments =
+                                                                  [];
+
+                                                              PerStudentComments =
+                                                                  AllStudentInfo[
+                                                                          index]
+                                                                      [
+                                                                      "Comment"];
+
+                                                              PerStudentComments.add(
+                                                                  CommentController[
+                                                                      index]);
+
                                                               var perStudentInfoWithComment =
                                                                   {
-                                                                "year":
-                                                                    "${DateTime.now().year}",
-                                                                "month":
-                                                                    "${DateTime.now().month}/${DateTime.now().year}",
-                                                                "Date":
-                                                                    "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
-                                                                "DateTime": DateTime
-                                                                        .now()
-                                                                    .toIso8601String(),
+                                                                "Comment":
+                                                                    PerStudentComments,
+                                                                "CallCount":
+                                                                    ((int.parse(AllStudentInfo[index]["CallCount"])) +
+                                                                            1)
+                                                                        .toString(),
+                                                                "status":
+                                                                    "Call-${((int.parse(AllStudentInfo[index]["CallCount"])) + 1).toString()}",
+                                                                "LastCallingDate":
+                                                                    DateTime.now()
+                                                                        .toIso8601String(),
                                                               };
 
                                                               print(
@@ -765,20 +726,107 @@ class _StaffWorkState extends State<StaffWork> {
 
                                                               // var id = getRandomString(7);
 
-                                                              final ResultInfo = FirebaseFirestore
+                                                              final StudentInfo = FirebaseFirestore
                                                                   .instance
                                                                   .collection(
-                                                                      'StaffWork')
+                                                                      'PhoneCallStudentList')
                                                                   .doc(AllStudentInfo[
                                                                           index]
-                                                                      [
-                                                                      "SIDNo"]);
+                                                                      ["SID"]);
 
-                                                              ResultInfo.update(
+                                                              StudentInfo.update(
                                                                       perStudentInfoWithComment)
                                                                   .then((value) =>
                                                                       setState(
                                                                           () async {
+                                                                        var UpdateCallingHeader =
+                                                                            {
+                                                                          "LastWork":
+                                                                              DateTime.now().toIso8601String(),
+                                                                          "Incomplete": AllStudentInfo[index]["status"] == "incomplete"
+                                                                              ? (int.parse(widget.TotalStudent) - 1).toString()
+                                                                              : widget.Incomplete,
+                                                                        };
+
+                                                                        // var id = getRandomString(7);
+
+                                                                        final UpdateHeaderInfo = FirebaseFirestore
+                                                                            .instance
+                                                                            .collection('StaffWorkHeader')
+                                                                            .doc(widget.FileID);
+
+                                                                        getFileHeaderInfo();
+                                                                        getAllStudentInfo();
+
+                                                                        UpdateHeaderInfo.update(
+                                                                                UpdateCallingHeader)
+                                                                            .then((value) =>
+                                                                                setState(() async {
+                                                                                  // Navigator.pop(context);
+
+                                                                                  AwesomeDialog(
+                                                                                    width: 500,
+                                                                                    context: context,
+                                                                                    animType: AnimType.scale,
+                                                                                    dialogType: DialogType.success,
+                                                                                    body: const Center(
+                                                                                        child: Text(
+                                                                                      "Comment যুক্ত হয়েছে",
+                                                                                      style: TextStyle(fontFamily: "Josefin Sans", fontWeight: FontWeight.bold),
+                                                                                    )),
+                                                                                    title: 'Comment  যুক্ত হয়েছে',
+                                                                                    desc: 'Comment যুক্ত হয়েছে',
+                                                                                    btnOkOnPress: () {
+                                                                                      Navigator.pop(context);
+                                                                                    },
+                                                                                  ).show();
+
+                                                                                  const snackBar = SnackBar(
+                                                                                    elevation: 0,
+                                                                                    behavior: SnackBarBehavior.floating,
+                                                                                    backgroundColor: Colors.transparent,
+                                                                                    content: AwesomeSnackbarContent(
+                                                                                      title: 'successfull',
+                                                                                      message: 'Hey Thank You. Good Job',
+
+                                                                                      /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                                      contentType: ContentType.success,
+                                                                                    ),
+                                                                                  );
+
+                                                                                  ScaffoldMessenger.of(context)
+                                                                                    ..hideCurrentSnackBar()
+                                                                                    ..showSnackBar(snackBar);
+
+                                                                                  setState(() {
+                                                                                    loading = false;
+                                                                                  });
+                                                                                }))
+                                                                            .onError((error, stackTrace) => setState(() {
+                                                                                  const snackBar = SnackBar(
+                                                                                    /// need to set following properties for best effect of awesome_snackbar_content
+                                                                                    elevation: 0,
+
+                                                                                    behavior: SnackBarBehavior.floating,
+                                                                                    backgroundColor: Colors.transparent,
+                                                                                    content: AwesomeSnackbarContent(
+                                                                                      title: 'Something Wrong!!!!',
+                                                                                      message: 'Try again later...',
+
+                                                                                      /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                                      contentType: ContentType.failure,
+                                                                                    ),
+                                                                                  );
+
+                                                                                  ScaffoldMessenger.of(context)
+                                                                                    ..hideCurrentSnackBar()
+                                                                                    ..showSnackBar(snackBar);
+
+                                                                                  setState(() {
+                                                                                    loading = false;
+                                                                                  });
+                                                                                }));
+
                                                                         // Navigator.pop(context);
 
                                                                         AwesomeDialog(
@@ -806,7 +854,7 @@ class _StaffWorkState extends State<StaffWork> {
                                                                           },
                                                                         ).show();
 
-                                                                        final snackBar =
+                                                                        const snackBar =
                                                                             SnackBar(
                                                                           elevation:
                                                                               0,
@@ -843,7 +891,7 @@ class _StaffWorkState extends State<StaffWork> {
                                                                           stackTrace) =>
                                                                       setState(
                                                                           () {
-                                                                        final snackBar =
+                                                                        const snackBar =
                                                                             SnackBar(
                                                                           /// need to set following properties for best effect of awesome_snackbar_content
                                                                           elevation:
