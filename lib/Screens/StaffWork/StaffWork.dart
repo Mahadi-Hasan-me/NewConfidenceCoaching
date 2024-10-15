@@ -15,9 +15,8 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:uuid/uuid.dart';
 
 class StaffWork extends StatefulWidget {
-  StaffWork({
-    super.key,
-  });
+  final String FileID;
+  StaffWork({super.key, required this.FileID});
 
   @override
   _StaffWorkState createState() => _StaffWorkState();
@@ -31,26 +30,11 @@ class _StaffWorkState extends State<StaffWork> {
   var uuid = Uuid();
 
   TextEditingController SearchByStudentIDController = TextEditingController();
-
-  TextEditingController BatchNameController = TextEditingController();
-  TextEditingController BatchDescriptionController = TextEditingController();
-  TextEditingController PerStudentFeeController = TextEditingController();
-  TextEditingController BuyingPriceController = TextEditingController();
-  TextEditingController SalePriceController = TextEditingController();
-  TextEditingController CustomerNameController = TextEditingController();
-  TextEditingController CustomerPhoneNoController = TextEditingController();
-  TextEditingController CustomerAddressController = TextEditingController();
-  TextEditingController ConditionMonthController = TextEditingController();
-  TextEditingController DiscountAmountController = TextEditingController();
-  TextEditingController CashInController = TextEditingController();
-  TextEditingController InterestController = TextEditingController();
-  TextEditingController FileNoController = TextEditingController();
-  TextEditingController ClassOfMsgController = TextEditingController();
-  TextEditingController TeacherIDController = TextEditingController();
-  TextEditingController StudentIDController = TextEditingController();
-  TextEditingController StaffWorkController = TextEditingController();
-  TextEditingController TopicNameController = TextEditingController();
-  TextEditingController ExamDateController = TextEditingController();
+  TextEditingController StudentNameController = TextEditingController();
+  TextEditingController StudentPhoneNoController = TextEditingController();
+  TextEditingController StudentFatherPhoneNoController =
+      TextEditingController();
+  TextEditingController AddressController = TextEditingController();
 
   final List<TextEditingController> CommentController = [];
 
@@ -180,6 +164,390 @@ class _StaffWorkState extends State<StaffWork> {
         Expanded(
           child: Scaffold(
             appBar: AppBar(
+              actions: [
+                PopupMenuButton(
+                  onSelected: (value) {
+                    // your logic
+                  },
+                  itemBuilder: (BuildContext bc) {
+                    return [
+                      PopupMenuItem(
+                        child: Text("Add Student Info"),
+                        onTap: () async {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              String SelectedStudentStatus = "";
+                              String Title =
+                                  "Student এর Information যুক্ত করুন";
+
+                              bool loading = false;
+
+                              // String LabelText ="আয়ের খাত লিখবেন";
+
+                              return StatefulBuilder(
+                                builder: (context, setState) {
+                                  return AlertDialog(
+                                    title: Column(
+                                      children: [
+                                        Center(
+                                          child: Text(
+                                            Title,
+                                            style: const TextStyle(
+                                                fontFamily: "Josefin Sans",
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    content: loading
+                                        ? const Center(
+                                            child: CircularProgressIndicator(),
+                                          )
+                                        : SingleChildScrollView(
+                                            child: Column(
+                                              children: [
+                                                const SizedBox(
+                                                  height: 20,
+                                                ),
+                                                Container(
+                                                  width: 300,
+                                                  child: TextField(
+                                                    onChanged: (value) {},
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    decoration: InputDecoration(
+                                                      border:
+                                                          OutlineInputBorder(),
+                                                      labelText: 'Student Name',
+
+                                                      hintText: 'Student Name',
+
+                                                      //  enabledBorder: OutlineInputBorder(
+                                                      //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                      //     ),
+                                                      focusedBorder:
+                                                          OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            width: 3,
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor),
+                                                      ),
+                                                      errorBorder:
+                                                          const OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            width: 3,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    66,
+                                                                    125,
+                                                                    145)),
+                                                      ),
+                                                    ),
+                                                    controller:
+                                                        StudentNameController,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 20,
+                                                ),
+                                                Container(
+                                                  width: 300,
+                                                  child: TextField(
+                                                    onChanged: (value) {},
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    decoration: InputDecoration(
+                                                      border:
+                                                          OutlineInputBorder(),
+                                                      labelText:
+                                                          'Student Phone No',
+
+                                                      hintText:
+                                                          'Student Phone No',
+
+                                                      //  enabledBorder: OutlineInputBorder(
+                                                      //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                      //     ),
+                                                      focusedBorder:
+                                                          OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            width: 3,
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor),
+                                                      ),
+                                                      errorBorder:
+                                                          const OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            width: 3,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    66,
+                                                                    125,
+                                                                    145)),
+                                                      ),
+                                                    ),
+                                                    controller:
+                                                        StudentPhoneNoController,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 20,
+                                                ),
+                                                Container(
+                                                  width: 300,
+                                                  child: TextField(
+                                                    onChanged: (value) {},
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    decoration: InputDecoration(
+                                                      border:
+                                                          OutlineInputBorder(),
+                                                      labelText:
+                                                          'Student Father phone no',
+
+                                                      hintText:
+                                                          'Student Father phone no',
+
+                                                      //  enabledBorder: OutlineInputBorder(
+                                                      //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                      //     ),
+                                                      focusedBorder:
+                                                          OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            width: 3,
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor),
+                                                      ),
+                                                      errorBorder:
+                                                          const OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            width: 3,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    66,
+                                                                    125,
+                                                                    145)),
+                                                      ),
+                                                    ),
+                                                    controller:
+                                                        StudentFatherPhoneNoController,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 20,
+                                                ),
+                                                Container(
+                                                  width: 300,
+                                                  child: TextField(
+                                                    onChanged: (value) {},
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    decoration: InputDecoration(
+                                                      border:
+                                                          OutlineInputBorder(),
+                                                      labelText: 'Address',
+
+                                                      hintText: 'Address',
+
+                                                      //  enabledBorder: OutlineInputBorder(
+                                                      //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                      //     ),
+                                                      focusedBorder:
+                                                          OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            width: 3,
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor),
+                                                      ),
+                                                      errorBorder:
+                                                          const OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            width: 3,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    66,
+                                                                    125,
+                                                                    145)),
+                                                      ),
+                                                    ),
+                                                    controller:
+                                                        AddressController,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 20,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: const Text("Cancel"),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () async {
+                                          setState(() {
+                                            loading = true;
+                                          });
+
+                                          var PerStudentHistory = {
+                                            "FileID": widget.FileID,
+                                            "status": "incomplete",
+                                            "comment": "None",
+                                            "SID": ProductUniqueID.toString(),
+                                            "StudentPhoneNo":
+                                                StudentPhoneNoController.text
+                                                    .trim(),
+                                            "StudentFatherPhoneNo":
+                                                StudentFatherPhoneNoController
+                                                    .text
+                                                    .trim(),
+                                            "Address":
+                                                AddressController.text.trim(),
+                                            "LastCallingDate": "None",
+                                            "Dream": "None",
+                                            "CallCount":"0",
+                                          };
+
+                                          final docUser = FirebaseFirestore
+                                              .instance
+                                              .collection("PhoneCallStudentList")
+                                              .doc(ProductUniqueID);
+
+                                          docUser
+                                              .set(PerStudentHistory)
+                                              .then((value) => setState(() {
+                                                    setState(() {
+                                                      loading = false;
+                                                    });
+
+                                                    Navigator.pop(context);
+
+                                                    final snackBar = SnackBar(
+                                                      /// need to set following properties for best effect of awesome_snackbar_content
+                                                      elevation: 0,
+                                                      behavior: SnackBarBehavior
+                                                          .floating,
+                                                      backgroundColor:
+                                                          Colors.transparent,
+                                                      content:
+                                                          AwesomeSnackbarContent(
+                                                        title:
+                                                            'Created successfull',
+                                                        message:
+                                                            'Created successfull',
+
+                                                        /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                        contentType:
+                                                            ContentType.success,
+                                                      ),
+                                                    );
+
+                                                    // Navigator.push(
+                                                    //   context,
+                                                    //   MaterialPageRoute(
+                                                    //       builder: (context) => CustomerProfile(
+                                                    //           CustomerID: widget.CustomerID)),
+                                                    // );
+                                                  }))
+                                              .onError((error, stackTrace) =>
+                                                  setState(() {
+                                                    setState(() {
+                                                      loading = false;
+                                                    });
+
+                                                    final snackBar = SnackBar(
+                                                      /// need to set following properties for best effect of awesome_snackbar_content
+                                                      elevation: 0,
+                                                      behavior: SnackBarBehavior
+                                                          .floating,
+                                                      backgroundColor:
+                                                          Colors.transparent,
+                                                      content:
+                                                          AwesomeSnackbarContent(
+                                                        title:
+                                                            'Something Wrong!!!',
+                                                        message:
+                                                            'Please Check your connection',
+
+                                                        /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                        contentType:
+                                                            ContentType.failure,
+                                                      ),
+                                                    );
+                                                  }));
+
+// q
+//                                             List AllWorkStudent = [];
+
+//                                             for (var i = 0;
+//                                                 i < AllStudentInfo.length;
+//                                                 i++) {
+//                                               var perWorkStudent = {
+//                                                 "StudentName": AllStudentInfo[i]
+//                                                     ["StudentName"],
+//                                                 "StudentPhoneNumber":
+//                                                     AllStudentInfo[i]
+//                                                         ["StudentPhoneNumber"],
+//                                                 "FatherPhoneNo":
+//                                                     AllStudentInfo[i]
+//                                                         ["FatherPhoneNo"],
+//                                                 "FutureAim": AllStudentInfo[i]
+//                                                     ["FutureAim"],
+//                                                 "SIDNo": AllStudentInfo[i]
+//                                                     ["SIDNo"],
+//                                                 "StudentImageUrl":
+//                                                     AllStudentInfo[i]
+//                                                         ["StudentImageUrl"],
+//                                                 "Comment": "",
+//                                                 "status": "done",
+//                                                 "FileUrl": "",
+//                                                 "HSCBatchYear":
+//                                                     AllStudentInfo[i]
+//                                                         ["HSCBatchYear"],
+//                                                 "SSCBatchYear":
+//                                                     AllStudentInfo[i]
+//                                                         ["SSCBatchYear"],
+//                                                 "Department": AllStudentInfo[i]
+//                                                     ["Department"],
+//                                               };
+
+//                                               AllWorkStudent.add(
+//                                                   perWorkStudent);
+//                                             }
+                                        },
+                                        child: const Text("Save"),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                          );
+                        },
+                      ),
+                      PopupMenuItem(
+                        child: Text("Go to All Work"),
+                        value: '/about',
+                      ),
+                      // PopupMenuItem(
+                      //   child: Text("Contact"),
+                      //   value: '/contact',
+                      // )
+                    ];
+                  },
+                )
+              ],
               title: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -232,23 +600,15 @@ class _StaffWorkState extends State<StaffWork> {
                                 DataColumn(
                                   label: Text('Father Phone No'),
                                 ),
-
                                 DataColumn(
                                   label: Text('Collage/School Name'),
                                 ),
-
-
-                                   DataColumn(
+                                DataColumn(
                                   label: Text('Status'),
-                                 
                                 ),
-
                                 DataColumn(
                                   label: Text('Add Comment'),
                                 ),
-
-                             
-
                               ],
                               rows: List<DataRow>.generate(
                                   AllStudentInfo.length,
@@ -274,16 +634,13 @@ class _StaffWorkState extends State<StaffWork> {
                                                 ["StudentPhoneNumber"]
                                             .toString()
                                             .toUpperCase())),
-
-
                                         DataCell(Text(AllStudentInfo[index]
-                                                ["status"]
-                                            .toString()
-                                            .toUpperCase()=="DONE"?"Done":"Incomplete")),
-
-
-
-
+                                                        ["status"]
+                                                    .toString()
+                                                    .toUpperCase() ==
+                                                "DONE"
+                                            ? "Done"
+                                            : "Incomplete")),
                                         DataCell(ElevatedButton(
                                             onPressed: () async {
                                               showDialog(
