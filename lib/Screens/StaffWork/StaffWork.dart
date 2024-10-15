@@ -395,6 +395,7 @@ class _StaffWorkState extends State<StaffWork> {
                                             "status": "incomplete",
                                             "Comment": [],
                                             "SID": ProductUniqueID.toString(),
+                                            "StudentName":StudentNameController.text.trim(),
                                             "StudentPhoneNo":
                                                 StudentPhoneNoController.text
                                                     .trim(),
