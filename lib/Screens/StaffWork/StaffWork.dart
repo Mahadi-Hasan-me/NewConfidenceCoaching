@@ -460,7 +460,8 @@ class _StaffWorkState extends State<StaffWork> {
                         child: Text("Go to All Work"),
                         value: '/about',
                         onTap: () {
-                               Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllWorkFile()));
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => AllWorkFile()));
                         },
                       ),
                       // PopupMenuItem(
@@ -526,9 +527,6 @@ class _StaffWorkState extends State<StaffWork> {
                                   label: Text('Father Phone No'),
                                 ),
                                 DataColumn(
-                                  label: Text('Collage/School Name'),
-                                ),
-                                DataColumn(
                                   label: Text('Status'),
                                 ),
                                 DataColumn(
@@ -557,25 +555,309 @@ class _StaffWorkState extends State<StaffWork> {
                                             .toString()
                                             .toUpperCase())),
                                         DataCell(Text(AllStudentInfo[index]
-                                                ["StudentPhoneNumber"]
+                                                ["StudentPhoneNo"]
                                             .toString()
                                             .toUpperCase())),
                                         DataCell(Text(AllStudentInfo[index]
-                                                ["StudentPhoneNumber"]
-                                            .toString()
-                                            .toUpperCase())),
-                                        DataCell(Text(AllStudentInfo[index]
-                                                ["StudentPhoneNumber"]
+                                                ["StudentFatherPhoneNo"]
                                             .toString()
                                             .toUpperCase())),
                                         DataCell(Text(AllStudentInfo[index]
                                                 ["status"]
                                             .toString()
                                             .toUpperCase())),
-                                        DataCell(Text(AllStudentInfo[index]
-                                                ["Dream"]
-                                            .toString()
-                                            .toUpperCase())),
+                                        DataCell(Row(
+                                          children: [
+                                            Text(AllStudentInfo[index]["Dream"]
+                                                .toString()
+                                                .toUpperCase()),
+                                            ElevatedButton.icon(
+                                                onPressed: () async {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      String
+                                                          SelectedStudentStatus =
+                                                          "";
+                                                      String Title =
+                                                          "Student এর Aim যুক্ত করুন";
+
+                                                      final List<String>
+                                                          Student_Aim = [
+                                                        'BUET',
+                                                        'University',
+                                                        'Medical',
+                                                        'Nursing',
+                                                      ];
+                                                      String?
+                                                          selectedStudent_Aim_Value;
+
+                                                      bool loading = false;
+
+                                                      // String LabelText ="আয়ের খাত লিখবেন";
+
+                                                      return StatefulBuilder(
+                                                        builder: (context,
+                                                            setState) {
+                                                          return AlertDialog(
+                                                            title: Column(
+                                                              children: [
+                                                                Center(
+                                                                  child: Text(
+                                                                    Title,
+                                                                    style: const TextStyle(
+                                                                        fontFamily:
+                                                                            "Josefin Sans",
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            content: loading
+                                                                ? const Center(
+                                                                    child:
+                                                                        CircularProgressIndicator(),
+                                                                  )
+                                                                : SingleChildScrollView(
+                                                                    child:
+                                                                        Column(
+                                                                      children: [
+                                                                        Card(
+                                                                          elevation:
+                                                                              20,
+                                                                          child:
+                                                                              Container(
+                                                                            width:
+                                                                                200,
+                                                                            child:
+                                                                                DropdownButtonHideUnderline(
+                                                                              child: DropdownButton2<String>(
+                                                                                isExpanded: true,
+                                                                                hint: Text(
+                                                                                  'Select Student Aim',
+                                                                                  style: TextStyle(
+                                                                                    fontSize: 14,
+                                                                                    color: Theme.of(context).hintColor,
+                                                                                  ),
+                                                                                ),
+                                                                                items: Student_Aim.map((String item) => DropdownMenuItem<String>(
+                                                                                      value: item,
+                                                                                      child: Text(
+                                                                                        item,
+                                                                                        style: const TextStyle(
+                                                                                          fontSize: 14,
+                                                                                        ),
+                                                                                      ),
+                                                                                    )).toList(),
+                                                                                value: selectedStudent_Aim_Value,
+                                                                                onChanged: (String? value) {
+                                                                                  setState(() async {
+                                                                                    selectedStudent_Aim_Value = value;
+
+                                                                                    setState(() {
+                                                                                      loading = true;
+                                                                                    });
+
+                                                                                    var ChangeStudentDream = {
+                                                                                      "Dream": selectedStudent_Aim_Value
+                                                                                    };
+
+                                                                                    final docUser = FirebaseFirestore.instance.collection("PhoneCallStudentList").doc(AllStudentInfo[index]["SID"]);
+
+                                                                                    docUser
+                                                                                        .update(ChangeStudentDream)
+                                                                                        .then((value) => setState(() {
+                                                                                              setState(() {
+                                                                                                loading = false;
+                                                                                              });
+
+                                                                                              getAllStudentInfo();
+
+                                                                                              Navigator.pop(context);
+
+                                                                                              const snackBar = SnackBar(
+                                                                                                /// need to set following properties for best effect of awesome_snackbar_content
+                                                                                                elevation: 0,
+
+                                                                                                behavior: SnackBarBehavior.floating,
+                                                                                                backgroundColor: Colors.transparent,
+                                                                                                content: AwesomeSnackbarContent(
+                                                                                                  title: 'Dream update Successfull',
+                                                                                                  message: 'Dream update Successfull',
+
+                                                                                                  /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                                                  contentType: ContentType.success,
+                                                                                                ),
+                                                                                              );
+
+                                                                                              ScaffoldMessenger.of(context)
+                                                                                                ..hideCurrentSnackBar()
+                                                                                                ..showSnackBar(snackBar);
+
+                                                                                              // Navigator.push(
+                                                                                              //   context,
+                                                                                              //   MaterialPageRoute(
+                                                                                              //       builder: (context) => CustomerProfile(
+                                                                                              //           CustomerID: widget.CustomerID)),
+                                                                                              // );
+                                                                                            }))
+                                                                                        .onError((error, stackTrace) => setState(() {
+                                                                                              setState(() {
+                                                                                                loading = false;
+                                                                                              });
+
+                                                                                              const snackBar = SnackBar(
+                                                                                                /// need to set following properties for best effect of awesome_snackbar_content
+                                                                                                elevation: 0,
+
+                                                                                                behavior: SnackBarBehavior.floating,
+                                                                                                backgroundColor: Colors.transparent,
+                                                                                                content: AwesomeSnackbarContent(
+                                                                                                  title: 'Something Wrong!!!',
+                                                                                                  message: 'Something Wrong!!!',
+
+                                                                                                  /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                                                  contentType: ContentType.failure,
+                                                                                                ),
+                                                                                              );
+
+                                                                                              ScaffoldMessenger.of(context)
+                                                                                                ..hideCurrentSnackBar()
+                                                                                                ..showSnackBar(snackBar);
+                                                                                            }));
+                                                                                  });
+                                                                                },
+                                                                                buttonStyleData: const ButtonStyleData(
+                                                                                  padding: EdgeInsets.symmetric(horizontal: 16),
+                                                                                  height: 40,
+                                                                                  width: 140,
+                                                                                ),
+                                                                                menuItemStyleData: const MenuItemStyleData(
+                                                                                  height: 40,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                            actions: <Widget>[
+                                                              TextButton(
+                                                                onPressed: () =>
+                                                                    Navigator.pop(
+                                                                        context),
+                                                                child: const Text(
+                                                                    "Cancel"),
+                                                              ),
+                                                              ElevatedButton(
+                                                                onPressed:
+                                                                    () async {
+                                                                  setState(() {
+                                                                    loading =
+                                                                        true;
+                                                                  });
+
+                                                                  var ChangeStudentDream =
+                                                                      {
+                                                                    "Dream":
+                                                                        selectedStudent_Aim_Value
+                                                                  };
+
+                                                                  final docUser = FirebaseFirestore
+                                                                      .instance
+                                                                      .collection(
+                                                                          "PhoneCallStudentList")
+                                                                      .doc(AllStudentInfo[
+                                                                              index]
+                                                                          [
+                                                                          "SID"]);
+
+                                                                  docUser
+                                                                      .update(
+                                                                          ChangeStudentDream)
+                                                                      .then((value) =>
+                                                                          setState(
+                                                                              () {
+                                                                            setState(() {
+                                                                              loading = false;
+                                                                            });
+
+                                                                            getAllStudentInfo();
+
+                                                                            Navigator.pop(context);
+
+                                                                            const snackBar =
+                                                                                SnackBar(
+                                                                              /// need to set following properties for best effect of awesome_snackbar_content
+                                                                              elevation: 0,
+
+                                                                              behavior: SnackBarBehavior.floating,
+                                                                              backgroundColor: Colors.transparent,
+                                                                              content: AwesomeSnackbarContent(
+                                                                                title: 'Dream update Successfull',
+                                                                                message: 'Dream update Successfull',
+
+                                                                                /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                                contentType: ContentType.success,
+                                                                              ),
+                                                                            );
+
+                                                                            ScaffoldMessenger.of(context)
+                                                                              ..hideCurrentSnackBar()
+                                                                              ..showSnackBar(snackBar);
+
+                                                                            // Navigator.push(
+                                                                            //   context,
+                                                                            //   MaterialPageRoute(
+                                                                            //       builder: (context) => CustomerProfile(
+                                                                            //           CustomerID: widget.CustomerID)),
+                                                                            // );
+                                                                          }))
+                                                                      .onError((error,
+                                                                              stackTrace) =>
+                                                                          setState(
+                                                                              () {
+                                                                            setState(() {
+                                                                              loading = false;
+                                                                            });
+
+                                                                            const snackBar =
+                                                                                SnackBar(
+                                                                              /// need to set following properties for best effect of awesome_snackbar_content
+                                                                              elevation: 0,
+
+                                                                              behavior: SnackBarBehavior.floating,
+                                                                              backgroundColor: Colors.transparent,
+                                                                              content: AwesomeSnackbarContent(
+                                                                                title: 'Something Wrong!!!',
+                                                                                message: 'Something Wrong!!!',
+
+                                                                                /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                                contentType: ContentType.failure,
+                                                                              ),
+                                                                            );
+
+                                                                            ScaffoldMessenger.of(context)
+                                                                              ..hideCurrentSnackBar()
+                                                                              ..showSnackBar(snackBar);
+                                                                          }));
+                                                                },
+                                                                child:
+                                                                    const Text(
+                                                                        "Save"),
+                                                              ),
+                                                            ],
+                                                          );
+                                                        },
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                                label: Icon(Icons.edit))
+                                          ],
+                                        )),
                                         DataCell(Text(AllStudentInfo[index]
                                                 ["LastCallingDate"]
                                             .toString()
@@ -595,6 +877,10 @@ class _StaffWorkState extends State<StaffWork> {
                                                       "ফোন কলের কথা গুলো shortly যুক্ত করুন।";
 
                                                   bool loading = false;
+
+                                                  List PerStudentComment =
+                                                      AllStudentInfo[index]
+                                                          ["Comment"];
 
                                                   // String LabelText ="আয়ের খাত লিখবেন";
 
@@ -627,12 +913,12 @@ class _StaffWorkState extends State<StaffWork> {
                                                                   children: [
                                                                     for (int i =
                                                                             0;
-                                                                        i < AllStudentInfo[index]["Comment"].length;
+                                                                        i < PerStudentComment.length;
                                                                         i++)
                                                                       Container(
                                                                         child:
                                                                             Text(
-                                                                          "${i + 1}. ${AllStudentInfo[index]["Comment"][i].toString()}",
+                                                                          "${i + 1}. ${PerStudentComment[i].toString()}",
                                                                           style: const TextStyle(
                                                                               fontFamily: "Josefin Sans",
                                                                               fontWeight: FontWeight.bold),
@@ -715,7 +1001,7 @@ class _StaffWorkState extends State<StaffWork> {
 
                                                               PerStudentComments.add(
                                                                   CommentController[
-                                                                      index]);
+                                                                      index].text.trim());
 
                                                               var perStudentInfoWithComment =
                                                                   {
@@ -775,8 +1061,6 @@ class _StaffWorkState extends State<StaffWork> {
                                                                                 setState(() async {
                                                                                   // Navigator.pop(context);
 
-                                                                                
-
                                                                                   const snackBar = SnackBar(
                                                                                     elevation: 0,
                                                                                     behavior: SnackBarBehavior.floating,
@@ -824,8 +1108,6 @@ class _StaffWorkState extends State<StaffWork> {
                                                                                 }));
 
                                                                         // Navigator.pop(context);
-
-                                                       
 
                                                                         const snackBar =
                                                                             SnackBar(

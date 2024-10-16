@@ -1156,7 +1156,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         // getProductInfo();
                                                         Navigator.pop(context);
 
-                                                        final snackBar =
+                                                        const snackBar =
                                                             SnackBar(
                                                           elevation: 0,
                                                           behavior:
@@ -1192,7 +1192,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   .onError((error,
                                                           stackTrace) =>
                                                       setState(() {
-                                                        final snackBar =
+                                                        const snackBar =
                                                             SnackBar(
                                                           /// need to set following properties for best effect of awesome_snackbar_content
                                                           elevation: 0,

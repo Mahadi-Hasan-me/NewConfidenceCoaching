@@ -41,6 +41,7 @@ class _AllWorkFileState extends State<AllWorkFile> {
   TextEditingController TotalStudentController = TextEditingController();
   TextEditingController YearController = TextEditingController();
   TextEditingController RecentClassController = TextEditingController();
+  TextEditingController ClassOfMsgController = TextEditingController();
 
   final List<TextEditingController> CommentController = [];
 
@@ -61,12 +62,12 @@ class _AllWorkFileState extends State<AllWorkFile> {
 
   List AllStudentInfo = [];
 
-  Future<void> getAllStudentInfo() async {
+  Future<void> getAllStudentInfo(String FileID) async {
     CollectionReference _collectionStudentInfoRef =
         FirebaseFirestore.instance.collection('PhoneCallStudentList');
 
     Query StudentInfoquery =
-        _collectionStudentInfoRef.where("FileID", isEqualTo: "");
+        _collectionStudentInfoRef.where("FileID", isEqualTo: FileID);
 
     QuerySnapshot StudentInfoquerySnapshot = await StudentInfoquery.get();
     AllStudentInfo =
@@ -166,7 +167,7 @@ class _AllWorkFileState extends State<AllWorkFile> {
                             context: context,
                             builder: (context) {
                               String SelectedStudentStatus = "";
-                              String Title = "কাজের জন্য নির্বাচন করুন";
+                              String Title = "নতুন স্কুল বা কলেজ সংযুক্ত করুন।";
 
                               bool loading = false;
 
@@ -629,6 +630,9 @@ class _AllWorkFileState extends State<AllWorkFile> {
                                   label: Text('Edit'),
                                 ),
                                 DataColumn(
+                                  label: Text('Send SMS'),
+                                ),
+                                DataColumn(
                                   label: Text('Delete'),
                                 ),
                               ],
@@ -686,6 +690,187 @@ class _AllWorkFileState extends State<AllWorkFile> {
                                         DataCell(ElevatedButton(
                                             onPressed: () {},
                                             child: Text("Edit"))),
+                                        DataCell(ElevatedButton(
+                                            onPressed: () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  String Title =
+                                                      "Marketing এর জন্য SMS পাঠান";
+
+                                                  bool loading = false;
+
+                                                  int SuccessfulMSG = 0;
+                                                  int unSuccessfullMSG = 0;
+                                                  int TotalMSG =
+                                                      AllStudentInfo.length;
+
+                                                  // String LabelText ="আয়ের খাত লিখবেন";
+
+                                                  return StatefulBuilder(
+                                                    builder:
+                                                        (context, setState) {
+                                                      return AlertDialog(
+                                                        title: Column(
+                                                          children: [
+                                                            Center(
+                                                              child: Text(
+                                                                Title,
+                                                                style: const TextStyle(
+                                                                    fontFamily:
+                                                                        "Josefin Sans",
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        content: loading
+                                                            ? Center(
+                                                                child: Column(
+                                                                  children: [
+                                                                    Text(
+                                                                        "Successfully Send: ${SuccessfulMSG.toString()}"),
+                                                                    Text(
+                                                                        "Failed: ${unSuccessfullMSG.toString()}"),
+                                                                    Text(
+                                                                        "Total SMS: ${TotalMSG.toString()}"),
+                                                                    CircularProgressIndicator(),
+                                                                  ],
+                                                                ),
+                                                              )
+                                                            : SingleChildScrollView(
+                                                                child: Column(
+                                                                  children: [
+                                                                    const SizedBox(
+                                                                        height:
+                                                                            10),
+                                                                    Container(
+                                                                      width:
+                                                                          300,
+                                                                      child:
+                                                                          TextField(
+                                                                        maxLines:
+                                                                            10,
+                                                                        onChanged:
+                                                                            (value) {},
+                                                                        keyboardType:
+                                                                            TextInputType.text,
+                                                                        decoration:
+                                                                            InputDecoration(
+                                                                          border:
+                                                                              OutlineInputBorder(),
+                                                                          labelText:
+                                                                              'Message BOX',
+
+                                                                          hintText:
+                                                                              'Message BOX',
+
+                                                                          //  enabledBorder: OutlineInputBorder(
+                                                                          //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                                          //     ),
+                                                                          focusedBorder:
+                                                                              OutlineInputBorder(
+                                                                            borderSide:
+                                                                                BorderSide(width: 3, color: Theme.of(context).primaryColor),
+                                                                          ),
+                                                                          errorBorder:
+                                                                              const OutlineInputBorder(
+                                                                            borderSide:
+                                                                                BorderSide(width: 3, color: Color.fromARGB(255, 66, 125, 145)),
+                                                                          ),
+                                                                        ),
+                                                                        controller:
+                                                                            ClassOfMsgController,
+                                                                      ),
+                                                                    ),
+                                                                    const SizedBox(
+                                                                      height:
+                                                                          20,
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                        actions: <Widget>[
+                                                          TextButton(
+                                                            onPressed: () =>
+                                                                Navigator.pop(
+                                                                    context),
+                                                            child:
+                                                                Text("Cancel"),
+                                                          ),
+                                                          ElevatedButton(
+                                                            onPressed:
+                                                                () async {
+                                                              setState(() {
+                                                                loading = true;
+                                                              });
+
+                                                              setState(() {
+                                                                getAllStudentInfo(
+                                                                    FileHeaderInfo[
+                                                                            index]
+                                                                        [
+                                                                        "FileID"]);
+                                                              });
+
+                                                              var AdminMsg =
+                                                                  ClassOfMsgController
+                                                                      .text
+                                                                      .trim();
+
+                                                              for (var i = 0;
+                                                                  i <
+                                                                      AllStudentInfo
+                                                                          .length;
+                                                                  i++) {
+                                                                try {
+                                                                  final response =
+                                                                      await http.get(
+                                                                          Uri.parse(
+                                                                              'https://api.greenweb.com.bd/api.php?token=1024519252916991043295858a1b3ac3cb09ae52385b1489dff95&to=${AllStudentInfo[i]["StudentPhoneNumber"].trim()}&message=$AdminMsg'));
+
+                                                                  if (response
+                                                                          .statusCode ==
+                                                                      200) {
+                                                                    setState(
+                                                                        () {
+                                                                      SuccessfulMSG++;
+                                                                    });
+                                                                    // If the server did return a 200 OK response,
+                                                                    // then parse the JSON.
+                                                                    print(jsonDecode(
+                                                                        response
+                                                                            .body));
+                                                                  } else {
+                                                                    setState(
+                                                                        () {
+                                                                      unSuccessfullMSG++;
+                                                                    });
+                                                                    // If the server did not return a 200 OK response,
+                                                                    // then throw an exception.
+                                                                    throw Exception(
+                                                                        'Failed to load album');
+                                                                  }
+                                                                } catch (e) {}
+                                                              }
+
+                                                              setState(() {
+                                                                loading = false;
+                                                              });
+                                                            },
+                                                            child: const Text(
+                                                                "Send"),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            child: Text("Send SMS"))),
                                         DataCell(ElevatedButton(
                                             onPressed: () async {
                                               showDialog(
