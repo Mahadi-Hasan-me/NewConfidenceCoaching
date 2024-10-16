@@ -748,6 +748,9 @@ class _AllWorkFileState extends State<AllWorkFile> {
                                                                 setState(() {
 
 
+                                                        // delete All student info under this file
+
+
                                                           const snackBar =
                                                               SnackBar(
                                                             /// need to set following properties for best effect of awesome_snackbar_content
