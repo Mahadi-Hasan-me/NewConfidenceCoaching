@@ -2096,19 +2096,37 @@ class _HomeScreenState extends State<HomeScreen> {
                               Navigator.pop(context);
 
 
-                                             final snackBar = SnackBar(
-                  /// need to set following properties for best effect of awesome_snackbar_content
-                  elevation: 0,
-                  behavior: SnackBarBehavior.floating,
-                  backgroundColor: Colors.transparent,
-                  content: AwesomeSnackbarContent(
-                    title: 'Created successfull',
-                    message: 'Created successfull',
+                                                               const snackBar =
+                                                              SnackBar(
+                                                            /// need to set following properties for best effect of awesome_snackbar_content
+                                                            elevation: 0,
 
-                    /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                    contentType: ContentType.success,
-                  ),
-                );
+                                                            behavior:
+                                                                SnackBarBehavior
+                                                                    .floating,
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            content:
+                                                                AwesomeSnackbarContent(
+                                                              title:
+                                                                  'Created Successfull',
+                                                              message:
+                                                                  'Created Successfull',
+
+                                                              /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                              contentType:
+                                                                  ContentType
+                                                                      .success,
+                                                            ),
+                                                          );
+
+
+                                                        ScaffoldMessenger.of(
+                                                              context)
+                                                            ..hideCurrentSnackBar()
+                                                            ..showSnackBar(
+                                                                snackBar);
 
                               // Navigator.push(
                               //   context,
@@ -2126,70 +2144,44 @@ class _HomeScreenState extends State<HomeScreen> {
                               });
 
 
-             final snackBar = SnackBar(
-                  /// need to set following properties for best effect of awesome_snackbar_content
-                  elevation: 0,
-                  behavior: SnackBarBehavior.floating,
-                  backgroundColor: Colors.transparent,
-                  content: AwesomeSnackbarContent(
-                    title: 'Something Wrong!!!',
-                    message: 'Please Check your connection',
+   const snackBar =
+                                                              SnackBar(
+                                                            /// need to set following properties for best effect of awesome_snackbar_content
+                                                            elevation: 0,
 
-                    /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                    contentType: ContentType.failure,
-                  ),
-                );
+                                                            behavior:
+                                                                SnackBarBehavior
+                                                                    .floating,
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            content:
+                                                                AwesomeSnackbarContent(
+                                                              title:
+                                                                  'Something Wrong!!!',
+                                                              message:
+                                                                  'Something Wrong!!!',
+
+                                                              /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                              contentType:
+                                                                  ContentType
+                                                                      .failure,
+                                                            ),
+                                                          );
 
 
-                
+                                                        ScaffoldMessenger.of(
+                                                              context)
+                                                            ..hideCurrentSnackBar()
+                                                            ..showSnackBar(
+                                                                snackBar);
 
 
-                              
-
-
-
+  
                                                         }));
 
                                             
 
-// q
-//                                             List AllWorkStudent = [];
-
-//                                             for (var i = 0;
-//                                                 i < AllStudentInfo.length;
-//                                                 i++) {
-//                                               var perWorkStudent = {
-//                                                 "StudentName": AllStudentInfo[i]
-//                                                     ["StudentName"],
-//                                                 "StudentPhoneNumber":
-//                                                     AllStudentInfo[i]
-//                                                         ["StudentPhoneNumber"],
-//                                                 "FatherPhoneNo":
-//                                                     AllStudentInfo[i]
-//                                                         ["FatherPhoneNo"],
-//                                                 "FutureAim": AllStudentInfo[i]
-//                                                     ["FutureAim"],
-//                                                 "SIDNo": AllStudentInfo[i]
-//                                                     ["SIDNo"],
-//                                                 "StudentImageUrl":
-//                                                     AllStudentInfo[i]
-//                                                         ["StudentImageUrl"],
-//                                                 "Comment": "",
-//                                                 "status": "done",
-//                                                 "FileUrl": "",
-//                                                 "HSCBatchYear":
-//                                                     AllStudentInfo[i]
-//                                                         ["HSCBatchYear"],
-//                                                 "SSCBatchYear":
-//                                                     AllStudentInfo[i]
-//                                                         ["SSCBatchYear"],
-//                                                 "Department": AllStudentInfo[i]
-//                                                     ["Department"],
-//                                               };
-
-//                                               AllWorkStudent.add(
-//                                                   perWorkStudent);
-//                                             }
                                           },
                                           child: const Text("Save"),
                                         ),
@@ -2208,6 +2200,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
+
+
+
                       ];
                     },
                   ),

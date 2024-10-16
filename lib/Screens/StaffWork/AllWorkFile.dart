@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,21 +13,16 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 // import 'package:input_quantity/input_quantity.dart';
 import 'package:uuid/uuid.dart';
 
-class StaffWork extends StatefulWidget {
-  final String FileID;
-  final String TotalStudent;
-  final String Incomplete;
-  StaffWork(
-      {super.key,
-      required this.FileID,
-      required this.TotalStudent,
-      required this.Incomplete});
+class AllWorkFile extends StatefulWidget {
+  AllWorkFile({
+    super.key,
+  });
 
   @override
-  _StaffWorkState createState() => _StaffWorkState();
+  _AllWorkFileState createState() => _AllWorkFileState();
 }
 
-class _StaffWorkState extends State<StaffWork> {
+class _AllWorkFileState extends State<AllWorkFile> {
   int _selectedDestination = 0;
 
   bool DataLoad = false;
@@ -41,6 +35,11 @@ class _StaffWorkState extends State<StaffWork> {
   TextEditingController StudentFatherPhoneNoController =
       TextEditingController();
   TextEditingController AddressController = TextEditingController();
+  TextEditingController SchoolOrCollegeNameController = TextEditingController();
+  TextEditingController DepartmentController = TextEditingController();
+  TextEditingController TotalStudentController = TextEditingController();
+  TextEditingController YearController = TextEditingController();
+  TextEditingController RecentClassController = TextEditingController();
 
   final List<TextEditingController> CommentController = [];
 
@@ -66,7 +65,7 @@ class _StaffWorkState extends State<StaffWork> {
         FirebaseFirestore.instance.collection('PhoneCallStudentList');
 
     Query StudentInfoquery =
-        _collectionStudentInfoRef.where("FileID", isEqualTo: widget.FileID);
+        _collectionStudentInfoRef.where("FileID", isEqualTo: "");
 
     QuerySnapshot StudentInfoquerySnapshot = await StudentInfoquery.get();
     AllStudentInfo =
@@ -93,12 +92,9 @@ class _StaffWorkState extends State<StaffWork> {
 
   Future<void> getFileHeaderInfo() async {
     CollectionReference _collectionFileInfoRef =
-        FirebaseFirestore.instance.collection('StaffWorkHeader');
+        FirebaseFirestore.instance.collection('AllWorkFileHeader');
 
-    Query FileInfoquery =
-        _collectionFileInfoRef.where("FileID", isEqualTo: widget.FileID);
-
-    QuerySnapshot FileInfoquerySnapshot = await FileInfoquery.get();
+    QuerySnapshot FileInfoquerySnapshot = await _collectionFileInfoRef.get();
 
     FileHeaderInfo =
         FileInfoquerySnapshot.docs.map((doc) => doc.data()).toList();
@@ -126,7 +122,7 @@ class _StaffWorkState extends State<StaffWork> {
   void initState() {
     // FlutterNativeSplash.remove();
 
-    getAllStudentInfo();
+    // getAllStudentInfo();
 
     getFileHeaderInfo();
 
@@ -164,14 +160,12 @@ class _StaffWorkState extends State<StaffWork> {
                   itemBuilder: (BuildContext bc) {
                     return [
                       PopupMenuItem(
-                        child: Text("Add Student Info"),
                         onTap: () async {
                           showDialog(
                             context: context,
                             builder: (context) {
                               String SelectedStudentStatus = "";
-                              String Title =
-                                  "Student এর Information যুক্ত করুন";
+                              String Title = "কাজের জন্য নির্বাচন করুন";
 
                               bool loading = false;
 
@@ -211,9 +205,11 @@ class _StaffWorkState extends State<StaffWork> {
                                                     decoration: InputDecoration(
                                                       border:
                                                           OutlineInputBorder(),
-                                                      labelText: 'Student Name',
+                                                      labelText:
+                                                          'School/ College Name',
 
-                                                      hintText: 'Student Name',
+                                                      hintText:
+                                                          'School/ College Name',
 
                                                       //  enabledBorder: OutlineInputBorder(
                                                       //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
@@ -239,7 +235,7 @@ class _StaffWorkState extends State<StaffWork> {
                                                       ),
                                                     ),
                                                     controller:
-                                                        StudentNameController,
+                                                        SchoolOrCollegeNameController,
                                                   ),
                                                 ),
                                                 const SizedBox(
@@ -255,10 +251,10 @@ class _StaffWorkState extends State<StaffWork> {
                                                       border:
                                                           OutlineInputBorder(),
                                                       labelText:
-                                                          'Student Phone No',
+                                                          'Department(Science)',
 
                                                       hintText:
-                                                          'Student Phone No',
+                                                          'Department(Science)',
 
                                                       //  enabledBorder: OutlineInputBorder(
                                                       //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
@@ -284,7 +280,7 @@ class _StaffWorkState extends State<StaffWork> {
                                                       ),
                                                     ),
                                                     controller:
-                                                        StudentPhoneNoController,
+                                                        DepartmentController,
                                                   ),
                                                 ),
                                                 const SizedBox(
@@ -300,10 +296,9 @@ class _StaffWorkState extends State<StaffWork> {
                                                       border:
                                                           OutlineInputBorder(),
                                                       labelText:
-                                                          'Student Father phone no',
+                                                          'Total Student',
 
-                                                      hintText:
-                                                          'Student Father phone no',
+                                                      hintText: 'Total Student',
 
                                                       //  enabledBorder: OutlineInputBorder(
                                                       //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
@@ -329,7 +324,7 @@ class _StaffWorkState extends State<StaffWork> {
                                                       ),
                                                     ),
                                                     controller:
-                                                        StudentFatherPhoneNoController,
+                                                        TotalStudentController,
                                                   ),
                                                 ),
                                                 const SizedBox(
@@ -344,9 +339,53 @@ class _StaffWorkState extends State<StaffWork> {
                                                     decoration: InputDecoration(
                                                       border:
                                                           OutlineInputBorder(),
-                                                      labelText: 'Address',
+                                                      labelText: 'Year',
 
-                                                      hintText: 'Address',
+                                                      hintText: 'Year',
+
+                                                      //  enabledBorder: OutlineInputBorder(
+                                                      //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                      //     ),
+                                                      focusedBorder:
+                                                          OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            width: 3,
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor),
+                                                      ),
+                                                      errorBorder:
+                                                          const OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            width: 3,
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    66,
+                                                                    125,
+                                                                    145)),
+                                                      ),
+                                                    ),
+                                                    controller: YearController,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 20,
+                                                ),
+                                                Container(
+                                                  width: 300,
+                                                  child: TextField(
+                                                    onChanged: (value) {},
+                                                    keyboardType:
+                                                        TextInputType.text,
+                                                    decoration: InputDecoration(
+                                                      border:
+                                                          OutlineInputBorder(),
+                                                      labelText:
+                                                          'Recent Class(Nine/Ten/SSC/HSC)',
+
+                                                      hintText:
+                                                          'Recent Class(Nine/Ten/SSC/HSC)',
 
                                                       //  enabledBorder: OutlineInputBorder(
                                                       //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
@@ -372,7 +411,7 @@ class _StaffWorkState extends State<StaffWork> {
                                                       ),
                                                     ),
                                                     controller:
-                                                        AddressController,
+                                                        RecentClassController,
                                                   ),
                                                 ),
                                                 const SizedBox(
@@ -392,44 +431,63 @@ class _StaffWorkState extends State<StaffWork> {
                                             loading = true;
                                           });
 
-                                          var PerStudentHistory = {
-                                            "FileID": widget.FileID,
-                                            "status": "incomplete",
-                                            "Comment": [],
-                                            "SID": ProductUniqueID.toString(),
-                                            "StudentName": StudentNameController
-                                                .text
-                                                .trim(),
-                                            "StudentPhoneNo":
-                                                StudentPhoneNoController.text
-                                                    .trim(),
-                                            "StudentFatherPhoneNo":
-                                                StudentFatherPhoneNoController
+                                          var StaffCallingHeader = {
+                                            "SchoolOrCollegeName":
+                                                SchoolOrCollegeNameController
                                                     .text
                                                     .trim(),
-                                            "Address":
-                                                AddressController.text.trim(),
-                                            "LastCallingDate": "None",
-                                            "Dream": "None",
-                                            "CallCount": "0",
+                                            "Department": DepartmentController
+                                                .text
+                                                .trim(),
+                                            "TotalStudent":
+                                                TotalStudentController.text
+                                                    .trim(),
+                                            "Year": YearController.text.trim(),
+                                            "RecentClass": RecentClassController
+                                                .text
+                                                .trim(),
+                                            "LastWork": DateTime.now()
+                                                .toIso8601String(),
+                                            "Incomplete": TotalStudentController
+                                                .text
+                                                .trim(),
+                                            "FileID":
+                                                ProductUniqueID.toString(),
                                           };
 
                                           final docUser = FirebaseFirestore
                                               .instance
-                                              .collection(
-                                                  "PhoneCallStudentList")
+                                              .collection("StaffWorkHeader")
                                               .doc(ProductUniqueID);
 
                                           docUser
-                                              .set(PerStudentHistory)
+                                              .set(StaffCallingHeader)
                                               .then((value) => setState(() {
-                                                    getAllStudentInfo();
-
                                                     setState(() {
                                                       loading = false;
                                                     });
 
                                                     Navigator.pop(context);
+
+                                                    final snackBar = SnackBar(
+                                                      /// need to set following properties for best effect of awesome_snackbar_content
+                                                      elevation: 0,
+                                                      behavior: SnackBarBehavior
+                                                          .floating,
+                                                      backgroundColor:
+                                                          Colors.transparent,
+                                                      content:
+                                                          AwesomeSnackbarContent(
+                                                        title:
+                                                            'Created successfull',
+                                                        message:
+                                                            'Created successfull',
+
+                                                        /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                        contentType:
+                                                            ContentType.success,
+                                                      ),
+                                                    );
 
                                                     // Navigator.push(
                                                     //   context,
@@ -443,6 +501,26 @@ class _StaffWorkState extends State<StaffWork> {
                                                     setState(() {
                                                       loading = false;
                                                     });
+
+                                                    final snackBar = SnackBar(
+                                                      /// need to set following properties for best effect of awesome_snackbar_content
+                                                      elevation: 0,
+                                                      behavior: SnackBarBehavior
+                                                          .floating,
+                                                      backgroundColor:
+                                                          Colors.transparent,
+                                                      content:
+                                                          AwesomeSnackbarContent(
+                                                        title:
+                                                            'Something Wrong!!!',
+                                                        message:
+                                                            'Please Check your connection',
+
+                                                        /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                        contentType:
+                                                            ContentType.failure,
+                                                      ),
+                                                    );
                                                   }));
                                         },
                                         child: const Text("Save"),
@@ -454,24 +532,23 @@ class _StaffWorkState extends State<StaffWork> {
                             },
                           );
                         },
+                        value: '/hello',
+                        child: const Text(
+                          "Make Work",
+                          style: TextStyle(
+                              fontFamily: "Josefin Sans",
+                              fontWeight: FontWeight.bold),
+                        ),
                       ),
-                      PopupMenuItem(
-                        child: Text("Go to All Work"),
-                        value: '/about',
-                      ),
-                      // PopupMenuItem(
-                      //   child: Text("Contact"),
-                      //   value: '/contact',
-                      // )
                     ];
                   },
                 )
               ],
-              title: Row(
+              title: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Phone Call Work    S/C: ${FileHeaderInfo[0]["SchoolOrCollegeName"]}    RC:${FileHeaderInfo[0]["RecentClass"]}     D:${FileHeaderInfo[0]["Department"]}  LW: ${FileHeaderInfo[0]["LastWork"]}  IC: ${FileHeaderInfo[0]["Incomplete"]}/${FileHeaderInfo[0]["TotalStudent"]}",
+                    "All Phone Call Work",
                   ),
                 ],
               ),
@@ -510,28 +587,31 @@ class _StaffWorkState extends State<StaffWork> {
                                   size: ColumnSize.L,
                                 ),
                                 DataColumn(
-                                  label: Text('SID'),
+                                  label: Text('S/C Name'),
                                 ),
                                 DataColumn(
-                                  label: Text('Student Name'),
+                                  label: Text('Department'),
                                 ),
                                 DataColumn(
-                                  label: Text('Phone No'),
+                                  label: Text('Total Student'),
                                 ),
                                 DataColumn(
-                                  label: Text('Father Phone No'),
+                                  label: Text('Recent Class'),
                                 ),
                                 DataColumn(
-                                  label: Text('Collage/School Name'),
+                                  label: Text('Year'),
                                 ),
                                 DataColumn(
-                                  label: Text('Status'),
+                                  label: Text('Last Work Time'),
                                 ),
                                 DataColumn(
-                                  label: Text('Dream'),
+                                  label: Text('Incomplete'),
                                 ),
                                 DataColumn(
-                                  label: Text('Last Call'),
+                                  label: Text('Edit'),
+                                ),
+                                DataColumn(
+                                  label: Text('Delete'),
                                 ),
                                 DataColumn(
                                   label: Text('Count'),
@@ -541,35 +621,35 @@ class _StaffWorkState extends State<StaffWork> {
                                 ),
                               ],
                               rows: List<DataRow>.generate(
-                                  AllStudentInfo.length,
+                                  FileHeaderInfo.length,
                                   (index) => DataRow(cells: [
                                         DataCell(Text('${index + 1}')),
-                                        DataCell(Text(AllStudentInfo[index]
-                                                ["SID"]
+                                        DataCell(Text(FileHeaderInfo[index]
+                                                ["SchoolOrCollegeName"]
                                             .toString()
                                             .toUpperCase())),
-                                        DataCell(Text(AllStudentInfo[index]
-                                                ["StudentName"]
+                                        DataCell(Text(FileHeaderInfo[index]
+                                                ["Department"]
                                             .toString()
                                             .toUpperCase())),
-                                        DataCell(Text(AllStudentInfo[index]
-                                                ["StudentPhoneNumber"]
+                                        DataCell(Text(FileHeaderInfo[index]
+                                                ["TotalStudent"]
                                             .toString()
                                             .toUpperCase())),
-                                        DataCell(Text(AllStudentInfo[index]
-                                                ["StudentPhoneNumber"]
+                                        DataCell(Text(FileHeaderInfo[index]
+                                                ["RecentClass"]
                                             .toString()
                                             .toUpperCase())),
-                                        DataCell(Text(AllStudentInfo[index]
-                                                ["StudentPhoneNumber"]
+                                        DataCell(Text(FileHeaderInfo[index]
+                                                ["Year"]
                                             .toString()
                                             .toUpperCase())),
-                                        DataCell(Text(AllStudentInfo[index]
-                                                ["status"]
+                                        DataCell(Text(FileHeaderInfo[index]
+                                                ["LastWork"]
                                             .toString()
                                             .toUpperCase())),
-                                        DataCell(Text(AllStudentInfo[index]
-                                                ["Dream"]
+                                        DataCell(Text(FileHeaderInfo[index]
+                                                ["Incomplete"]
                                             .toString()
                                             .toUpperCase())),
                                         DataCell(Text(AllStudentInfo[index]
@@ -588,7 +668,7 @@ class _StaffWorkState extends State<StaffWork> {
                                                   String SelectedStudentStatus =
                                                       "";
                                                   String Title =
-                                                      "ফোন কলের কথা গুলো shortly যুক্ত করুন।";
+                                                      "Are You Sure?? You Want to Delete This File!!!!!";
 
                                                   bool loading = false;
 
@@ -621,66 +701,20 @@ class _StaffWorkState extends State<StaffWork> {
                                                             : SingleChildScrollView(
                                                                 child: Column(
                                                                   children: [
-                                                                    for (int i =
-                                                                            0;
-                                                                        i < AllStudentInfo[index]["Comment"].length;
-                                                                        i++)
-                                                                      Container(
-                                                                        child:
-                                                                            Text(
-                                                                          "${i + 1}. ${AllStudentInfo[index]["Comment"][i].toString()}",
-                                                                          style: const TextStyle(
-                                                                              fontFamily: "Josefin Sans",
-                                                                              fontWeight: FontWeight.bold),
-                                                                        ),
-                                                                      ),
-                                                                    const SizedBox(
-                                                                      height:
-                                                                          20,
-                                                                    ),
-                                                                    Container(
-                                                                      width:
-                                                                          300,
-                                                                      child:
-                                                                          TextField(
-                                                                        maxLines:
-                                                                            10,
-                                                                        onChanged:
-                                                                            (value) {},
-                                                                        keyboardType:
-                                                                            TextInputType.multiline,
-                                                                        decoration:
-                                                                            InputDecoration(
-                                                                          border:
-                                                                              OutlineInputBorder(),
-                                                                          labelText:
-                                                                              'Comment',
 
-                                                                          hintText:
-                                                                              'Comment',
 
-                                                                          //  enabledBorder: OutlineInputBorder(
-                                                                          //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                                          //     ),
-                                                                          focusedBorder:
-                                                                              OutlineInputBorder(
-                                                                            borderSide:
-                                                                                BorderSide(width: 3, color: Theme.of(context).primaryColor),
-                                                                          ),
-                                                                          errorBorder:
-                                                                              const OutlineInputBorder(
-                                                                            borderSide:
-                                                                                BorderSide(width: 3, color: Color.fromARGB(255, 66, 125, 145)),
-                                                                          ),
-                                                                        ),
-                                                                        controller:
-                                                                            CommentController[index],
-                                                                      ),
-                                                                    ),
-                                                                    const SizedBox(
-                                                                      height:
-                                                                          20,
-                                                                    ),
+                                                           Center(
+                                                              child: Text(
+                                                                "Delete করতে নিচে থাকা Yes button এ press করুন।",
+                                                                style: const TextStyle(
+                                                                    fontFamily:
+                                                                        "Josefin Sans",
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ),
+                                                             
                                                                   ],
                                                                 ),
                                                               ),
@@ -699,205 +733,93 @@ class _StaffWorkState extends State<StaffWork> {
                                                                 loading = true;
                                                               });
 
-                                                              List
-                                                                  PerStudentComments =
-                                                                  [];
-
-                                                              PerStudentComments =
-                                                                  AllStudentInfo[
+                                                              final collection =
+                                                                  FirebaseFirestore
+                                                                      .instance
+                                                                      .collection(
+                                                                          'AllWorkFileHeader');
+                                                              collection
+                                                                  .doc(FileHeaderInfo[
                                                                           index]
                                                                       [
-                                                                      "Comment"];
+                                                                      "FileID"]) // <-- Doc ID to be deleted.
+                                                                  .delete() // <-- Delete
+                                                                  .then((_) {
+                                                                setState(() {
 
-                                                              PerStudentComments.add(
-                                                                  CommentController[
-                                                                      index]);
 
-                                                              var perStudentInfoWithComment =
-                                                                  {
-                                                                "Comment":
-                                                                    PerStudentComments,
-                                                                "CallCount":
-                                                                    ((int.parse(AllStudentInfo[index]["CallCount"])) +
-                                                                            1)
-                                                                        .toString(),
-                                                                "status":
-                                                                    "Call-${((int.parse(AllStudentInfo[index]["CallCount"])) + 1).toString()}",
-                                                                "LastCallingDate":
-                                                                    DateTime.now()
-                                                                        .toIso8601String(),
-                                                              };
+                                                          const snackBar =
+                                                              SnackBar(
+                                                            /// need to set following properties for best effect of awesome_snackbar_content
+                                                            elevation: 0,
 
-                                                              print(
-                                                                  perStudentInfoWithComment);
+                                                            behavior:
+                                                                SnackBarBehavior
+                                                                    .floating,
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            content:
+                                                                AwesomeSnackbarContent(
+                                                              title:
+                                                                  'Delete Successfull',
+                                                              message:
+                                                                  'Delete Successfull',
 
-                                                              // var id = getRandomString(7);
+                                                              /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                              contentType:
+                                                                  ContentType
+                                                                      .success,
+                                                            ),
+                                                          );
 
-                                                              final StudentInfo = FirebaseFirestore
-                                                                  .instance
-                                                                  .collection(
-                                                                      'PhoneCallStudentList')
-                                                                  .doc(AllStudentInfo[
-                                                                          index]
-                                                                      ["SID"]);
+                                                          ScaffoldMessenger.of(
+                                                              context)
+                                                            ..hideCurrentSnackBar()
+                                                            ..showSnackBar(
+                                                                snackBar);
 
-                                                              StudentInfo.update(
-                                                                      perStudentInfoWithComment)
-                                                                  .then((value) =>
-                                                                      setState(
-                                                                          () async {
-                                                                        var UpdateCallingHeader =
-                                                                            {
-                                                                          "LastWork":
-                                                                              DateTime.now().toIso8601String(),
-                                                                          "Incomplete": AllStudentInfo[index]["status"] == "incomplete"
-                                                                              ? (int.parse(widget.TotalStudent) - 1).toString()
-                                                                              : widget.Incomplete,
-                                                                        };
 
-                                                                        // var id = getRandomString(7);
 
-                                                                        final UpdateHeaderInfo = FirebaseFirestore
-                                                                            .instance
-                                                                            .collection('StaffWorkHeader')
-                                                                            .doc(widget.FileID);
+                                                                });
+                                                              }).catchError(
+                                                                      (error) {
+                                                                setState(() {
+                                                        const snackBar =
+                                                              SnackBar(
+                                                            /// need to set following properties for best effect of awesome_snackbar_content
+                                                            elevation: 0,
 
-                                                                        getFileHeaderInfo();
-                                                                        getAllStudentInfo();
+                                                            behavior:
+                                                                SnackBarBehavior
+                                                                    .floating,
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .transparent,
+                                                            content:
+                                                                AwesomeSnackbarContent(
+                                                              title:
+                                                                  'Something Wrong!!!!',
+                                                              message:
+                                                                  'Try again later...',
 
-                                                                        UpdateHeaderInfo.update(
-                                                                                UpdateCallingHeader)
-                                                                            .then((value) =>
-                                                                                setState(() async {
-                                                                                  // Navigator.pop(context);
+                                                              /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                              contentType:
+                                                                  ContentType
+                                                                      .failure,
+                                                            ),
+                                                          );
 
-                                                                                
-
-                                                                                  const snackBar = SnackBar(
-                                                                                    elevation: 0,
-                                                                                    behavior: SnackBarBehavior.floating,
-                                                                                    backgroundColor: Colors.transparent,
-                                                                                    content: AwesomeSnackbarContent(
-                                                                                      title: 'successfull',
-                                                                                      message: 'Hey Thank You. Good Job',
-
-                                                                                      /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                                                      contentType: ContentType.success,
-                                                                                    ),
-                                                                                  );
-
-                                                                                  ScaffoldMessenger.of(context)
-                                                                                    ..hideCurrentSnackBar()
-                                                                                    ..showSnackBar(snackBar);
-
-                                                                                  setState(() {
-                                                                                    loading = false;
-                                                                                  });
-                                                                                }))
-                                                                            .onError((error, stackTrace) => setState(() {
-                                                                                  const snackBar = SnackBar(
-                                                                                    /// need to set following properties for best effect of awesome_snackbar_content
-                                                                                    elevation: 0,
-
-                                                                                    behavior: SnackBarBehavior.floating,
-                                                                                    backgroundColor: Colors.transparent,
-                                                                                    content: AwesomeSnackbarContent(
-                                                                                      title: 'Something Wrong!!!!',
-                                                                                      message: 'Try again later...',
-
-                                                                                      /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                                                      contentType: ContentType.failure,
-                                                                                    ),
-                                                                                  );
-
-                                                                                  ScaffoldMessenger.of(context)
-                                                                                    ..hideCurrentSnackBar()
-                                                                                    ..showSnackBar(snackBar);
-
-                                                                                  setState(() {
-                                                                                    loading = false;
-                                                                                  });
-                                                                                }));
-
-                                                                        // Navigator.pop(context);
-
-                                                       
-
-                                                                        const snackBar =
-                                                                            SnackBar(
-                                                                          elevation:
-                                                                              0,
-                                                                          behavior:
-                                                                              SnackBarBehavior.floating,
-                                                                          backgroundColor:
-                                                                              Colors.transparent,
-                                                                          content:
-                                                                              AwesomeSnackbarContent(
-                                                                            title:
-                                                                                'successfull',
-                                                                            message:
-                                                                                'Hey Thank You. Good Job',
-
-                                                                            /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                                            contentType:
-                                                                                ContentType.success,
-                                                                          ),
-                                                                        );
-
-                                                                        ScaffoldMessenger.of(
-                                                                            context)
-                                                                          ..hideCurrentSnackBar()
-                                                                          ..showSnackBar(
-                                                                              snackBar);
-
-                                                                        setState(
-                                                                            () {
-                                                                          loading =
-                                                                              false;
-                                                                        });
-                                                                      }))
-                                                                  .onError((error,
-                                                                          stackTrace) =>
-                                                                      setState(
-                                                                          () {
-                                                                        const snackBar =
-                                                                            SnackBar(
-                                                                          /// need to set following properties for best effect of awesome_snackbar_content
-                                                                          elevation:
-                                                                              0,
-
-                                                                          behavior:
-                                                                              SnackBarBehavior.floating,
-                                                                          backgroundColor:
-                                                                              Colors.transparent,
-                                                                          content:
-                                                                              AwesomeSnackbarContent(
-                                                                            title:
-                                                                                'Something Wrong!!!!',
-                                                                            message:
-                                                                                'Try again later...',
-
-                                                                            /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                                            contentType:
-                                                                                ContentType.failure,
-                                                                          ),
-                                                                        );
-
-                                                                        ScaffoldMessenger.of(
-                                                                            context)
-                                                                          ..hideCurrentSnackBar()
-                                                                          ..showSnackBar(
-                                                                              snackBar);
-
-                                                                        setState(
-                                                                            () {
-                                                                          loading =
-                                                                              false;
-                                                                        });
-                                                                      }));
+                                                          ScaffoldMessenger.of(
+                                                              context)
+                                                            ..hideCurrentSnackBar()
+                                                            ..showSnackBar(
+                                                                snackBar);
+                                                                });
+                                                              });
                                                             },
                                                             child: const Text(
-                                                                "Save"),
+                                                                "Yes"),
                                                           ),
                                                         ],
                                                       );
@@ -906,7 +828,7 @@ class _StaffWorkState extends State<StaffWork> {
                                                 },
                                               );
                                             },
-                                            child: Text("Add Comment"))),
+                                            child: Text("Delete"))),
                                       ]))),
                         ),
                       ),
