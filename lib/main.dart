@@ -1,4 +1,5 @@
 import 'package:confidence/Screens/HomeScreen.dart';
+import 'package:confidence/Screens/PDF/RegistrationFormPDF.dart';
 import 'package:confidence/Screens/StaffWork/StaffWork.dart';
 import 'package:confidence/Screens/Students/AllStudent.dart';
 import 'package:confidence/Screens/Students/StudentsRegistration.dart';
@@ -57,7 +58,55 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: StaffWork(FileID: "2f6ebe66-c24b-4794-84a5-2743dcf629ac", TotalStudent: '100', Incomplete: '100',),
+      home: RegistrationFormPDF(SalesData: [{
+                                                "StudentName": "",
+
+                                        "StudentPhoneNumber":
+                                            "",
+                                        "StudentPresentAddress":
+                                           "",
+
+                                        "StudentPermanentAddress":
+                                            "",
+
+                                        "StudentDateOfBirth":
+                                           "",
+
+                                        "FatherName": "",
+                                        "MotherName": "",
+                                        "SSCRollNo":"",
+                                        "HSCRollNo":"",
+                                        "RegistrationNo":"",
+                                        "SSCInstitutionName":"",
+                                        "HSCInstitutionName":"",
+                                        "SSCGPA":"",
+                                        "HSCGPA":"",
+                                        "FutureAim":"",
+                                        "FatherPhoneNo":
+                                            "",
+                                        "SSCBatchYear":"",
+                                        "HSCBatchYear":"",
+                                        "Department": "",
+
+                                        "SIDNo": "",
+                                        "AdmissionDateTime":
+                                            "${DateTime.now().toIso8601String()}",
+                                        "AdmissionDate":
+                                            "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
+                                        "AdmissionMonth":
+                                            "${DateTime.now().month}/${DateTime.now().year}",
+                                        "AdmissionYear":
+                                            "${DateTime.now().year}",
+                                        "StudentStatus": "new",
+                                        "AccountStatus": "open",
+                                        "TeacherList":[],
+                                        "FatherPhoneOtpCode": "",
+                                        "StudentPhoneOtpCode": "",
+                                        "StudentPhoneVerify": "false",
+                                        "FatherPhoneVerify": "false",
+                                        "StudentImageUrl":
+                                            "https://t4.ftcdn.net/jpg/00/65/77/27/360_F_65772719_A1UV5kLi5nCEWI0BNLLiFaBPEkUbv5Fv.jpg"
+      }]),
     );
   }
 }
