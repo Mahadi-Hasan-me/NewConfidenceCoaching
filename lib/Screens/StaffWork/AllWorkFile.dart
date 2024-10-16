@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:confidence/Screens/StaffWork/StaffWork.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -92,7 +93,7 @@ class _AllWorkFileState extends State<AllWorkFile> {
 
   Future<void> getFileHeaderInfo() async {
     CollectionReference _collectionFileInfoRef =
-        FirebaseFirestore.instance.collection('AllWorkFileHeader');
+        FirebaseFirestore.instance.collection('StaffWorkHeader');
 
     QuerySnapshot FileInfoquerySnapshot = await _collectionFileInfoRef.get();
 
@@ -467,11 +468,14 @@ class _AllWorkFileState extends State<AllWorkFile> {
                                                       loading = false;
                                                     });
 
+                                                    getFileHeaderInfo();
+
                                                     Navigator.pop(context);
 
-                                                    final snackBar = SnackBar(
+                                                    const snackBar = SnackBar(
                                                       /// need to set following properties for best effect of awesome_snackbar_content
                                                       elevation: 0,
+
                                                       behavior: SnackBarBehavior
                                                           .floating,
                                                       backgroundColor:
@@ -479,15 +483,20 @@ class _AllWorkFileState extends State<AllWorkFile> {
                                                       content:
                                                           AwesomeSnackbarContent(
                                                         title:
-                                                            'Created successfull',
+                                                            'Created Successfull',
                                                         message:
-                                                            'Created successfull',
+                                                            'Created Successfull',
 
                                                         /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
                                                         contentType:
                                                             ContentType.success,
                                                       ),
                                                     );
+
+                                                    ScaffoldMessenger.of(
+                                                        context)
+                                                      ..hideCurrentSnackBar()
+                                                      ..showSnackBar(snackBar);
 
                                                     // Navigator.push(
                                                     //   context,
@@ -502,9 +511,10 @@ class _AllWorkFileState extends State<AllWorkFile> {
                                                       loading = false;
                                                     });
 
-                                                    final snackBar = SnackBar(
+                                                    const snackBar = SnackBar(
                                                       /// need to set following properties for best effect of awesome_snackbar_content
                                                       elevation: 0,
+
                                                       behavior: SnackBarBehavior
                                                           .floating,
                                                       backgroundColor:
@@ -514,13 +524,18 @@ class _AllWorkFileState extends State<AllWorkFile> {
                                                         title:
                                                             'Something Wrong!!!',
                                                         message:
-                                                            'Please Check your connection',
+                                                            'Something Wrong!!!',
 
                                                         /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
                                                         contentType:
                                                             ContentType.failure,
                                                       ),
                                                     );
+
+                                                    ScaffoldMessenger.of(
+                                                        context)
+                                                      ..hideCurrentSnackBar()
+                                                      ..showSnackBar(snackBar);
                                                   }));
                                         },
                                         child: const Text("Save"),
@@ -608,6 +623,9 @@ class _AllWorkFileState extends State<AllWorkFile> {
                                   label: Text('Incomplete'),
                                 ),
                                 DataColumn(
+                                  label: Text('View'),
+                                ),
+                                DataColumn(
                                   label: Text('Edit'),
                                 ),
                                 DataColumn(
@@ -646,6 +664,25 @@ class _AllWorkFileState extends State<AllWorkFile> {
                                                 ["Incomplete"]
                                             .toString()
                                             .toUpperCase())),
+                                        DataCell(ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) => StaffWork(
+                                                          FileID:
+                                                              FileHeaderInfo[
+                                                                      index]
+                                                                  ["FileID"],
+                                                          TotalStudent:
+                                                              FileHeaderInfo[
+                                                                      index][
+                                                                  "TotalStudent"],
+                                                          Incomplete:
+                                                              FileHeaderInfo[
+                                                                      index][
+                                                                  "Incomplete"])));
+                                            },
+                                            child: Text("View"))),
                                         DataCell(ElevatedButton(
                                             onPressed: () {},
                                             child: Text("Edit"))),
@@ -721,7 +758,7 @@ class _AllWorkFileState extends State<AllWorkFile> {
                                                                   FirebaseFirestore
                                                                       .instance
                                                                       .collection(
-                                                                          'AllWorkFileHeader');
+                                                                          'StaffWorkHeader');
                                                               collection
                                                                   .doc(FileHeaderInfo[
                                                                           index]
@@ -733,6 +770,9 @@ class _AllWorkFileState extends State<AllWorkFile> {
                                                                   // delete All student info under this file
 
                                                                   getFileHeaderInfo();
+
+                                                                  Navigator.pop(
+                                                                      context);
                                                                   const snackBar =
                                                                       SnackBar(
                                                                     /// need to set following properties for best effect of awesome_snackbar_content
@@ -769,6 +809,9 @@ class _AllWorkFileState extends State<AllWorkFile> {
                                                               }).catchError(
                                                                       (error) {
                                                                 setState(() {
+                                                                  Navigator.pop(
+                                                                      context);
+
                                                                   const snackBar =
                                                                       SnackBar(
                                                                     /// need to set following properties for best effect of awesome_snackbar_content
