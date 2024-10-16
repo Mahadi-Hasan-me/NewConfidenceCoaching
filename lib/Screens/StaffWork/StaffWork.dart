@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:confidence/Screens/StaffWork/AllWorkFile.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -458,6 +459,9 @@ class _StaffWorkState extends State<StaffWork> {
                       PopupMenuItem(
                         child: Text("Go to All Work"),
                         value: '/about',
+                        onTap: () {
+                               Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllWorkFile()));
+                        },
                       ),
                       // PopupMenuItem(
                       //   child: Text("Contact"),

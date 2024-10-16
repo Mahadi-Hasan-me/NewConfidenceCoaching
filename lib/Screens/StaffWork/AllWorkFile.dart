@@ -613,12 +613,6 @@ class _AllWorkFileState extends State<AllWorkFile> {
                                 DataColumn(
                                   label: Text('Delete'),
                                 ),
-                                DataColumn(
-                                  label: Text('Count'),
-                                ),
-                                DataColumn(
-                                  label: Text('Add Comment'),
-                                ),
                               ],
                               rows: List<DataRow>.generate(
                                   FileHeaderInfo.length,
@@ -652,21 +646,14 @@ class _AllWorkFileState extends State<AllWorkFile> {
                                                 ["Incomplete"]
                                             .toString()
                                             .toUpperCase())),
-                                        DataCell(Text(AllStudentInfo[index]
-                                                ["LastCallingDate"]
-                                            .toString()
-                                            .toUpperCase())),
-                                        DataCell(Text(AllStudentInfo[index]
-                                                ["CallCount"]
-                                            .toString()
-                                            .toUpperCase())),
+                                        DataCell(ElevatedButton(
+                                            onPressed: () {},
+                                            child: Text("Edit"))),
                                         DataCell(ElevatedButton(
                                             onPressed: () async {
                                               showDialog(
                                                 context: context,
                                                 builder: (context) {
-                                                  String SelectedStudentStatus =
-                                                      "";
                                                   String Title =
                                                       "Are You Sure?? You Want to Delete This File!!!!!";
 
@@ -698,23 +685,20 @@ class _AllWorkFileState extends State<AllWorkFile> {
                                                                 child:
                                                                     CircularProgressIndicator(),
                                                               )
-                                                            : SingleChildScrollView(
+                                                            : const SingleChildScrollView(
                                                                 child: Column(
                                                                   children: [
-
-
-                                                           Center(
-                                                              child: Text(
-                                                                "Delete করতে নিচে থাকা Yes button এ press করুন।",
-                                                                style: const TextStyle(
-                                                                    fontFamily:
-                                                                        "Josefin Sans",
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                              ),
-                                                            ),
-                                                             
+                                                                    Center(
+                                                                      child:
+                                                                          Text(
+                                                                        "Delete করতে নিচে থাকা Yes button এ press করুন।",
+                                                                        style: TextStyle(
+                                                                            fontFamily:
+                                                                                "Josefin Sans",
+                                                                            fontWeight:
+                                                                                FontWeight.bold),
+                                                                      ),
+                                                                    ),
                                                                   ],
                                                                 ),
                                                               ),
@@ -746,78 +730,77 @@ class _AllWorkFileState extends State<AllWorkFile> {
                                                                   .delete() // <-- Delete
                                                                   .then((_) {
                                                                 setState(() {
+                                                                  // delete All student info under this file
 
+                                                                  getFileHeaderInfo();
+                                                                  const snackBar =
+                                                                      SnackBar(
+                                                                    /// need to set following properties for best effect of awesome_snackbar_content
+                                                                    elevation:
+                                                                        0,
 
-                                                        // delete All student info under this file
+                                                                    behavior:
+                                                                        SnackBarBehavior
+                                                                            .floating,
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    content:
+                                                                        AwesomeSnackbarContent(
+                                                                      title:
+                                                                          'Delete Successfull',
+                                                                      message:
+                                                                          'Delete Successfull',
 
+                                                                      /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                      contentType:
+                                                                          ContentType
+                                                                              .success,
+                                                                    ),
+                                                                  );
 
-                                                          const snackBar =
-                                                              SnackBar(
-                                                            /// need to set following properties for best effect of awesome_snackbar_content
-                                                            elevation: 0,
-
-                                                            behavior:
-                                                                SnackBarBehavior
-                                                                    .floating,
-                                                            backgroundColor:
-                                                                Colors
-                                                                    .transparent,
-                                                            content:
-                                                                AwesomeSnackbarContent(
-                                                              title:
-                                                                  'Delete Successfull',
-                                                              message:
-                                                                  'Delete Successfull',
-
-                                                              /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                              contentType:
-                                                                  ContentType
-                                                                      .success,
-                                                            ),
-                                                          );
-
-                                                          ScaffoldMessenger.of(
-                                                              context)
-                                                            ..hideCurrentSnackBar()
-                                                            ..showSnackBar(
-                                                                snackBar);
-
-
-
+                                                                  ScaffoldMessenger
+                                                                      .of(
+                                                                          context)
+                                                                    ..hideCurrentSnackBar()
+                                                                    ..showSnackBar(
+                                                                        snackBar);
                                                                 });
                                                               }).catchError(
                                                                       (error) {
                                                                 setState(() {
-                                                        const snackBar =
-                                                              SnackBar(
-                                                            /// need to set following properties for best effect of awesome_snackbar_content
-                                                            elevation: 0,
+                                                                  const snackBar =
+                                                                      SnackBar(
+                                                                    /// need to set following properties for best effect of awesome_snackbar_content
+                                                                    elevation:
+                                                                        0,
 
-                                                            behavior:
-                                                                SnackBarBehavior
-                                                                    .floating,
-                                                            backgroundColor:
-                                                                Colors
-                                                                    .transparent,
-                                                            content:
-                                                                AwesomeSnackbarContent(
-                                                              title:
-                                                                  'Something Wrong!!!!',
-                                                              message:
-                                                                  'Try again later...',
+                                                                    behavior:
+                                                                        SnackBarBehavior
+                                                                            .floating,
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    content:
+                                                                        AwesomeSnackbarContent(
+                                                                      title:
+                                                                          'Something Wrong!!!!',
+                                                                      message:
+                                                                          'Try again later...',
 
-                                                              /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                              contentType:
-                                                                  ContentType
-                                                                      .failure,
-                                                            ),
-                                                          );
+                                                                      /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                      contentType:
+                                                                          ContentType
+                                                                              .failure,
+                                                                    ),
+                                                                  );
 
-                                                          ScaffoldMessenger.of(
-                                                              context)
-                                                            ..hideCurrentSnackBar()
-                                                            ..showSnackBar(
-                                                                snackBar);
+                                                                  ScaffoldMessenger
+                                                                      .of(
+                                                                          context)
+                                                                    ..hideCurrentSnackBar()
+                                                                    ..showSnackBar(
+                                                                        snackBar);
                                                                 });
                                                               });
                                                             },
