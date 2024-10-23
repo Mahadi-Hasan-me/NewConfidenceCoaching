@@ -61,6 +61,8 @@ class _StudentRegistrationState extends State<StudentRegistration> {
 
   String SelectedValue = "";
 
+  String SelectedSex = "";
+
   String SelectedSemisterValue = "";
 
   String SelectedCategory = "";
@@ -268,17 +270,19 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                           width: width / 3,
                           child: TextField(
                             onChanged: (value) {
-                        checkAddressTextField();
-                        checkNameTextField();
-                        checkPhoneNumberTextField();
-                        checkFatherPhoneNoTextField();
-
-                      },
+                              checkAddressTextField();
+                              checkNameTextField();
+                              checkPhoneNumberTextField();
+                              checkFatherPhoneNoTextField();
+                            },
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Student Name',
-                              helperText: NameError ? 'Required Enter Student Name' : "",
-                              helperStyle: TextStyle(color: Colors.red.shade400),
+                              helperText: NameError
+                                  ? 'Required Enter Student Name'
+                                  : "",
+                              helperStyle:
+                                  TextStyle(color: Colors.red.shade400),
                               labelStyle: TextStyle(
                                   color: myFocusNode.hasFocus
                                       ? Theme.of(context).primaryColor
@@ -308,12 +312,11 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                           width: width / 3,
                           child: TextField(
                             onChanged: (value) {
-                        checkAddressTextField();
-                        checkNameTextField();
-                        checkPhoneNumberTextField();
-                        checkFatherPhoneNoTextField();
-
-                      },
+                              checkAddressTextField();
+                              checkNameTextField();
+                              checkPhoneNumberTextField();
+                              checkFatherPhoneNoTextField();
+                            },
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Father Name',
@@ -346,12 +349,11 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                           width: width / 4,
                           child: TextField(
                             onChanged: (value) {
-                        checkAddressTextField();
-                        checkNameTextField();
-                        checkPhoneNumberTextField();
-                        checkFatherPhoneNoTextField();
-
-                      },
+                              checkAddressTextField();
+                              checkNameTextField();
+                              checkPhoneNumberTextField();
+                              checkFatherPhoneNoTextField();
+                            },
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Mother Name',
@@ -390,12 +392,11 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                           width: width / 3,
                           child: TextField(
                             onChanged: (value) {
-                        checkAddressTextField();
-                        checkNameTextField();
-                        checkPhoneNumberTextField();
-                        checkFatherPhoneNoTextField();
-
-                      },
+                              checkAddressTextField();
+                              checkNameTextField();
+                              checkPhoneNumberTextField();
+                              checkFatherPhoneNoTextField();
+                            },
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Date of Birth (01/01/2000)',
@@ -428,17 +429,19 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                           width: width / 3,
                           child: TextField(
                             onChanged: (value) {
-                        checkAddressTextField();
-                        checkNameTextField();
-                        checkPhoneNumberTextField();
-                        checkFatherPhoneNoTextField();
-
-                      },
+                              checkAddressTextField();
+                              checkNameTextField();
+                              checkPhoneNumberTextField();
+                              checkFatherPhoneNoTextField();
+                            },
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Student Phone No(017******)',
-                              helperText: phoneNumberError ? 'Required Enter Student Phone No' : "",
-                              helperStyle: TextStyle(color: Colors.red.shade400),
+                              helperText: phoneNumberError
+                                  ? 'Required Enter Student Phone No'
+                                  : "",
+                              helperStyle:
+                                  TextStyle(color: Colors.red.shade400),
                               labelStyle: TextStyle(
                                   color: myFocusNode.hasFocus
                                       ? Theme.of(context).primaryColor
@@ -468,17 +471,19 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                           width: width / 4,
                           child: TextField(
                             onChanged: (value) {
-                        checkAddressTextField();
-                        checkNameTextField();
-                        checkPhoneNumberTextField();
-                        checkFatherPhoneNoTextField();
-
-                      },
+                              checkAddressTextField();
+                              checkNameTextField();
+                              checkPhoneNumberTextField();
+                              checkFatherPhoneNoTextField();
+                            },
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Father Phone No(017****)',
-                              helperText: FatherPhoneError ? 'Required Enter Father Phone No' : "",
-                              helperStyle: TextStyle(color: Colors.red.shade400),
+                              helperText: FatherPhoneError
+                                  ? 'Required Enter Father Phone No'
+                                  : "",
+                              helperStyle:
+                                  TextStyle(color: Colors.red.shade400),
                               labelStyle: TextStyle(
                                   color: myFocusNode.hasFocus
                                       ? Theme.of(context).primaryColor
@@ -514,12 +519,11 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                           width: width / 3,
                           child: TextField(
                             onChanged: (value) {
-                        checkAddressTextField();
-                        checkNameTextField();
-                        checkPhoneNumberTextField();
-                        checkFatherPhoneNoTextField();
-
-                      },
+                              checkAddressTextField();
+                              checkNameTextField();
+                              checkPhoneNumberTextField();
+                              checkFatherPhoneNoTextField();
+                            },
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'SSC Roll No',
@@ -552,12 +556,11 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                           width: width / 3,
                           child: TextField(
                             onChanged: (value) {
-                        checkAddressTextField();
-                        checkNameTextField();
-                        checkPhoneNumberTextField();
-                        checkFatherPhoneNoTextField();
-
-                      },
+                              checkAddressTextField();
+                              checkNameTextField();
+                              checkPhoneNumberTextField();
+                              checkFatherPhoneNoTextField();
+                            },
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'HSC Roll No',
@@ -590,12 +593,11 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                           width: width / 4,
                           child: TextField(
                             onChanged: (value) {
-                        checkAddressTextField();
-                        checkNameTextField();
-                        checkPhoneNumberTextField();
-                        checkFatherPhoneNoTextField();
-
-                      },
+                              checkAddressTextField();
+                              checkNameTextField();
+                              checkPhoneNumberTextField();
+                              checkFatherPhoneNoTextField();
+                            },
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Registration No',
@@ -634,12 +636,11 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                           width: width / 5,
                           child: TextField(
                             onChanged: (value) {
-                        checkAddressTextField();
-                        checkNameTextField();
-                        checkPhoneNumberTextField();
-                        checkFatherPhoneNoTextField();
-
-                      },
+                              checkAddressTextField();
+                              checkNameTextField();
+                              checkPhoneNumberTextField();
+                              checkFatherPhoneNoTextField();
+                            },
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'SSC GPA',
@@ -672,12 +673,11 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                           width: width / 5,
                           child: TextField(
                             onChanged: (value) {
-                        checkAddressTextField();
-                        checkNameTextField();
-                        checkPhoneNumberTextField();
-                        checkFatherPhoneNoTextField();
-
-                      },
+                              checkAddressTextField();
+                              checkNameTextField();
+                              checkPhoneNumberTextField();
+                              checkFatherPhoneNoTextField();
+                            },
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'HSC GPA',
@@ -710,12 +710,11 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                           width: width / 4,
                           child: TextField(
                             onChanged: (value) {
-                        checkAddressTextField();
-                        checkNameTextField();
-                        checkPhoneNumberTextField();
-                        checkFatherPhoneNoTextField();
-
-                      },
+                              checkAddressTextField();
+                              checkNameTextField();
+                              checkPhoneNumberTextField();
+                              checkFatherPhoneNoTextField();
+                            },
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'SSC Institution Name',
@@ -748,12 +747,11 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                           width: width / 4,
                           child: TextField(
                             onChanged: (value) {
-                        checkAddressTextField();
-                        checkNameTextField();
-                        checkPhoneNumberTextField();
-                        checkFatherPhoneNoTextField();
-
-                      },
+                              checkAddressTextField();
+                              checkNameTextField();
+                              checkPhoneNumberTextField();
+                              checkFatherPhoneNoTextField();
+                            },
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'HSC Institution Name',
@@ -791,13 +789,12 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                         SizedBox(
                           width: width / 3,
                           child: TextField(
-                        onChanged: (value) {
-                        checkAddressTextField();
-                        checkNameTextField();
-                        checkPhoneNumberTextField();
-                        checkFatherPhoneNoTextField();
-
-                      },
+                            onChanged: (value) {
+                              checkAddressTextField();
+                              checkNameTextField();
+                              checkPhoneNumberTextField();
+                              checkFatherPhoneNoTextField();
+                            },
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Present Address',
@@ -830,16 +827,18 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                           width: width / 3,
                           child: TextField(
                             onChanged: (value) {
-                        checkAddressTextField();
-                        checkNameTextField();
-                        checkPhoneNumberTextField();
-                        checkFatherPhoneNoTextField();
-
-                      },
+                              checkAddressTextField();
+                              checkNameTextField();
+                              checkPhoneNumberTextField();
+                              checkFatherPhoneNoTextField();
+                            },
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              helperText: addressError ? 'Required Enter Permanent Address' : "",
-                              helperStyle: TextStyle(color: Colors.red.shade400),
+                              helperText: addressError
+                                  ? 'Required Enter Permanent Address'
+                                  : "",
+                              helperStyle:
+                                  TextStyle(color: Colors.red.shade400),
                               labelText: 'Permanent Address',
                               labelStyle: TextStyle(
                                   color: myFocusNode.hasFocus
@@ -869,14 +868,12 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                         SizedBox(
                           width: width / 4,
                           child: TextField(
-                        
-                        onChanged: (value) {
-                        checkAddressTextField();
-                        checkNameTextField();
-                        checkPhoneNumberTextField();
-                        checkFatherPhoneNoTextField();
-
-                      },
+                            onChanged: (value) {
+                              checkAddressTextField();
+                              checkNameTextField();
+                              checkPhoneNumberTextField();
+                              checkFatherPhoneNoTextField();
+                            },
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText:
@@ -907,9 +904,7 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                       ],
                     ),
 
-
-
-                   const SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
 
@@ -918,13 +913,12 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                         SizedBox(
                           width: width / 2,
                           child: TextField(
-                        onChanged: (value) {
-                        checkAddressTextField();
-                        checkNameTextField();
-                        checkPhoneNumberTextField();
-                        checkFatherPhoneNoTextField();
-
-                      },
+                            onChanged: (value) {
+                              checkAddressTextField();
+                              checkNameTextField();
+                              checkPhoneNumberTextField();
+                              checkFatherPhoneNoTextField();
+                            },
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'SSC Batch Year(2024)',
@@ -957,15 +951,14 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                           width: width / 2,
                           child: TextField(
                             onChanged: (value) {
-                        checkAddressTextField();
-                        checkNameTextField();
-                        checkPhoneNumberTextField();
-                        checkFatherPhoneNoTextField();
-
-                      },
+                              checkAddressTextField();
+                              checkNameTextField();
+                              checkPhoneNumberTextField();
+                              checkFatherPhoneNoTextField();
+                            },
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              
+
                               labelText: 'HSC Batch Year(2026)',
                               labelStyle: TextStyle(
                                   color: myFocusNode.hasFocus
@@ -992,11 +985,8 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                         const SizedBox(
                           width: 15,
                         ),
-                     
                       ],
                     ),
-
-       
 
                     SizedBox(
                       height: 11,
@@ -1036,6 +1026,49 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                           setState(
                             () {
                               SelectedValue = val!;
+                            },
+                          );
+                        },
+                      ),
+                    ),
+
+                    SizedBox(
+                      height: 11,
+                    ),
+
+                    Container(
+                      height: 70,
+                      child: DropdownButton(
+                        hint: SelectedSex == ""
+                            ? Text('SEX')
+                            : Text(
+                               SelectedSex,
+                                style: TextStyle(
+                                    color: ColorName().appColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16),
+                              ),
+                        isExpanded: true,
+                        iconSize: 30.0,
+                        style: TextStyle(
+                            color: ColorName().appColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16),
+                        items: [
+                          'Male',
+                          'Female',
+                        ].map(
+                          (val) {
+                            return DropdownMenuItem<String>(
+                              value: val,
+                              child: Text(val),
+                            );
+                          },
+                        ).toList(),
+                        onChanged: (val) {
+                          setState(
+                            () {
+                              SelectedSex = val!;
                             },
                           );
                         },
@@ -1093,12 +1126,11 @@ class _StudentRegistrationState extends State<StudentRegistration> {
 // যদি Android হয় তখন নিচে RegCodeTextField change করে RegCodeController.text.trim().tolowerCase() ব্যবহার করতে হবে।
 
                     RegCode == RegCodeTextField &&
-                            
                             myAddressController.text.isNotEmpty &&
                             StudentNameController.text.isNotEmpty &&
                             myPhoneNumberController.text.isNotEmpty &&
                             FatherPhoneNoController.text.isNotEmpty &&
-                            SelectedValue.isNotEmpty 
+                            SelectedValue.isNotEmpty
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -1143,41 +1175,47 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                                             .text
                                             .trim()
                                             .toLowerCase(),
-
                                         "StudentPhoneNumber":
                                             myPhoneNumberController.text.trim(),
                                         "StudentPresentAddress":
                                             PresentAddressController.text
                                                 .trim(),
-
                                         "StudentPermanentAddress":
-                                            myAddressController.text
-                                                .trim(),
-
+                                            myAddressController.text.trim(),
                                         "StudentDateOfBirth":
                                             DateOfBirthController.text.trim(),
-
                                         "FatherName": FatherNameController.text
                                             .trim()
                                             .toLowerCase(),
                                         "MotherName": MotherNameController.text
                                             .trim()
                                             .toLowerCase(),
-                                        "SSCRollNo":SSCRollNoController.text.trim(),
-                                        "HSCRollNo":HSCRollNoController.text.trim(),
-                                        "RegistrationNo":RegistrationNoController.text.trim(),
-                                        "SSCInstitutionName":SSCInstitutionNameController.text.trim(),
-                                        "HSCInstitutionName":HSCInstitutionNameController.text.trim(),
-                                        "SSCGPA":SSCGPAController.text.trim(),
-                                        "HSCGPA":HSCGPAController.text.trim(),
-                                        "FutureAim":FutureAimController.text.trim(),
+                                        "Sex":SelectedSex.toString(),
+                                        "SSCRollNo":
+                                            SSCRollNoController.text.trim(),
+                                        "HSCRollNo":
+                                            HSCRollNoController.text.trim(),
+                                        "RegistrationNo":
+                                            RegistrationNoController.text
+                                                .trim(),
+                                        "SSCInstitutionName":
+                                            SSCInstitutionNameController.text
+                                                .trim(),
+                                        "HSCInstitutionName":
+                                            HSCInstitutionNameController.text
+                                                .trim(),
+                                        "SSCGPA": SSCGPAController.text.trim(),
+                                        "HSCGPA": HSCGPAController.text.trim(),
+                                        "FutureAim":
+                                            FutureAimController.text.trim(),
                                         "FatherPhoneNo":
                                             FatherPhoneNoController.text.trim(),
-                                        "SSCBatchYear":SSCBatchYearController.text.trim(),
-                                        "HSCBatchYear":HSCBatchYearController.text.trim(),
+                                        "SSCBatchYear":
+                                            SSCBatchYearController.text.trim(),
+                                        "HSCBatchYear":
+                                            HSCBatchYearController.text.trim(),
                                         "Department": SelectedValue.toString()
                                             .toLowerCase(),
-
                                         "SIDNo": code.toString(),
                                         "AdmissionDateTime":
                                             "${DateTime.now().toIso8601String()}",
@@ -1189,7 +1227,7 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                                             "${DateTime.now().year}",
                                         "StudentStatus": "new",
                                         "AccountStatus": "open",
-                                        "TeacherList":[],
+                                        "TeacherList": [],
                                         "FatherPhoneOtpCode": code.toString(),
                                         "StudentPhoneOtpCode": code.toString(),
                                         "StudentPhoneVerify": "false",
@@ -1249,7 +1287,10 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
-                                                      builder: (context) => ImageUpload(SID: code.toString())),
+                                                      builder: (context) =>
+                                                          ImageUpload(
+                                                              SID: code
+                                                                  .toString())),
                                                 );
 
                                                 //  myAdminNameController.clear();

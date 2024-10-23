@@ -118,6 +118,24 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+  fonts:
+    - family: Pacifico
+      fonts:
+        - asset: lib/fonts/Pacifico-Regular.ttf
+        - asset: lib/fonts/JosefinSans-VariableFont_wght.ttf
+        - asset: lib/fonts/JosefinSans-BoldItalic.ttf
+    - family: Josefin Sans
+      fonts:
+        - asset: lib/fonts/TiroBangla-Regular.ttf
+    - family: SiyamRupali
+      fonts:
+        - asset: lib/fonts/Siyam-Rupali-ANSI.ttf
+    - family: Caladea
+      fonts:
+        - asset: lib/fonts/Caladea-BoldItalic.ttf
+    - family: Bungee
+      fonts:
+        - asset: lib/fonts/Bungee-Regular.ttf
   # fonts:
   #   - family: Schyler
   #     fonts:
