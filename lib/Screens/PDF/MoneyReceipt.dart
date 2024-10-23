@@ -13,18 +13,18 @@ import 'package:printing/printing.dart';
 
 
 
-class RegistrationFormPDF extends StatefulWidget {
+class MoneyReceiptPDF extends StatefulWidget {
 
 
 final List SalesData;
 
- const RegistrationFormPDF({super.key,  required this.SalesData});
+ const MoneyReceiptPDF({super.key,  required this.SalesData});
 
   @override
-  State<RegistrationFormPDF> createState() => _RegistrationFormPDFState();
+  State<MoneyReceiptPDF> createState() => _MoneyReceiptPDFState();
 }
 
-class _RegistrationFormPDFState extends State<RegistrationFormPDF> {
+class _MoneyReceiptPDFState extends State<MoneyReceiptPDF> {
 
 
 
@@ -83,7 +83,7 @@ class _RegistrationFormPDFState extends State<RegistrationFormPDF> {
 
 Future<Uint8List> makePdf(List SalesData) async {
 
-final netImage = await networkImage(SalesData[0]["StudentImageUrl"]);
+final netImage = await networkImage('https://i.ibb.co.com/qdTw3h6/young-bearded-man-with-striped-shirt.jpg');
 
 final backImage = await networkImage('https://i.ibb.co.com/pjm35Bm/v915-mynt-002-b.jpg');
 
@@ -240,7 +240,7 @@ pdf.addPage(pw.Page(
 
                   //  pw.SizedBox(height: 6),
 
-                  pw.Center(child: pw.Text("Mobile: 01718615601, 01746621124", style:pw.TextStyle(fontSize: 10,  font: ttf, color: PdfColor.fromInt(0xffffff))),),
+                  pw.Center(child: pw.Text("Mobile: 01711414664, 01721608030", style:pw.TextStyle(fontSize: 10,  font: ttf, color: PdfColor.fromInt(0xffffff))),),
 
                   pw.SizedBox(height: 6),
                   // pw.Center(child: pw.Text("EIIN: 122026", style:pw.TextStyle(fontSize: 11,  font: ttf)),),
@@ -264,21 +264,21 @@ pdf.addPage(pw.Page(
               ),
 
 
-              // pw.Container(
-              //   width: 650,
-              //   height: 20,
-              //    decoration: const pw.BoxDecoration(
-              //           borderRadius: pw.BorderRadius.only(
-              //               topRight: pw.Radius.circular(10.0),
-              //               topLeft: pw.Radius.circular(10.0),
-              //               bottomLeft: pw.Radius.circular(10.0),
-              //               bottomRight: pw.Radius.circular(10.0)),
-              //           color: PdfColor.fromInt(0x04064f),
-              //         ),
+              pw.Container(
+                width: 650,
+                height: 20,
+                 decoration: const pw.BoxDecoration(
+                        borderRadius: pw.BorderRadius.only(
+                            topRight: pw.Radius.circular(10.0),
+                            topLeft: pw.Radius.circular(10.0),
+                            bottomLeft: pw.Radius.circular(10.0),
+                            bottomRight: pw.Radius.circular(10.0)),
+                        color: PdfColor.fromInt(0x04064f),
+                      ),
                 
                 
                 
-              //   child: pw.Center(child: pw.Padding(padding: pw.EdgeInsets.all(3), child: pw.Text("bvwm©s I wek¦we`¨vjq fwZ© ‡KvwPs Gi wek¦¯— c«wZôvb", style: pw.TextStyle(fontSize: 10, color: PdfColors.white, font: Banglattf))))),
+                child: pw.Center(child: pw.Padding(padding: pw.EdgeInsets.all(3), child: pw.Text("bvwm©s I wek¦we`¨vjq fwZ© ‡KvwPs Gi wek¦¯— c«wZôvb", style: pw.TextStyle(fontSize: 10, color: PdfColors.white, font: Banglattf))))),
 
 
               // pw.Center(child:  pw.Image(netImage, height: 150, width: 250, ),),
@@ -292,7 +292,7 @@ pdf.addPage(pw.Page(
 
 
               pw.SizedBox(
-                      height: 10,
+                      height: 30,
                       
                 
               ),
@@ -350,7 +350,7 @@ pdf.addPage(pw.Page(
         children: [
                 pw.Padding(
                    padding: pw.EdgeInsets.only(left: 30,top: 30),
-                  child: pw.Center(child:  pw.Image(netImage, height: 100, width: 100, ),),),
+                  child: pw.Center(child:  pw.Image(netImage, height: 140, width: 160, ),),),
 
 
         ]),
@@ -554,22 +554,22 @@ pdf.addPage(pw.Page(
                 width: 100,
                 decoration:  pw.BoxDecoration(
                 border: pw.Border(bottom: pw.BorderSide(width: 1, style: pw.BorderStyle.dashed))),
-                    child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text("${SalesData[0]["StudentDateOfBirth"]}", style: pw.TextStyle(fontSize: 13,)))),
+                    child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text("${SalesData[0]["StudentDateOfBirth"]}", style: pw.TextStyle(fontSize: 14,)))),
 
                  pw.SizedBox(width: 9),
 
 
                 
-                  pw.Text("Phone", style: pw.TextStyle(fontSize: 11,)),
+                  pw.Text("Phone No", style: pw.TextStyle(fontSize: 11,)),
 
-                  pw.SizedBox(width: 2),
+                  pw.SizedBox(width: 5),
 
                   pw.Container(
                 
-                width: 120,
+                width: 90,
                 decoration:  pw.BoxDecoration(
                 border: pw.Border(bottom: pw.BorderSide(width: 1, style: pw.BorderStyle.dashed))),
-                    child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text("${SalesData[0]["StudentPhoneNumber"]}", style: pw.TextStyle(fontSize: 13,)))),
+                    child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text("${SalesData[0]["StudentPhoneNumber"]}", style: pw.TextStyle(fontSize: 14,)))),
 
               
 
@@ -583,10 +583,10 @@ pdf.addPage(pw.Page(
 
                   pw.Container(
                 
-                width: 60,
+                width: 90,
                 decoration:  pw.BoxDecoration(
                 border: pw.Border(bottom: pw.BorderSide(width: 1, style: pw.BorderStyle.dashed))),
-                    child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text("${SalesData[0]["Sex"]}", style: pw.TextStyle(fontSize: 13,)))),
+                    child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text("${SalesData[0]["Sex"]}", style: pw.TextStyle(fontSize: 14,)))),
 
             
 
@@ -600,7 +600,7 @@ pdf.addPage(pw.Page(
 
                   pw.Container(
                 
-                width: 100,
+                width: 80,
                 decoration:  pw.BoxDecoration(
                 border: pw.Border(bottom: pw.BorderSide(width: 1, style: pw.BorderStyle.dashed))),
                     child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text("${SalesData[0]["FutureAim"]}", style: pw.TextStyle(fontSize: 14,)))),
@@ -753,10 +753,6 @@ pdf.addPage(pw.Page(
             defaultVerticalAlignment: pw.TableCellVerticalAlignment.bottom,
             border:pw.TableBorder.all(width: 1.0,color: PdfColors.black),
             children: [
-
-
-
-
               pw.TableRow(
                 children: [
                   pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Institution Name", style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold))),
@@ -773,8 +769,8 @@ pdf.addPage(pw.Page(
               for(int i =0; i<2; i++)
                             pw.TableRow(
                 children: [
-                  pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("${SalesData[0]["SSCInstitutionName"]}", style: pw.TextStyle(fontSize: 10, ))),
-                 pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("${SalesData[0]["SSCBoard"]}", style: pw.TextStyle(fontSize: 10,))),
+                  pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Joypurhat Govt. College", style: pw.TextStyle(fontSize: 10, ))),
+                 pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Rajshahi ", style: pw.TextStyle(fontSize: 10,))),
                  pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Science", style: pw.TextStyle(fontSize: 10,))),
                  pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("174149", style: pw.TextStyle(fontSize: 10,))),
                 pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("124354689900", style: pw.TextStyle(fontSize: 10, ))),

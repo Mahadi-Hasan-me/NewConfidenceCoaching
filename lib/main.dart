@@ -59,21 +59,21 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: RegistrationFormPDF(SalesData: [{
-                                                "StudentName": "",
+                                                "StudentName": "Mahadi Hasan",
 
                                         "StudentPhoneNumber":
-                                            "",
+                                            "12023425245",
                                         "StudentPresentAddress":
-                                           "",
+                                           "Komorgram Sadar, Joypurhat, Rajshahi, Dhaka",
 
                                         "StudentPermanentAddress":
-                                            "",
+                                            "Komorgram Sadar, Joypurhat, Rajshahi, Dhaka",
 
                                         "StudentDateOfBirth":
-                                           "",
+                                           "31/12/1995",
 
-                                        "FatherName": "",
-                                        "MotherName": "",
+                                        "FatherName": "None",
+                                        "MotherName": "None",
                                         "SSCRollNo":"",
                                         "HSCRollNo":"",
                                         "RegistrationNo":"",
@@ -81,14 +81,18 @@ class MyApp extends StatelessWidget {
                                         "HSCInstitutionName":"",
                                         "SSCGPA":"",
                                         "HSCGPA":"",
-                                        "FutureAim":"",
+                                        "FutureAim":"Medical",
                                         "FatherPhoneNo":
-                                            "",
+                                            "01281239423",
                                         "SSCBatchYear":"",
                                         "HSCBatchYear":"",
                                         "Department": "",
-
-                                        "SIDNo": "",
+                                        "Sex":"Male",
+                                        "SIDNo": "2342525235",
+                                        "SSCBoard":"Rajshahi",
+                                        "HSCBoard":"Rajshahi",
+                                        "SSCDepartment": "2024",
+                                        "HSCDepartment":"2026",
                                         "AdmissionDateTime":
                                             "${DateTime.now().toIso8601String()}",
                                         "AdmissionDate":

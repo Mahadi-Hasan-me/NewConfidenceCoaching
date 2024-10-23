@@ -52,6 +52,9 @@ class _StudentRegistrationState extends State<StudentRegistration> {
   TextEditingController FutureAimController = TextEditingController();
   TextEditingController SSCBatchYearController = TextEditingController();
   TextEditingController HSCBatchYearController = TextEditingController();
+  TextEditingController SSCBoardController = TextEditingController();
+  TextEditingController HSCBoardController = TextEditingController();
+  
 
   String errorTxt = "";
 
@@ -60,6 +63,7 @@ class _StudentRegistrationState extends State<StudentRegistration> {
   var RegCodeTextField = "";
 
   String SelectedValue = "";
+  String SelectedHSCValue = "";
 
   String SelectedSex = "";
 
@@ -985,6 +989,88 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                         const SizedBox(
                           width: 15,
                         ),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        SizedBox(
+                          width: width / 2,
+                          child: TextField(
+                            onChanged: (value) {
+                              checkAddressTextField();
+                              checkNameTextField();
+                              checkPhoneNumberTextField();
+                              checkFatherPhoneNoTextField();
+                            },
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+
+                              labelText: 'SSC Board',
+                              labelStyle: TextStyle(
+                                  color: myFocusNode.hasFocus
+                                      ? Theme.of(context).primaryColor
+                                      : Colors.black),
+                              hintText: 'SSC Board',
+                              //  enabledBorder: OutlineInputBorder(
+                              //     borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                              //   ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 3,
+                                    color: Theme.of(context).primaryColor),
+                              ),
+                              errorBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 3,
+                                    color: Color.fromARGB(255, 66, 125, 145)),
+                              ),
+                            ),
+                            controller: SSCBoardController,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        SizedBox(
+                          width: width / 2,
+                          child: TextField(
+                            onChanged: (value) {
+                              checkAddressTextField();
+                              checkNameTextField();
+                              checkPhoneNumberTextField();
+                              checkFatherPhoneNoTextField();
+                            },
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+
+                              labelText: 'HSC Board',
+                              labelStyle: TextStyle(
+                                  color: myFocusNode.hasFocus
+                                      ? Theme.of(context).primaryColor
+                                      : Colors.black),
+                              hintText: 'HSC Board',
+                              //  enabledBorder: OutlineInputBorder(
+                              //     borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                              //   ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 3,
+                                    color: Theme.of(context).primaryColor),
+                              ),
+                              errorBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 3,
+                                    color: Color.fromARGB(255, 66, 125, 145)),
+                              ),
+                            ),
+                            controller: HSCBoardController,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 15,
+                        ),
                       ],
                     ),
 
@@ -996,7 +1082,7 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                       height: 70,
                       child: DropdownButton(
                         hint: SelectedValue == ""
-                            ? Text('Department')
+                            ? Text('SSC Department')
                             : Text(
                                 SelectedValue,
                                 style: TextStyle(
@@ -1032,6 +1118,51 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                       ),
                     ),
 
+
+                    SizedBox(
+                      height: 11,
+                    ),
+
+                    Container(
+                      height: 70,
+                      child: DropdownButton(
+                        hint: SelectedHSCValue == ""
+                            ? Text('HSC Department')
+                            : Text(
+                                SelectedHSCValue,
+                                style: TextStyle(
+                                    color: ColorName().appColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16),
+                              ),
+                        isExpanded: true,
+                        iconSize: 30.0,
+                        style: TextStyle(
+                            color: ColorName().appColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16),
+                        items: [
+                          'Science',
+                          'Arts',
+                          'Commerce',
+                        ].map(
+                          (val) {
+                            return DropdownMenuItem<String>(
+                              value: val,
+                              child: Text(val),
+                            );
+                          },
+                        ).toList(),
+                        onChanged: (val) {
+                          setState(
+                            () {
+                              SelectedHSCValue = val!;
+                            },
+                          );
+                        },
+                      ),
+                    ),
+
                     SizedBox(
                       height: 11,
                     ),
@@ -1042,7 +1173,7 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                         hint: SelectedSex == ""
                             ? Text('SEX')
                             : Text(
-                               SelectedSex,
+                                SelectedSex,
                                 style: TextStyle(
                                     color: ColorName().appColor,
                                     fontWeight: FontWeight.bold,
@@ -1190,7 +1321,7 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                                         "MotherName": MotherNameController.text
                                             .trim()
                                             .toLowerCase(),
-                                        "Sex":SelectedSex.toString(),
+                                        "Sex": SelectedSex.toString(),
                                         "SSCRollNo":
                                             SSCRollNoController.text.trim(),
                                         "HSCRollNo":
@@ -1204,6 +1335,8 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                                         "HSCInstitutionName":
                                             HSCInstitutionNameController.text
                                                 .trim(),
+                                        "SSCBoard":SSCBoardController.text.trim(),
+                                        "HSCBoard":HSCBoardController.text.trim(),
                                         "SSCGPA": SSCGPAController.text.trim(),
                                         "HSCGPA": HSCGPAController.text.trim(),
                                         "FutureAim":
@@ -1214,8 +1347,9 @@ class _StudentRegistrationState extends State<StudentRegistration> {
                                             SSCBatchYearController.text.trim(),
                                         "HSCBatchYear":
                                             HSCBatchYearController.text.trim(),
-                                        "Department": SelectedValue.toString()
+                                        "SSCDepartment": SelectedValue.toString()
                                             .toLowerCase(),
+                                        "HSCDepartment":SelectedHSCValue.toString().toLowerCase(),
                                         "SIDNo": code.toString(),
                                         "AdmissionDateTime":
                                             "${DateTime.now().toIso8601String()}",
