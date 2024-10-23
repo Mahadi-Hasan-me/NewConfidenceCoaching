@@ -58,62 +58,67 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: RegistrationFormPDF(SalesData: [{
-                                                "StudentName": "Mahadi Hasan",
-
-                                        "StudentPhoneNumber":
-                                            "12023425245",
-                                        "StudentPresentAddress":
-                                           "Komorgram Sadar, Joypurhat, Rajshahi, Dhaka",
-
-                                        "StudentPermanentAddress":
-                                            "Komorgram Sadar, Joypurhat, Rajshahi, Dhaka",
-
-                                        "StudentDateOfBirth":
-                                           "31/12/1995",
-
-                                        "FatherName": "None",
-                                        "MotherName": "None",
-                                        "SSCRollNo":"213245",
-                                        "HSCRollNo":"111114",
-                                        "RegistrationNo":"13333535332",
-                                        "SSCInstitutionName":"Joypurhat Govt. Girls High School",
-                                        "HSCInstitutionName":"Joypurhat Govt. College",
-                                        "SSCGPA":"5.00",
-                                        "HSCGPA":"5.00",
-                                        "FutureAim":"Medical",
-                                        "FatherPhoneNo":
-                                            "01281239423",
-                                        "SSCBatchYear":"2024",
-                                        "HSCBatchYear":"2026",
-                                 
-                                        "Sex":"Male",
-                                        "SIDNo": "2342525235",
-                                        "SSCBoard":"Rajshahi",
-                                        "HSCBoard":"Rajshahi",
-                                        "SSCDepartment": "Science",
-                                        "HSCDepartment":"Science",
-                                        "AdmissionDateTime":
-                                            "${DateTime.now().toIso8601String()}",
-                                        "AdmissionDate":
-                                            "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
-                                        "AdmissionMonth":
-                                            "${DateTime.now().month}/${DateTime.now().year}",
-                                        "AdmissionYear":
-                                            "${DateTime.now().year}",
-                                        "StudentStatus": "new",
-                                        "AccountStatus": "open",
-                                        "TeacherList":[],
-                                        "FatherPhoneOtpCode": "",
-                                        "StudentPhoneOtpCode": "",
-                                        "StudentPhoneVerify": "false",
-                                        "FatherPhoneVerify": "false",
-                                        "StudentImageUrl":
-                                            "https://i.ibb.co.com/qdTw3h6/young-bearded-man-with-striped-shirt.jpg"
-      }]),
+      home: HomeScreen(),
     );
   }
 }
+
+
+
+
+// RegistrationFormPDF(SalesData: [{
+//                                                 "StudentName": "Mahadi Hasan",
+
+//                                         "StudentPhoneNumber":
+//                                             "12023425245",
+//                                         "StudentPresentAddress":
+//                                            "Komorgram Sadar, Joypurhat, Rajshahi, Dhaka",
+
+//                                         "StudentPermanentAddress":
+//                                             "Komorgram Sadar, Joypurhat, Rajshahi, Dhaka",
+
+//                                         "StudentDateOfBirth":
+//                                            "31/12/1995",
+
+//                                         "FatherName": "None",
+//                                         "MotherName": "None",
+//                                         "SSCRollNo":"213245",
+//                                         "HSCRollNo":"111114",
+//                                         "RegistrationNo":"13333535332",
+//                                         "SSCInstitutionName":"Joypurhat Govt. Girls High School",
+//                                         "HSCInstitutionName":"Joypurhat Govt. College",
+//                                         "SSCGPA":"5.00",
+//                                         "HSCGPA":"5.00",
+//                                         "FutureAim":"Medical",
+//                                         "FatherPhoneNo":
+//                                             "01281239423",
+//                                         "SSCBatchYear":"2024",
+//                                         "HSCBatchYear":"2026",
+                                 
+//                                         "Sex":"Male",
+//                                         "SIDNo": "2342525235",
+//                                         "SSCBoard":"Rajshahi",
+//                                         "HSCBoard":"Rajshahi",
+//                                         "SSCDepartment": "Science",
+//                                         "HSCDepartment":"Science",
+//                                         "AdmissionDateTime":
+//                                             "${DateTime.now().toIso8601String()}",
+//                                         "AdmissionDate":
+//                                             "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
+//                                         "AdmissionMonth":
+//                                             "${DateTime.now().month}/${DateTime.now().year}",
+//                                         "AdmissionYear":
+//                                             "${DateTime.now().year}",
+//                                         "StudentStatus": "new",
+//                                         "AccountStatus": "open",
+//                                         "TeacherList":[],
+//                                         "FatherPhoneOtpCode": "",
+//                                         "StudentPhoneOtpCode": "",
+//                                         "StudentPhoneVerify": "false",
+//                                         "FatherPhoneVerify": "false",
+//                                         "StudentImageUrl":
+//                                             "https://i.ibb.co.com/qdTw3h6/young-bearded-man-with-striped-shirt.jpg"
+//       }]),
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});

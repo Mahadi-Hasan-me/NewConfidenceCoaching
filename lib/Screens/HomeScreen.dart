@@ -6,6 +6,7 @@ import 'package:confidence/Screens/AllBatchInfo.dart';
 import 'package:confidence/Screens/Attendance/ShowStudentAttendance.dart';
 import 'package:confidence/Screens/Dashboard/StudentAllPayment.dart';
 import 'package:confidence/Screens/ExamMarks/ExamMarks.dart';
+import 'package:confidence/Screens/PDF/MoneyReceipt.dart';
 import 'package:confidence/Screens/Students/StudentProfile.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/cupertino.dart';
@@ -2787,6 +2788,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                           .text
                                                                           .trim()
                                                                       : "",
+                                                                  "StudentName":AllStudentInfo[index]["StudentName"].toString().toUpperCase(),
                                                                   "TeacherAcademyName":
                                                                       AllStudentInfo[
                                                                               index]
@@ -2806,6 +2808,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   "DateTime": DateTime
                                                                           .now()
                                                                       .toIso8601String(),
+                                                                   "Due": DiscountAvailable
+                                                                                ? ((int.parse(AllStudentInfo[index]["Due"])) - (int.parse((PaymentAmountController.text.trim().toString()))) + (int.parse(DiscountAmountController.text.trim().toString()))).toString()
+                                                                                : ((int.parse(AllStudentInfo[index]["Due"])) - (int.parse((PaymentAmountController.text.trim().toString())))).toString(),
                                                                 };
 
                                                                 final PerTeacherStudentPayment = FirebaseFirestore
@@ -2871,6 +2876,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                                     // Navigator.pop(context);
 
                                                                                     getAllStudentInfo();
+                                                                                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => MoneyReceiptPDF(SalesData: [PaymentData])));
 
                                                                                     final snackBar = SnackBar(
                                                                                       elevation: 0,

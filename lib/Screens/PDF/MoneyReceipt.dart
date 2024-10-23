@@ -56,7 +56,7 @@ class _MoneyReceiptPDFState extends State<MoneyReceiptPDF> {
        
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
         leading: IconButton(onPressed: () => Navigator.of(context).pop(), icon: Icon(Icons.chevron_left)),
-        title: const Text("Registration Form", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 17),),
+        title: const Text("Money Receipt", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 17),),
         backgroundColor: Colors.transparent,
         bottomOpacity: 0.0,
         elevation: 0.0,
@@ -227,12 +227,12 @@ pdf.addPage(pw.Page(
                 //   child: pw.Center(child:  pw.Image(netImage, height: 140, width: 160, ),),),
 
                 pw.Padding(
-                  padding: pw.EdgeInsets.only(left: 60, top: 3),
+                  padding: pw.EdgeInsets.only(left: 140, top: 3),
                   
                   child: pw.Column(children: [
 
 
-                  pw.Text("New Confidence Coaching Center", style:pw.TextStyle(fontSize: 21, fontWeight: pw.FontWeight.bold, font: ttf, color: PdfColor.fromInt(0xffffff))),
+                  pw.Text("${SalesData[0]["TeacherAcademyName"].toString().toUpperCase()}", style:pw.TextStyle(fontSize: 21, fontWeight: pw.FontWeight.bold, font: ttf, color: PdfColor.fromInt(0xffffff))),
                   pw.Text("wbD Kbwd‡WÝ ‡KvwPs ‡m›Uvi ", style:pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold, font: Banglattf, color: PdfColor.fromInt(0xffffff))),
                   // pw.Center(child: pw.Text("Confidence joypurhat", style:pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold, font: ttf, color: PdfColor.fromInt(0xffffff))),),
 
@@ -264,21 +264,21 @@ pdf.addPage(pw.Page(
               ),
 
 
-              pw.Container(
-                width: 650,
-                height: 20,
-                 decoration: const pw.BoxDecoration(
-                        borderRadius: pw.BorderRadius.only(
-                            topRight: pw.Radius.circular(10.0),
-                            topLeft: pw.Radius.circular(10.0),
-                            bottomLeft: pw.Radius.circular(10.0),
-                            bottomRight: pw.Radius.circular(10.0)),
-                        color: PdfColor.fromInt(0x04064f),
-                      ),
+              // pw.Container(
+              //   width: 650,
+              //   height: 20,
+              //    decoration: const pw.BoxDecoration(
+              //           borderRadius: pw.BorderRadius.only(
+              //               topRight: pw.Radius.circular(10.0),
+              //               topLeft: pw.Radius.circular(10.0),
+              //               bottomLeft: pw.Radius.circular(10.0),
+              //               bottomRight: pw.Radius.circular(10.0)),
+              //           color: PdfColor.fromInt(0x04064f),
+              //         ),
                 
                 
                 
-                child: pw.Center(child: pw.Padding(padding: pw.EdgeInsets.all(3), child: pw.Text("bvwm©s I wek¦we`¨vjq fwZ© ‡KvwPs Gi wek¦¯— c«wZôvb", style: pw.TextStyle(fontSize: 10, color: PdfColors.white, font: Banglattf))))),
+              //   child: pw.Center(child: pw.Padding(padding: pw.EdgeInsets.all(3), child: pw.Text("bvwm©s I wek¦we`¨vjq fwZ© ‡KvwPs Gi wek¦¯— c«wZôvb", style: pw.TextStyle(fontSize: 10, color: PdfColors.white, font: Banglattf))))),
 
 
               // pw.Center(child:  pw.Image(netImage, height: 150, width: 250, ),),
@@ -312,7 +312,7 @@ pdf.addPage(pw.Page(
                 
                 
                 
-                child: pw.Padding(padding: pw.EdgeInsets.all(10), child: pw.Text("REGISTRATION FORM", style: pw.TextStyle(fontSize: 14, color: PdfColors.white, font: ttf))))),
+                child: pw.Padding(padding: pw.EdgeInsets.all(10), child: pw.Text("MONEY RECEIPT", style: pw.TextStyle(fontSize: 14, color: PdfColors.white, font: ttf))))),
 
 
            
@@ -335,25 +335,25 @@ pdf.addPage(pw.Page(
                   pw.Text("SID: ${SalesData[0]["SIDNo"]}"),
 
 
-                  pw.Text("Date: ${SalesData[0]["AdmissionDateTime"]}"),
+                  pw.Text("Date: ${SalesData[0]["DateTime"]}"),
 
               ]),
 
           
 
-        pw.Row(
+        // pw.Row(
           
-        mainAxisAlignment: pw.MainAxisAlignment.end, 
+        // mainAxisAlignment: pw.MainAxisAlignment.end, 
         
-        crossAxisAlignment: pw.CrossAxisAlignment.end, 
+        // crossAxisAlignment: pw.CrossAxisAlignment.end, 
         
-        children: [
-                pw.Padding(
-                   padding: pw.EdgeInsets.only(left: 30,top: 30),
-                  child: pw.Center(child:  pw.Image(netImage, height: 140, width: 160, ),),),
+        // children: [
+        //         pw.Padding(
+        //            padding: pw.EdgeInsets.only(left: 30,top: 30),
+        //           child: pw.Center(child:  pw.Image(netImage, height: 140, width: 160, ),),),
 
 
-        ]),
+        // ]),
 
 
 
@@ -381,7 +381,7 @@ pdf.addPage(pw.Page(
               
 
               
-                  pw.Text("Father Name", style: pw.TextStyle(fontSize: 11,)),
+                  pw.Text("Academy Name", style: pw.TextStyle(fontSize: 11,)),
 
                   pw.SizedBox(width: 4),
 
@@ -390,7 +390,7 @@ pdf.addPage(pw.Page(
                 width: 200,
                 decoration:  pw.BoxDecoration(
                 border: pw.Border(bottom: pw.BorderSide(width: 1, style: pw.BorderStyle.dashed))),
-                    child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text("${SalesData[0]["FatherName"].toString().toUpperCase()}", style: pw.TextStyle(fontSize: 14,))))
+                    child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text("${SalesData[0]["TeacherAcademyName"].toString().toUpperCase()}", style: pw.TextStyle(fontSize: 14,))))
 
               ]),
 
@@ -406,7 +406,7 @@ pdf.addPage(pw.Page(
                 mainAxisAlignment: pw.MainAxisAlignment.start,
                 children: [
 
-                  pw.Text("Mother Name", style: pw.TextStyle(fontSize: 11,)),
+                  pw.Text("Amount", style: pw.TextStyle(fontSize: 11,)),
 
                   pw.SizedBox(width: 4),
 
@@ -415,13 +415,13 @@ pdf.addPage(pw.Page(
                 width: 200,
                 decoration:  pw.BoxDecoration(
                 border: pw.Border(bottom: pw.BorderSide(width: 1, style: pw.BorderStyle.dashed))),
-                    child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text("${SalesData[0]["MotherName"].toString().toUpperCase()}", style: pw.TextStyle(fontSize: 14,)))),
+                    child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text("${SalesData[0]["PaymentAmount"].toString().toUpperCase()}/- tk", style: pw.TextStyle(fontSize: 14,)))),
 
 
 
                   pw.SizedBox(width: 7),
               
-                  pw.Text("F Phone No", style: pw.TextStyle(fontSize: 11,)),
+                  pw.Text("Discount", style: pw.TextStyle(fontSize: 11,)),
 
                   pw.SizedBox(width: 4),
 
@@ -430,7 +430,7 @@ pdf.addPage(pw.Page(
                 width: 170,
                 decoration:  pw.BoxDecoration(
                 border: pw.Border(bottom: pw.BorderSide(width: 1, style: pw.BorderStyle.dashed))),
-                    child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text("${SalesData[0]["FatherPhoneNo"].toString().toUpperCase()}", style: pw.TextStyle(fontSize: 14,))))
+                    child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text("${SalesData[0]["DiscountAmount"].toString().toUpperCase()}", style: pw.TextStyle(fontSize: 14,))))
 
 
 
@@ -450,7 +450,7 @@ pdf.addPage(pw.Page(
                 mainAxisAlignment: pw.MainAxisAlignment.start,
                 children: [
 
-                  pw.Text("Present Address", style: pw.TextStyle(fontSize: 11,)),
+                  pw.Text("Due", style: pw.TextStyle(fontSize: 11,)),
 
                   pw.SizedBox(width: 4),
 
@@ -459,7 +459,7 @@ pdf.addPage(pw.Page(
                 width: 425,
                 decoration:  pw.BoxDecoration(
                 border: pw.Border(bottom: pw.BorderSide(width: 1, style: pw.BorderStyle.dashed))),
-                    child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text("${SalesData[0]["StudentPresentAddress"]}", style: pw.TextStyle(fontSize: 14,))))
+                    child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text("${SalesData[0]["Due"]}/- tk", style: pw.TextStyle(fontSize: 14,))))
 
               ]),
 
@@ -481,7 +481,7 @@ pdf.addPage(pw.Page(
                 mainAxisAlignment: pw.MainAxisAlignment.start,
                 children: [
 
-                  pw.Text("Permanent Address", style: pw.TextStyle(fontSize: 11,)),
+                  pw.Text("Batch", style: pw.TextStyle(fontSize: 11,)),
 
                   pw.SizedBox(width: 4),
 
@@ -490,7 +490,7 @@ pdf.addPage(pw.Page(
                 width: 410,
                 decoration:  pw.BoxDecoration(
                 border: pw.Border(bottom: pw.BorderSide(width: 1, style: pw.BorderStyle.dashed))),
-                    child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text("${SalesData[0]["StudentPermanentAddress"]}", style: pw.TextStyle(fontSize: 14,))))
+                    child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text("${SalesData[0]["BatchName"]}", style: pw.TextStyle(fontSize: 14,))))
 
               ]),
 
@@ -540,76 +540,76 @@ pdf.addPage(pw.Page(
 
 
 
-              pw.Row(
+              // pw.Row(
                 
-                mainAxisAlignment: pw.MainAxisAlignment.start,
-                children: [
+              //   mainAxisAlignment: pw.MainAxisAlignment.start,
+              //   children: [
 
-                  pw.Text("DOB", style: pw.TextStyle(fontSize: 11,)),
+              //     pw.Text("DOB", style: pw.TextStyle(fontSize: 11,)),
 
-                  pw.SizedBox(width: 4),
+              //     pw.SizedBox(width: 4),
 
-                  pw.Container(
+              //     pw.Container(
                 
-                width: 100,
-                decoration:  pw.BoxDecoration(
-                border: pw.Border(bottom: pw.BorderSide(width: 1, style: pw.BorderStyle.dashed))),
-                    child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text("${SalesData[0]["StudentDateOfBirth"]}", style: pw.TextStyle(fontSize: 14,)))),
+              //   width: 100,
+              //   decoration:  pw.BoxDecoration(
+              //   border: pw.Border(bottom: pw.BorderSide(width: 1, style: pw.BorderStyle.dashed))),
+              //       child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text("${SalesData[0]["StudentDateOfBirth"]}", style: pw.TextStyle(fontSize: 14,)))),
 
-                 pw.SizedBox(width: 9),
+              //    pw.SizedBox(width: 9),
 
 
                 
-                  pw.Text("Phone No", style: pw.TextStyle(fontSize: 11,)),
+              //     pw.Text("Phone No", style: pw.TextStyle(fontSize: 11,)),
 
-                  pw.SizedBox(width: 5),
+              //     pw.SizedBox(width: 5),
 
-                  pw.Container(
+              //     pw.Container(
                 
-                width: 90,
-                decoration:  pw.BoxDecoration(
-                border: pw.Border(bottom: pw.BorderSide(width: 1, style: pw.BorderStyle.dashed))),
-                    child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text("${SalesData[0]["StudentPhoneNumber"]}", style: pw.TextStyle(fontSize: 14,)))),
+              //   width: 90,
+              //   decoration:  pw.BoxDecoration(
+              //   border: pw.Border(bottom: pw.BorderSide(width: 1, style: pw.BorderStyle.dashed))),
+              //       child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text("${SalesData[0]["StudentPhoneNumber"]}", style: pw.TextStyle(fontSize: 14,)))),
 
               
 
-               pw.SizedBox(width: 9),
+              //  pw.SizedBox(width: 9),
 
 
                 
-                  pw.Text("Sex", style: pw.TextStyle(fontSize: 11,)),
+              //     pw.Text("Sex", style: pw.TextStyle(fontSize: 11,)),
 
-                  pw.SizedBox(width: 5),
+              //     pw.SizedBox(width: 5),
 
-                  pw.Container(
+              //     pw.Container(
                 
-                width: 90,
-                decoration:  pw.BoxDecoration(
-                border: pw.Border(bottom: pw.BorderSide(width: 1, style: pw.BorderStyle.dashed))),
-                    child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text("${SalesData[0]["Sex"]}", style: pw.TextStyle(fontSize: 14,)))),
+              //   width: 90,
+              //   decoration:  pw.BoxDecoration(
+              //   border: pw.Border(bottom: pw.BorderSide(width: 1, style: pw.BorderStyle.dashed))),
+              //       child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text("${SalesData[0]["Sex"]}", style: pw.TextStyle(fontSize: 14,)))),
 
             
 
 
             
-               pw.SizedBox(width: 9),
+              //  pw.SizedBox(width: 9),
                 
-                  pw.Text("Aim", style: pw.TextStyle(fontSize: 11,)),
+              //     pw.Text("Aim", style: pw.TextStyle(fontSize: 11,)),
 
-                  pw.SizedBox(width: 5),
+              //     pw.SizedBox(width: 5),
 
-                  pw.Container(
+              //     pw.Container(
                 
-                width: 80,
-                decoration:  pw.BoxDecoration(
-                border: pw.Border(bottom: pw.BorderSide(width: 1, style: pw.BorderStyle.dashed))),
-                    child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text("${SalesData[0]["FutureAim"]}", style: pw.TextStyle(fontSize: 14,)))),
+              //   width: 80,
+              //   decoration:  pw.BoxDecoration(
+              //   border: pw.Border(bottom: pw.BorderSide(width: 1, style: pw.BorderStyle.dashed))),
+              //       child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text("${SalesData[0]["FutureAim"]}", style: pw.TextStyle(fontSize: 14,)))),
 
 
 
 
 
-              ]),
+              // ]),
 
 
 
@@ -745,43 +745,43 @@ pdf.addPage(pw.Page(
 
 
 
-          pw.Padding(
-            padding: const pw.EdgeInsets.all(8.0),
-            child: pw.Table(
+        //   pw.Padding(
+        //     padding: const pw.EdgeInsets.all(8.0),
+        //     child: pw.Table(
                
 
-            defaultVerticalAlignment: pw.TableCellVerticalAlignment.bottom,
-            border:pw.TableBorder.all(width: 1.0,color: PdfColors.black),
-            children: [
-              pw.TableRow(
-                children: [
-                  pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Institution Name", style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold))),
-                 pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Board", style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold))),
-                 pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Department", style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold))),
-                 pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Roll", style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold))),
-                pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Reg", style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold))),
-               pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Year", style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold))),
-               pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("GPA", style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold))),
-                ]
-              ),
+        //     defaultVerticalAlignment: pw.TableCellVerticalAlignment.bottom,
+        //     border:pw.TableBorder.all(width: 1.0,color: PdfColors.black),
+        //     children: [
+        //       pw.TableRow(
+        //         children: [
+        //           pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Institution Name", style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold))),
+        //          pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Board", style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold))),
+        //          pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Department", style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold))),
+        //          pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Roll", style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold))),
+        //         pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Reg", style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold))),
+        //        pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Year", style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold))),
+        //        pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("GPA", style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold))),
+        //         ]
+        //       ),
 
 
-              for(int i =0; i<2; i++)
-                            pw.TableRow(
-                children: [
-                  pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Joypurhat Govt. College", style: pw.TextStyle(fontSize: 10, ))),
-                 pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Rajshahi ", style: pw.TextStyle(fontSize: 10,))),
-                 pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Science", style: pw.TextStyle(fontSize: 10,))),
-                 pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("174149", style: pw.TextStyle(fontSize: 10,))),
-                pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("124354689900", style: pw.TextStyle(fontSize: 10, ))),
-               pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("2019", style: pw.TextStyle(fontSize: 10, ))),
-               pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("5.00", style: pw.TextStyle(fontSize: 10, ))),
-                ]
-              ),
+        //       for(int i =0; i<2; i++)
+        //                     pw.TableRow(
+        //         children: [
+        //           pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Joypurhat Govt. College", style: pw.TextStyle(fontSize: 10, ))),
+        //          pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Rajshahi ", style: pw.TextStyle(fontSize: 10,))),
+        //          pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Science", style: pw.TextStyle(fontSize: 10,))),
+        //          pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("174149", style: pw.TextStyle(fontSize: 10,))),
+        //         pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("124354689900", style: pw.TextStyle(fontSize: 10, ))),
+        //        pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("2019", style: pw.TextStyle(fontSize: 10, ))),
+        //        pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("5.00", style: pw.TextStyle(fontSize: 10, ))),
+        //         ]
+        //       ),
 
 
-            ],
-        ),),
+        //     ],
+        // ),),
 
 
 
@@ -953,10 +953,10 @@ pdf.addPage(pw.Page(
 
 
 
-              pw.SizedBox(
-                      height: 20,    
+              // pw.SizedBox(
+              //         height: 20,    
                 
-              ),
+              // ),
 
 
 
@@ -1016,11 +1016,9 @@ pdf.addPage(pw.Page(
 
 
 
-                 pw.SizedBox(
-                      height: 70,
-                      
-                
-              ),
+          // pw.SizedBox(
+          //             height: 70,
+          //     ),
 
 
 
