@@ -658,25 +658,23 @@ pdf.addPage(pw.Page(
 
 
 
-              pw.Row(
+              // pw.Row(
                 
-                mainAxisAlignment: pw.MainAxisAlignment.start,
-                children: [
+              //   mainAxisAlignment: pw.MainAxisAlignment.start,
+              //   children: [
 
-                  pw.Text("Bike Price", style: pw.TextStyle(fontSize: 11,)),
+              //     pw.Text("Bike Price", style: pw.TextStyle(fontSize: 11,)),
 
-                  pw.SizedBox(width: 4),
+              //     pw.SizedBox(width: 4),
 
-                  pw.Container(
+              //     pw.Container(
                 
-                width: 430,
-                decoration:  pw.BoxDecoration(
-                border: pw.Border(bottom: pw.BorderSide(width: 1, style: pw.BorderStyle.dashed))),
-                    child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text("tk", style: pw.TextStyle(fontSize: 14,))))
+              //   width: 430,
+              //   decoration:  pw.BoxDecoration(
+              //   border: pw.Border(bottom: pw.BorderSide(width: 1, style: pw.BorderStyle.dashed))),
+              //       child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text("tk", style: pw.TextStyle(fontSize: 14,))))
 
-              ]),
-
-
+              // ]),
 
 
 
@@ -685,13 +683,15 @@ pdf.addPage(pw.Page(
 
 
 
-              pw.SizedBox(height: 10),
+
+
+              // pw.SizedBox(height: 10),
 
 
 
-              pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                children: [
+              // pw.Row(
+              //   mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+              //   children: [
 
 
   
@@ -700,31 +700,72 @@ pdf.addPage(pw.Page(
 
 
 
-               pw.Row(
+              //  pw.Row(
                 
-                mainAxisAlignment: pw.MainAxisAlignment.start,
-                children: [
+              //   mainAxisAlignment: pw.MainAxisAlignment.start,
+              //   children: [
 
-                  pw.Text("Due", style: pw.TextStyle(fontSize: 11,)),
+              //     pw.Text("Due", style: pw.TextStyle(fontSize: 11,)),
 
-                  pw.SizedBox(width: 4),
+              //     pw.SizedBox(width: 4),
 
-                  pw.Container(
+              //     pw.Container(
                 
-                width: 120,
-                decoration:  pw.BoxDecoration(
-                border: pw.Border(bottom: pw.BorderSide(width: 1, style: pw.BorderStyle.dashed))),
-                    child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text(" tk", style: pw.TextStyle(fontSize: 14,))))
+              //   width: 120,
+              //   decoration:  pw.BoxDecoration(
+              //   border: pw.Border(bottom: pw.BorderSide(width: 1, style: pw.BorderStyle.dashed))),
+              //       child: pw.Padding(padding: pw.EdgeInsets.only(bottom: 5, left: 30),child: pw.Text(" tk", style: pw.TextStyle(fontSize: 14,))))
 
-              ]),
+              // ]),
 
 
-              ]),
+              // ]),
 
 
 
 
                pw.SizedBox(height: 10),
+
+
+
+
+          pw.Padding(
+            padding: const pw.EdgeInsets.all(8.0),
+            child: pw.Table(
+               
+
+            defaultVerticalAlignment: pw.TableCellVerticalAlignment.bottom,
+            border:pw.TableBorder.all(width: 1.0,color: PdfColors.black),
+            children: [
+              pw.TableRow(
+                children: [
+                  pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Institution Name", style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold))),
+                 pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Board", style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold))),
+                 pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Department", style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold))),
+                 pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Roll", style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold))),
+                pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Reg", style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold))),
+               pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Year", style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold))),
+               pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("GPA", style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold))),
+                ]
+              ),
+
+
+              for(int i =0; i<2; i++)
+                            pw.TableRow(
+                children: [
+                  pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Joypurhat Govt. College", style: pw.TextStyle(fontSize: 10, ))),
+                 pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Rajshahi ", style: pw.TextStyle(fontSize: 10,))),
+                 pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Science", style: pw.TextStyle(fontSize: 10,))),
+                 pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("174149", style: pw.TextStyle(fontSize: 10,))),
+                pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("124354689900", style: pw.TextStyle(fontSize: 10, ))),
+               pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("2019", style: pw.TextStyle(fontSize: 10, ))),
+               pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("5.00", style: pw.TextStyle(fontSize: 10, ))),
+                ]
+              ),
+
+
+            ],
+        ),),
 
 
 
