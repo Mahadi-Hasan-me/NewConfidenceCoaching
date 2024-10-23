@@ -74,25 +74,25 @@ class MyApp extends StatelessWidget {
 
                                         "FatherName": "None",
                                         "MotherName": "None",
-                                        "SSCRollNo":"",
-                                        "HSCRollNo":"",
-                                        "RegistrationNo":"",
-                                        "SSCInstitutionName":"",
-                                        "HSCInstitutionName":"",
-                                        "SSCGPA":"",
-                                        "HSCGPA":"",
+                                        "SSCRollNo":"213245",
+                                        "HSCRollNo":"111114",
+                                        "RegistrationNo":"13333535332",
+                                        "SSCInstitutionName":"Joypurhat Govt. Girls High School",
+                                        "HSCInstitutionName":"Joypurhat Govt. College",
+                                        "SSCGPA":"5.00",
+                                        "HSCGPA":"5.00",
                                         "FutureAim":"Medical",
                                         "FatherPhoneNo":
                                             "01281239423",
-                                        "SSCBatchYear":"",
-                                        "HSCBatchYear":"",
-                                        "Department": "",
+                                        "SSCBatchYear":"2024",
+                                        "HSCBatchYear":"2026",
+                                 
                                         "Sex":"Male",
                                         "SIDNo": "2342525235",
                                         "SSCBoard":"Rajshahi",
                                         "HSCBoard":"Rajshahi",
-                                        "SSCDepartment": "2024",
-                                        "HSCDepartment":"2026",
+                                        "SSCDepartment": "Science",
+                                        "HSCDepartment":"Science",
                                         "AdmissionDateTime":
                                             "${DateTime.now().toIso8601String()}",
                                         "AdmissionDate":
@@ -109,7 +109,7 @@ class MyApp extends StatelessWidget {
                                         "StudentPhoneVerify": "false",
                                         "FatherPhoneVerify": "false",
                                         "StudentImageUrl":
-                                            "https://t4.ftcdn.net/jpg/00/65/77/27/360_F_65772719_A1UV5kLi5nCEWI0BNLLiFaBPEkUbv5Fv.jpg"
+                                            "https://i.ibb.co.com/qdTw3h6/young-bearded-man-with-striped-shirt.jpg"
       }]),
     );
   }

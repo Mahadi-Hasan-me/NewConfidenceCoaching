@@ -770,16 +770,31 @@ pdf.addPage(pw.Page(
               ),
 
 
-              for(int i =0; i<2; i++)
-                            pw.TableRow(
+                pw.TableRow(
                 children: [
                   pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("${SalesData[0]["SSCInstitutionName"]}", style: pw.TextStyle(fontSize: 10, ))),
                  pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("${SalesData[0]["SSCBoard"]}", style: pw.TextStyle(fontSize: 10,))),
-                 pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("Science", style: pw.TextStyle(fontSize: 10,))),
-                 pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("174149", style: pw.TextStyle(fontSize: 10,))),
-                pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("124354689900", style: pw.TextStyle(fontSize: 10, ))),
-               pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("2019", style: pw.TextStyle(fontSize: 10, ))),
-               pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("5.00", style: pw.TextStyle(fontSize: 10, ))),
+                 pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("${SalesData[0]["SSCDepartment"]}", style: pw.TextStyle(fontSize: 10,))),
+                 pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("${SalesData[0]["SSCRollNo"]}", style: pw.TextStyle(fontSize: 10,))),
+                pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("${SalesData[0]["RegistrationNo"]}", style: pw.TextStyle(fontSize: 10, ))),
+               pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("${SalesData[0]["SSCBatchYear"]}", style: pw.TextStyle(fontSize: 10, ))),
+               pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("${SalesData[0]["SSCGPA"]}", style: pw.TextStyle(fontSize: 10, ))),
+                ]
+              ),
+
+
+
+
+                   
+                pw.TableRow(
+                children: [
+                  pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("${SalesData[0]["HSCInstitutionName"]}", style: pw.TextStyle(fontSize: 10, ))),
+                 pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("${SalesData[0]["HSCBoard"]}", style: pw.TextStyle(fontSize: 10,))),
+                 pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("${SalesData[0]["HSCDepartment"]}", style: pw.TextStyle(fontSize: 10,))),
+                 pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("${SalesData[0]["HSCRollNo"]}", style: pw.TextStyle(fontSize: 10,))),
+                pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("${SalesData[0]["RegistrationNo"]}", style: pw.TextStyle(fontSize: 10, ))),
+               pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("${SalesData[0]["HSCBatchYear"]}", style: pw.TextStyle(fontSize: 10, ))),
+               pw.Padding(padding:  pw.EdgeInsets.all(2.0),child: pw.Text("${SalesData[0]["HSCGPA"]}", style: pw.TextStyle(fontSize: 10, ))),
                 ]
               ),
 
