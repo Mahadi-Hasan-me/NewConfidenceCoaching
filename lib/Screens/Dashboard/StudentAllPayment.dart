@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:confidence/Screens/PDF/MoneyReceipt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -216,9 +217,9 @@ Future<void> getData() async {
                           title: Text("${AllData[index]["PaymentAmount"]}৳", style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
                           trailing: ElevatedButton(onPressed: (){
       
-                  // Navigator.push(
-                  //     context,MaterialPageRoute(builder: (context) => ServiceMemoPDFPreview(CreditData: [AllData[index]],)),
-                  //   );
+                  Navigator.push(
+                      context,MaterialPageRoute(builder: (context) => MoneyReceiptPDF(SalesData: [AllData[index]],)),
+                    );
       
                           }, child: Text("Print")),
                           subtitle: Column(
@@ -229,6 +230,7 @@ Future<void> getData() async {
       
       
                               Text("SID No:${AllData[index]["SIDNo"]}"),
+                               Text("Name:${AllData[index]["StudentName"].toString().toUpperCase()}"),
       
       
                               Text("Teacher Academy Name:${AllData[index]["TeacherAcademyName"]}"),
