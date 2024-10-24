@@ -745,6 +745,7 @@ class _ExamMarksState extends State<ExamMarks> {
                                                       "HighestMarks":
                                                           SortStudentMarks.last
                                                               .toString(),
+                                                      "ExamMarks":ExamMarksController.text.trim(),
                                                       "ExamDate":
                                                           ExamDateController
                                                               .text
