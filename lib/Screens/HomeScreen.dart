@@ -2402,6 +2402,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             // numeric: true,
                           ),
                           DataColumn(
+                            label: Text('Exam Result'),
+                            // numeric: true,
+                          ),
+                          DataColumn(
                             label: Text('Academy Name'),
                             // numeric: true,
                           ),
@@ -3287,9 +3291,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       },
                                       child: Text("Send"))),
 
-                                  // DataCell(ElevatedButton(onPressed: (){
+                                  DataCell(ElevatedButton(onPressed: (){
 
-                                  // }, child: Text("Send Exam Marks"))),
+                                  }, child: Text("Exam Results"))),
 
                                   DataCell(Text(
                                       "${AllStudentInfo[index]["TeacherAcademyName"]}")),
