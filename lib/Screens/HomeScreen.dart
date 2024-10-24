@@ -6,6 +6,7 @@ import 'package:confidence/Screens/AllBatchInfo.dart';
 import 'package:confidence/Screens/Attendance/ShowStudentAttendance.dart';
 import 'package:confidence/Screens/Dashboard/StudentAllPayment.dart';
 import 'package:confidence/Screens/ExamMarks/ExamMarks.dart';
+import 'package:confidence/Screens/ExamMarks/ShowPerStudentExamResult.dart';
 import 'package:confidence/Screens/PDF/MoneyReceipt.dart';
 import 'package:confidence/Screens/Students/StudentProfile.dart';
 import 'package:data_table_2/data_table_2.dart';
@@ -3291,9 +3292,138 @@ class _HomeScreenState extends State<HomeScreen> {
                                       },
                                       child: Text("Send"))),
 
-                                  DataCell(ElevatedButton(onPressed: (){
+                                  DataCell(ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    StudentProfile(
+                                                        SIDNo: AllStudentInfo[
+                                                            index]["SIDNo"])));
 
-                                  }, child: Text("Exam Results"))),
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return StatefulBuilder(
+                                                  builder: (context, setState) {
+                                                final List<String>
+                                              TeachersAcademy = [
+                                                  'Rezuan Math Care',
+                                                  'Sazzad ICT',
+                                                  'MediCrack',
+                                                  'Protick Physics',
+                                                ];
+                                                String?
+                                                    selectedTeachersAcademyValue;
+                                                return AlertDialog(
+                                                  title: Text(
+                                                      'Exam Info ${AllStudentInfo[index]["SIDNo"].toString().toUpperCase()}'),
+                                                  content:
+                                                      SingleChildScrollView(
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Card(
+                                                          elevation: 20,
+                                                          child: Container(
+                                                            width: 200,
+                                                            child:
+                                                                DropdownButtonHideUnderline(
+                                                              child:
+                                                                  DropdownButton2<
+                                                                      String>(
+                                                                isExpanded:
+                                                                    true,
+                                                                hint: Text(
+                                                                  'Select Academy Name',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        14,
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .hintColor,
+                                                                  ),
+                                                                ),
+                                                                items: TeachersAcademy.map((String
+                                                                        item) =>
+                                                                    DropdownMenuItem<
+                                                                        String>(
+                                                                      value:
+                                                                          item,
+                                                                      child:
+                                                                          Text(
+                                                                        item,
+                                                                        style:
+                                                                            const TextStyle(
+                                                                          fontSize:
+                                                                              14,
+                                                                        ),
+                                                                      ),
+                                                                    )).toList(),
+                                                                value:
+                                                                    selectedTeachersAcademyValue,
+                                                                onChanged:
+                                                                    (String?
+                                                                        value) {
+                                                                  setState(() {
+                                                                    selectedTeachersAcademyValue =
+                                                                        value;
+
+                                                                    Navigator
+                                                                        .push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) => Showperstudentexamresult(
+                                                                              TeacherAcademyName: value,
+                                                                              SIDNo: AllStudentInfo[index]["SIDNo"])),
+                                                                    );
+                                                                  });
+                                                                },
+                                                                buttonStyleData:
+                                                                    const ButtonStyleData(
+                                                                  padding: EdgeInsets
+                                                                      .symmetric(
+                                                                          horizontal:
+                                                                              16),
+                                                                  height: 40,
+                                                                  width: 140,
+                                                                ),
+                                                                menuItemStyleData:
+                                                                    const MenuItemStyleData(
+                                                                  height: 40,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  actions: [
+                                                    ElevatedButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text('CANCEL'),
+                                                    ),
+                                                    ElevatedButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text('ACCEPT'),
+                                                    ),
+                                                  ],
+                                                );
+                                              });
+                                            });
+                                      },
+                                      child: Text("Exam Marks"))),
 
                                   DataCell(Text(
                                       "${AllStudentInfo[index]["TeacherAcademyName"]}")),
