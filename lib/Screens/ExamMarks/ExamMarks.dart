@@ -649,10 +649,10 @@ class _ExamMarksState extends State<ExamMarks> {
                                                               border:
                                                                   OutlineInputBorder(),
                                                               labelText:
-                                                                  'Exam Date(23-12-2000)',
+                                                                  'Exam Date(23/12/2000)',
 
                                                               hintText:
-                                                                  'Exam Date(23-12-2000)',
+                                                                  'Exam Date(23/12/2000)',
 
                                                               //  enabledBorder: OutlineInputBorder(
                                                               //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
