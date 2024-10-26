@@ -6,6 +6,7 @@ import 'package:confidence/Screens/AllBatchInfo.dart';
 import 'package:confidence/Screens/Attendance/ShowStudentAttendance.dart';
 import 'package:confidence/Screens/Dashboard/StudentAllPayment.dart';
 import 'package:confidence/Screens/ExamMarks/ExamMarks.dart';
+import 'package:confidence/Screens/ExamMarks/ShowEveryAcademyResult.dart';
 import 'package:confidence/Screens/ExamMarks/ShowPerStudentExamResult.dart';
 import 'package:confidence/Screens/PDF/MoneyReceipt.dart';
 import 'package:confidence/Screens/Students/StudentProfile.dart';
@@ -16,6 +17,7 @@ import 'package:flutter/widgets.dart';
 import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 // import 'package:flutter_native_splash/flutter_native_splash.dart';
 // import 'package:input_quantity/input_quantity.dart';
 import 'package:uuid/uuid.dart';
@@ -167,6 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
     'Protick Physics',
   ];
   String? selectedTeachersAcademyValue;
+  String? selectedForNextPageTeachersAcademyValue;
 
   List<String> BatchName = [
     'HSC261',
@@ -175,6 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
     'HSC263',
   ];
   String? selectedBatchNameValue;
+  String? selectedForNextPageBatchNameValue;
 
   @override
   void initState() {
@@ -219,9 +223,260 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               ListTile(
                 leading: Icon(Icons.favorite),
-                title: Text('All Exam'),
+                title: Text('All Exam Result'),
                 selected: _selectedDestination == 0,
                 onTap: () {
+                  var VisiblePaymentDate =
+                      "${DateTime.now().day.toString()}/${DateTime.now().month.toString()}/${DateTime.now().year.toString()}";
+
+                  void _onSelectionChanged(
+                      DateRangePickerSelectionChangedArgs args) {
+                    // TODO: implement your code here
+
+                    if (args.value is PickerDateRange) {
+                      try {
+                        final DateTime rangeStartDate = args.value.startDate;
+                        var adminSetDay = rangeStartDate.day;
+                        var adminSetMonth = rangeStartDate.month;
+                        var adminSetYear = rangeStartDate.year;
+
+                        var paymentDate =
+                            "${adminSetDay}/${adminSetMonth}/${adminSetYear}";
+
+                        VisiblePaymentDate = paymentDate;
+
+                        print(
+                            "${adminSetDay}/${adminSetMonth}/${adminSetYear}");
+
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ShowEveryAcademyResult(
+                                  TeacherAcademyName:
+                                      selectedForNextPageTeachersAcademyValue,
+                                  BatchName: selectedForNextPageBatchNameValue,
+                                  ExamDate: paymentDate,
+                                )));
+
+                        final DateTime rangeEndDate = args.value.endDate;
+                      } catch (e) {}
+                    } else if (args.value is DateTime) {
+                      final DateTime selectedDate = args.value;
+                      print(selectedDate);
+                    } else if (args.value is List<DateTime>) {
+                      final List<DateTime> selectedDates = args.value;
+                      print(selectedDates);
+                    } else {
+                      final List<PickerDateRange> selectedRanges = args.value;
+                      print(selectedRanges);
+                    }
+                  }
+
+                  var PaymentDate =
+                      "${DateTime.now().day.toString()}/${DateTime.now().month.toString()}/${DateTime.now().year.toString()}";
+
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        final List<String> TeachersAcademyName = [
+                          'Rezuan Math Care',
+                          'Sazzad ICT',
+                          'MediCrack',
+                          'Protick Physics',
+                        ];
+                        String? selectedTeachersAcademyNameValue;
+
+                        List<String> TeacherBatchName = [
+                          'HSC261',
+                          'HSC262',
+                          'HSC263',
+                          'HSC263',
+                        ];
+                        String? selectedTeacherBatchNameValue;
+
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Container(
+                              color: Theme.of(context).primaryColor,
+                              child: const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  "নিচে থেকে Date Select করুন।",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Card(
+                                  elevation: 20,
+                                  child: Container(
+                                    width: 200,
+                                    child: DropdownButtonHideUnderline(
+                                      child: DropdownButton2<String>(
+                                        isExpanded: true,
+                                        hint: Text(
+                                          'Select Academy Name',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Theme.of(context).hintColor,
+                                          ),
+                                        ),
+                                        items: TeachersAcademyName.map(
+                                            (String item) =>
+                                                DropdownMenuItem<String>(
+                                                  value: item,
+                                                  child: Text(
+                                                    item,
+                                                    style: const TextStyle(
+                                                      fontSize: 14,
+                                                    ),
+                                                  ),
+                                                )).toList(),
+                                        value: selectedTeachersAcademyNameValue,
+                                        onChanged: (String? value) async {
+                                          CollectionReference
+                                              _collectionBatchInfoRef =
+                                              FirebaseFirestore.instance
+                                                  .collection('AllBatchInfo');
+
+                                          Query BatchInfoRefquery =
+                                              _collectionBatchInfoRef.where(
+                                                  "TeacherAcademyName",
+                                                  isEqualTo:
+                                                      selectedTeachersAcademyValue);
+
+                                          QuerySnapshot
+                                              BatchInfoRefquerySnapshot =
+                                              await BatchInfoRefquery.get();
+
+                                          // Get data from docs and convert map to List
+                                          // AllStudentInfo =
+                                          //     StudentInfoquerySnapshot.docs.map((doc) => doc.data()).toList();
+
+                                          setState(() {
+                                            selectedTeachersAcademyNameValue =
+                                                value;
+                                            selectedForNextPageTeachersAcademyValue =
+                                                value;
+                                            TeacherBatchName.clear();
+
+                                            List AllBatchInfo = [];
+
+                                            AllBatchInfo =
+                                                BatchInfoRefquerySnapshot.docs
+                                                    .map((doc) => doc.data())
+                                                    .toList();
+
+                                            for (var i = 0;
+                                                i < AllBatchInfo.length;
+                                                i++) {
+                                              TeacherBatchName.add(
+                                                  AllBatchInfo[i]["BatchName"]);
+                                            }
+                                            ;
+                                          });
+
+                                          // setState(() {
+                                          //   selectedTeachersAcademyValue = value;
+                                          // });
+                                        },
+                                        buttonStyleData: const ButtonStyleData(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 16),
+                                          height: 40,
+                                          width: 140,
+                                        ),
+                                        menuItemStyleData:
+                                            const MenuItemStyleData(
+                                          height: 40,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Card(
+                                  elevation: 20,
+                                  child: Container(
+                                    width: 200,
+                                    child: DropdownButtonHideUnderline(
+                                      child: DropdownButton2<String>(
+                                        isExpanded: true,
+                                        hint: Text(
+                                          'Select Batch Name',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Theme.of(context).hintColor,
+                                          ),
+                                        ),
+                                        items: TeacherBatchName.map(
+                                            (String item) =>
+                                                DropdownMenuItem<String>(
+                                                  value: item,
+                                                  child: Text(
+                                                    item,
+                                                    style: const TextStyle(
+                                                      fontSize: 14,
+                                                    ),
+                                                  ),
+                                                )).toList(),
+                                        value: selectedTeacherBatchNameValue,
+                                        onChanged: (String? value) {
+                                          setState(() {
+                                            selectedTeacherBatchNameValue =
+                                                value;
+                                            selectedForNextPageBatchNameValue =
+                                                value;
+                                          });
+                                        },
+                                        buttonStyleData: const ButtonStyleData(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 16),
+                                          height: 40,
+                                          width: 140,
+                                        ),
+                                        menuItemStyleData:
+                                            const MenuItemStyleData(
+                                          height: 40,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                                // ElevatedButton(
+                                //     onPressed: () async {
+                                //       // getSearchProductInfo(SearchByStudentIDController
+                                //       //     .text
+                                //       //     .trim()
+                                //       //     .toLowerCase());
+
+                                //       // getSearchAllStudentInfo(
+                                //       //     selectedTeachersAcademyValue!,
+                                //       //     selectedBatchNameValue!);
+                                //     },
+                                //     child: Text("Search")),
+                              ],
+                            ),
+                            Container(
+                              child: SfDateRangePicker(
+                                onSelectionChanged: _onSelectionChanged,
+                                selectionMode:
+                                    DateRangePickerSelectionMode.range,
+                                todayHighlightColor:
+                                    Theme.of(context).primaryColor,
+                              ),
+                            ),
+                          ],
+                        );
+                      });
+
                   // Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen()));
                 },
               ),
@@ -2066,124 +2321,114 @@ class _HomeScreenState extends State<HomeScreen> {
                                             });
 
                                             var StaffCallingHeader = {
-
-                                              "SchoolOrCollegeName":SchoolOrCollegeNameController.text.trim(),
-                                              "Department":DepartmentController.text.trim(),
-                                              "TotalStudent":TotalStudentController.text.trim(),
-                                              "Year":YearController.text.trim(),
-                                              "RecentClass":RecentClassController.text.trim(),
-                                              "LastWork":DateTime.now().toIso8601String(),
-                                              "Incomplete":TotalStudentController.text.trim(),
-                                              "FileID":UniqueID.toString(),
-                                              
-
+                                              "SchoolOrCollegeName":
+                                                  SchoolOrCollegeNameController
+                                                      .text
+                                                      .trim(),
+                                              "Department": DepartmentController
+                                                  .text
+                                                  .trim(),
+                                              "TotalStudent":
+                                                  TotalStudentController.text
+                                                      .trim(),
+                                              "Year":
+                                                  YearController.text.trim(),
+                                              "RecentClass":
+                                                  RecentClassController.text
+                                                      .trim(),
+                                              "LastWork": DateTime.now()
+                                                  .toIso8601String(),
+                                              "Incomplete":
+                                                  TotalStudentController.text
+                                                      .trim(),
+                                              "FileID": UniqueID.toString(),
                                             };
 
+                                            final docUser = FirebaseFirestore
+                                                .instance
+                                                .collection("StaffWorkHeader")
+                                                .doc(UniqueID);
 
+                                            docUser
+                                                .set(StaffCallingHeader)
+                                                .then((value) => setState(() {
+                                                      setState(() {
+                                                        loading = false;
+                                                      });
 
-                    final docUser = FirebaseFirestore.instance
-                        .collection("StaffWorkHeader")
-                        .doc(UniqueID);
+                                                      Navigator.pop(context);
 
+                                                      const snackBar = SnackBar(
+                                                        /// need to set following properties for best effect of awesome_snackbar_content
+                                                        elevation: 0,
 
+                                                        behavior:
+                                                            SnackBarBehavior
+                                                                .floating,
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        content:
+                                                            AwesomeSnackbarContent(
+                                                          title:
+                                                              'Created Successfull',
+                                                          message:
+                                                              'Created Successfull',
 
-                      docUser
-                        .set(StaffCallingHeader)
-                        .then((value) => setState(() {
-                              setState(() {
-                                loading = false;
-                              });
+                                                          /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                          contentType:
+                                                              ContentType
+                                                                  .success,
+                                                        ),
+                                                      );
 
-                             
-                              Navigator.pop(context);
+                                                      ScaffoldMessenger.of(
+                                                          context)
+                                                        ..hideCurrentSnackBar()
+                                                        ..showSnackBar(
+                                                            snackBar);
 
+                                                      // Navigator.push(
+                                                      //   context,
+                                                      //   MaterialPageRoute(
+                                                      //       builder: (context) => CustomerProfile(
+                                                      //           CustomerID: widget.CustomerID)),
+                                                      // );
+                                                    }))
+                                                .onError((error, stackTrace) =>
+                                                    setState(() {
+                                                      setState(() {
+                                                        loading = false;
+                                                      });
 
-                                                               const snackBar =
-                                                              SnackBar(
-                                                            /// need to set following properties for best effect of awesome_snackbar_content
-                                                            elevation: 0,
+                                                      const snackBar = SnackBar(
+                                                        /// need to set following properties for best effect of awesome_snackbar_content
+                                                        elevation: 0,
 
-                                                            behavior:
-                                                                SnackBarBehavior
-                                                                    .floating,
-                                                            backgroundColor:
-                                                                Colors
-                                                                    .transparent,
-                                                            content:
-                                                                AwesomeSnackbarContent(
-                                                              title:
-                                                                  'Created Successfull',
-                                                              message:
-                                                                  'Created Successfull',
+                                                        behavior:
+                                                            SnackBarBehavior
+                                                                .floating,
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        content:
+                                                            AwesomeSnackbarContent(
+                                                          title:
+                                                              'Something Wrong!!!',
+                                                          message:
+                                                              'Something Wrong!!!',
 
-                                                              /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                              contentType:
-                                                                  ContentType
-                                                                      .success,
-                                                            ),
-                                                          );
+                                                          /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                          contentType:
+                                                              ContentType
+                                                                  .failure,
+                                                        ),
+                                                      );
 
-
-                                                        ScaffoldMessenger.of(
-                                                              context)
-                                                            ..hideCurrentSnackBar()
-                                                            ..showSnackBar(
-                                                                snackBar);
-
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //       builder: (context) => CustomerProfile(
-                              //           CustomerID: widget.CustomerID)),
-                              // );
-                            }))
-                        .onError((error, stackTrace) =>
-                               setState((){
-
-
-                            setState(() {
-                                loading = false;
-                              });
-
-
-   const snackBar =
-                                                              SnackBar(
-                                                            /// need to set following properties for best effect of awesome_snackbar_content
-                                                            elevation: 0,
-
-                                                            behavior:
-                                                                SnackBarBehavior
-                                                                    .floating,
-                                                            backgroundColor:
-                                                                Colors
-                                                                    .transparent,
-                                                            content:
-                                                                AwesomeSnackbarContent(
-                                                              title:
-                                                                  'Something Wrong!!!',
-                                                              message:
-                                                                  'Something Wrong!!!',
-
-                                                              /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                              contentType:
-                                                                  ContentType
-                                                                      .failure,
-                                                            ),
-                                                          );
-
-
-                                                        ScaffoldMessenger.of(
-                                                              context)
-                                                            ..hideCurrentSnackBar()
-                                                            ..showSnackBar(
-                                                                snackBar);
-
-
-  
-                                                        }));
-
-                                            
-
+                                                      ScaffoldMessenger.of(
+                                                          context)
+                                                        ..hideCurrentSnackBar()
+                                                        ..showSnackBar(
+                                                            snackBar);
+                                                    }));
                                           },
                                           child: const Text("Save"),
                                         ),
@@ -2202,9 +2447,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
-
-
-
                       ];
                     },
                   ),
@@ -2793,7 +3035,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                           .text
                                                                           .trim()
                                                                       : "",
-                                                                  "StudentName":AllStudentInfo[index]["StudentName"].toString().toUpperCase(),
+                                                                  "StudentName": AllStudentInfo[
+                                                                              index]
+                                                                          [
+                                                                          "StudentName"]
+                                                                      .toString()
+                                                                      .toUpperCase(),
                                                                   "TeacherAcademyName":
                                                                       AllStudentInfo[
                                                                               index]
@@ -2813,9 +3060,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   "DateTime": DateTime
                                                                           .now()
                                                                       .toIso8601String(),
-                                                                   "Due": DiscountAvailable
-                                                                                ? ((int.parse(AllStudentInfo[index]["Due"])) - (int.parse((PaymentAmountController.text.trim().toString()))) + (int.parse(DiscountAmountController.text.trim().toString()))).toString()
-                                                                                : ((int.parse(AllStudentInfo[index]["Due"])) - (int.parse((PaymentAmountController.text.trim().toString())))).toString(),
+                                                                  "Due": DiscountAvailable
+                                                                      ? ((int.parse(AllStudentInfo[index]["Due"])) - (int.parse((PaymentAmountController.text.trim().toString()))) + (int.parse(DiscountAmountController.text.trim().toString())))
+                                                                          .toString()
+                                                                      : ((int.parse(AllStudentInfo[index]["Due"])) -
+                                                                              (int.parse((PaymentAmountController.text.trim().toString()))))
+                                                                          .toString(),
                                                                 };
 
                                                                 final PerTeacherStudentPayment = FirebaseFirestore
@@ -2881,7 +3131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                                     // Navigator.pop(context);
 
                                                                                     getAllStudentInfo();
-                                                                                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => MoneyReceiptPDF(SalesData: [PaymentData])));
+                                                                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => MoneyReceiptPDF(SalesData: [PaymentData])));
 
                                                                                     final snackBar = SnackBar(
                                                                                       elevation: 0,
@@ -3161,8 +3411,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 .instance
                                                                 .collection(
                                                                     'ClassOffSMS')
-                                                                .doc(
-                                                                    UniqueID);
+                                                                .doc(UniqueID);
 
                                                         ClassOffSMS.set(MsgData)
                                                             .then((value) =>
@@ -3307,7 +3556,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               return StatefulBuilder(
                                                   builder: (context, setState) {
                                                 final List<String>
-                                              TeachersAcademy = [
+                                                    TeachersAcademy = [
                                                   'Rezuan Math Care',
                                                   'Sazzad ICT',
                                                   'MediCrack',
