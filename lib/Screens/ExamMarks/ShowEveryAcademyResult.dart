@@ -509,7 +509,7 @@ class _ShowEveryAcademyResultState extends State<ShowEveryAcademyResult> {
                               Text("Position:${AllData[index]["Position"]}"),
 
                               Text(
-                                  "Topic Marks:${AllData[index]["ExamMarks"]}"),
+                                  "Topic Marks:${AllData[index]["TotalMarks"]}"),
 
                               Text(
                                   "HighestMarks:${AllData[index]["HighestMarks"]}"),

@@ -733,6 +733,8 @@ class _ExamMarksState extends State<ExamMarks> {
                                                         {
                                                       "SIDNo": AllStudentInfo[i]
                                                           ["SIDNo"],
+                                                      "StudentName":AllStudentInfo[i]
+                                                          ["StudentName"],
                                                       "TeacherAcademyName":
                                                           AllStudentInfo[i][
                                                               "TeacherAcademyName"],
