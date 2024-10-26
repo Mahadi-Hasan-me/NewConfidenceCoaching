@@ -210,16 +210,48 @@ class _HomeScreenState extends State<HomeScreen> {
             // Important: Remove any padding from the ListView.
             padding: EdgeInsets.zero,
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  'All Menu',
-                  style: textTheme.titleLarge,
-                ),
-              ),
+
+              Center(child: Text("Dashboard", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
+
               const Divider(
                 height: 1,
                 thickness: 1,
+              ),
+              
+              ListTile(
+                leading: Icon(Icons.fingerprint),
+                title: Text(
+                  'Give Attendance',
+                  
+                ),
+                onTap: () async {
+                  showDialog<void>(
+                    context: context,
+                    barrierDismissible: false, // user must tap button!
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('নিচে ব্যাচের নাম এবং একাডেমিক নাম দেন।'),
+                        content: const SingleChildScrollView(
+                          child: ListBody(
+                            children: <Widget>[
+                              Text('This is a demo alert dialog.'),
+                              Text(
+                                  'Would you like to approve of this message?'),
+                            ],
+                          ),
+                        ),
+                        actions: <Widget>[
+                          TextButton(
+                            child: const Text('Approve'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
               ),
               ListTile(
                 leading: Icon(Icons.favorite),

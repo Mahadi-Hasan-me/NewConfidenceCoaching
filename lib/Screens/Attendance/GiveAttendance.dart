@@ -1,5 +1,6 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:confidence/Screens/Attendance/ChangeAttendance.dart';
 import 'package:confidence/Screens/PDF/MoneyReceipt.dart';
 import 'package:confidence/Screens/important.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -135,7 +136,7 @@ class _GiveAttendanceState extends State<GiveAttendance> {
             queryDueSnapshot.docs.map((doc) => doc.data()).toList();
         loading = false;
 
-        //  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChangeAttendance(StudentEmail: StudentEmail, AttendanceType: todayAttendanceData[0]["type"] , AttendanceID: todayAttendanceData[0]["AttendanceID"])));
+         Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChangeAttendance(id:todayAttendanceData[0]["id"], AttendanceType: todayAttendanceData[0]["type"] , AttendanceID: todayAttendanceData[0]["AttendanceID"])));
       });
     }
 
@@ -500,6 +501,8 @@ class _GiveAttendanceState extends State<GiveAttendance> {
                                                               ["StudentName"],
                                                       "SIDNo": AllData[index]
                                                           ["SIDNo"],
+                                                      "id":AllData[index]
+                                                          ["id"],
                                                       "StudentPhoneNumber":
                                                           AllData[index][
                                                               "StudentPhoneNumber"],
@@ -663,6 +666,8 @@ class _GiveAttendanceState extends State<GiveAttendance> {
                                                               ["StudentName"],
                                                       "SIDNo": AllData[index]
                                                           ["SIDNo"],
+                                                      "id":AllData[index]
+                                                          ["id"],
                                                       "StudentPhoneNumber":
                                                           AllData[index][
                                                               "StudentPhoneNumber"],
