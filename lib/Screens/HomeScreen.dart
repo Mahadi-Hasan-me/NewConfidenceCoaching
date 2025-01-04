@@ -1,19 +1,25 @@
+import 'dart:async';
 import 'dart:convert';
+import "dart:collection";
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:confidence/Screens/AllBatchInfo.dart';
+import 'package:confidence/Screens/Attendance/GiveAttendance.dart';
 import 'package:confidence/Screens/Attendance/ShowStudentAttendance.dart';
+import 'package:confidence/Screens/CommonScreen/InternetChecker.dart';
 import 'package:confidence/Screens/Dashboard/StudentAllPayment.dart';
 import 'package:confidence/Screens/ExamMarks/ExamMarks.dart';
 import 'package:confidence/Screens/ExamMarks/ShowEveryAcademyResult.dart';
 import 'package:confidence/Screens/ExamMarks/ShowPerStudentExamResult.dart';
 import 'package:confidence/Screens/PDF/MoneyReceipt.dart';
+import 'package:confidence/Screens/StaffWork/AllWorkFile.dart';
 import 'package:confidence/Screens/Students/StudentProfile.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -23,8 +29,12 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:uuid/uuid.dart';
 
 class HomeScreen extends StatefulWidget {
+  final UserName;
+  final UserEmail;
   HomeScreen({
     super.key,
+    required this.UserEmail,
+    required this.UserName,
   });
 
   @override
@@ -180,11 +190,42 @@ class _HomeScreenState extends State<HomeScreen> {
   String? selectedBatchNameValue;
   String? selectedForNextPageBatchNameValue;
 
+// internet connection checker
+
+  // bool online = true;
+  // Future getInternetValue() async {
+  //   bool onlineData =
+  //       await getInternetConnectionChecker().getInternetConnection();
+
+  //   setState(() {
+  //     online = onlineData;
+  //     print(online);
+  //   });
+  // }
+
+  // late var timer;
+
+  // @override
+  // void dispose() {
+  //   timer.cancel();
+  //   super.dispose();
+  // }
+
   @override
   void initState() {
     // FlutterNativeSplash.remove();
 
     getAllStudentInfo();
+
+    // if (mounted) {
+    //   var period = const Duration(seconds: 1);
+    //   timer = Timer.periodic(period, (arg) {
+    //     getInternetValue();
+    //   });
+    // }
+
+    // // TODO: implement initState
+    // FlutterNativeSplash.remove();
 
     // setState(() {
     //   _selectedDestination = 0;
@@ -210,47 +251,227 @@ class _HomeScreenState extends State<HomeScreen> {
             // Important: Remove any padding from the ListView.
             padding: EdgeInsets.zero,
             children: <Widget>[
-
-              Center(child: Text("Dashboard", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
-
+              Center(
+                  child: Text(
+                "Dashboard",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              )),
               const Divider(
                 height: 1,
                 thickness: 1,
               ),
-              
               ListTile(
                 leading: Icon(Icons.fingerprint),
                 title: Text(
                   'Give Attendance',
-                  
                 ),
                 onTap: () async {
                   showDialog<void>(
-                    context: context,
-                    barrierDismissible: false, // user must tap button!
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('নিচে ব্যাচের নাম এবং একাডেমিক নাম দেন।'),
-                        content: const SingleChildScrollView(
-                          child: ListBody(
-                            children: <Widget>[
-                              Text('This is a demo alert dialog.'),
-                              Text(
-                                  'Would you like to approve of this message?'),
-                            ],
-                          ),
-                        ),
-                        actions: <Widget>[
-                          TextButton(
-                            child: const Text('Approve'),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  );
+                      context: context,
+                      barrierDismissible: false, // user must tap button!
+                      builder: (BuildContext context) {
+                        final List<String> AllTeachersAcademyName = [
+                          'Rezuan Math Care',
+                          'Sazzad ICT',
+                          'MediCrack',
+                          'Protick Physics',
+                        ];
+                        String? selectedSingleTeachersAcademyValue;
+
+                        List<String> AllBatchName = [
+                          'HSC261',
+                          'HSC262',
+                          'HSC263',
+                          'HSC263',
+                        ];
+                        String? selectedAllBatchNameValue;
+
+                        return StatefulBuilder(
+                          builder: (context, setState) {
+                            return AlertDialog(
+                              title: const Text(
+                                  'নিচে ব্যাচের নাম এবং একাডেমিক নাম দেন।'),
+                              content: SingleChildScrollView(
+                                child: Column(
+                                  children: <Widget>[
+                                    Card(
+                                      elevation: 20,
+                                      child: Container(
+                                        width: 200,
+                                        child: DropdownButtonHideUnderline(
+                                          child: DropdownButton2<String>(
+                                            isExpanded: true,
+                                            hint: Text(
+                                              'Select Academy Name',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color:
+                                                    Theme.of(context).hintColor,
+                                              ),
+                                            ),
+                                            items: AllTeachersAcademyName.map(
+                                                (String item) =>
+                                                    DropdownMenuItem<String>(
+                                                      value: item,
+                                                      child: Text(
+                                                        item,
+                                                        style: const TextStyle(
+                                                          fontSize: 14,
+                                                        ),
+                                                      ),
+                                                    )).toList(),
+                                            value:
+                                                selectedSingleTeachersAcademyValue,
+                                            onChanged: (String? value) async {
+                                              CollectionReference
+                                                  _collectionBatchInfoRef =
+                                                  FirebaseFirestore.instance
+                                                      .collection(
+                                                          'AllBatchInfo');
+
+                                              Query BatchInfoRefquery =
+                                                  _collectionBatchInfoRef.where(
+                                                      "TeacherAcademyName",
+                                                      isEqualTo:
+                                                          selectedSingleTeachersAcademyValue);
+
+                                              QuerySnapshot
+                                                  BatchInfoRefquerySnapshot =
+                                                  await BatchInfoRefquery.get();
+
+                                              // Get data from docs and convert map to List
+                                              // AllStudentInfo =
+                                              //     StudentInfoquerySnapshot.docs.map((doc) => doc.data()).toList();
+
+                                              setState(() {
+                                                selectedSingleTeachersAcademyValue =
+                                                    value;
+                                                AllBatchName.clear();
+
+                                                List AllBatchInfo = [];
+
+                                                AllBatchInfo =
+                                                    BatchInfoRefquerySnapshot
+                                                        .docs
+                                                        .map(
+                                                            (doc) => doc.data())
+                                                        .toList();
+
+                                                List WithDuplicateBatchName =
+                                                    [];
+
+                                                for (var i = 0;
+                                                    i < AllBatchInfo.length;
+                                                    i++) {
+                                                  WithDuplicateBatchName.add(
+                                                      AllBatchInfo[i]
+                                                          ["BatchName"]);
+                                                }
+
+                                                // List<String> arr = ["a", "a", "b", "c", "b", "d"];
+                                                AllBatchName = LinkedHashSet<
+                                                            String>.from(
+                                                        WithDuplicateBatchName)
+                                                    .toList();
+
+                                                // AllBatchName =
+                                                //     WithDuplicateBatchName
+                                                //             .sort()
+                                                //         .toList();
+                                              });
+
+                                              // setState(() {
+                                              //   selectedTeachersAcademyValue = value;
+                                              // });
+                                            },
+                                            buttonStyleData:
+                                                const ButtonStyleData(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 16),
+                                              height: 40,
+                                              width: 140,
+                                            ),
+                                            menuItemStyleData:
+                                                const MenuItemStyleData(
+                                              height: 40,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Card(
+                                      elevation: 20,
+                                      child: SizedBox(
+                                        width: 200,
+                                        child: DropdownButtonHideUnderline(
+                                          child: DropdownButton2<String>(
+                                            isExpanded: true,
+                                            hint: Text(
+                                              'Select Batch Name',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color:
+                                                    Theme.of(context).hintColor,
+                                              ),
+                                            ),
+                                            items: AllBatchName.map(
+                                                (String item) =>
+                                                    DropdownMenuItem<String>(
+                                                      value: item,
+                                                      child: Text(
+                                                        item,
+                                                        style: const TextStyle(
+                                                          fontSize: 14,
+                                                        ),
+                                                      ),
+                                                    )).toList(),
+                                            value: selectedAllBatchNameValue,
+                                            onChanged: (String? value) {
+                                              setState(() {
+                                                selectedAllBatchNameValue =
+                                                    value;
+                                              });
+                                            },
+                                            buttonStyleData:
+                                                const ButtonStyleData(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 16),
+                                              height: 40,
+                                              width: 140,
+                                            ),
+                                            menuItemStyleData:
+                                                const MenuItemStyleData(
+                                              height: 40,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    ElevatedButton(
+                                        onPressed: () async {
+                                          Navigator.of(context).push(MaterialPageRoute(
+                                              builder: (context) => GiveAttendance(
+                                                  TeacherAcademyName:
+                                                      selectedSingleTeachersAcademyValue,
+                                                  BatchName:
+                                                      selectedAllBatchNameValue)));
+                                        },
+                                        child: Text("Search")),
+                                  ],
+                                ),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: const Text('Cancel'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      });
                 },
               ),
               ListTile(
@@ -523,6 +744,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 onTap: () {
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => AllBatchInfo()));
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.favorite),
+                title: Text('Staff Work'),
+                selected: _selectedDestination == 0,
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => AllWorkFile()));
                 },
               ),
               ListTile(
@@ -2482,7 +2712,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ];
                     },
                   ),
-                  const Text(" Confidence Dashboard"),
+                  Text(
+                      " Confidence Dashboard User:${widget.UserName}  Email:${widget.UserEmail} "),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -2622,402 +2853,218 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             body: GridView.count(
-              crossAxisCount: 1,
-              crossAxisSpacing: 20,
-              mainAxisSpacing: 20,
-              padding: EdgeInsets.all(20),
-              childAspectRatio: 3 / 2,
-              children: [
-                Card(
-                  surfaceTintColor: Colors.white,
-                  elevation: 20,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: DataTable2(
-                        headingTextStyle: const TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.white),
-                        columnSpacing: 12,
-                        headingRowColor:
-                            const WidgetStatePropertyAll(Colors.pink),
-                        horizontalMargin: 12,
-                        minWidth: 2600,
-                        dividerThickness: 3,
-                        isHorizontalScrollBarVisible: true,
-                        columns: const [
-                          DataColumn2(
-                            label: Text('SL'),
-                          ),
-                          DataColumn2(
-                            label: Text('Student ID'),
-                          ),
-                          DataColumn2(
-                            label: Text('Payment Status'),
-                          ),
-                          DataColumn2(
-                            label: Text('Due Amount'),
-                          ),
-                          DataColumn(
-                            label: Text('Student Name'),
-                          ),
-                          DataColumn(
-                            label: Text('Phone No'),
-                          ),
-                          // DataColumn2(
-                          //   label: Text('Institution Name'),
-                          //   size: ColumnSize.L,
-                          // ),
-                          DataColumn2(
-                              label: Text('Father Phone No'), fixedWidth: 170),
-                          DataColumn(
-                            label: Text('Pay'),
-                            // numeric: true,
-                          ),
-                          DataColumn(
-                            label: Text('Send SMS'),
-                            // numeric: true,
-                          ),
-                          DataColumn(
-                            label: Text('Exam Result'),
-                            // numeric: true,
-                          ),
-                          DataColumn(
-                            label: Text('Academy Name'),
-                            // numeric: true,
-                          ),
-                          DataColumn(
-                            label: Text('Status'),
-                            // numeric: true,
-                          ),
-                          DataColumn(
-                            label: Text('Edit'),
-                            // numeric: true,
-                          ),
+                    crossAxisCount: 1,
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 20,
+                    padding: EdgeInsets.all(20),
+                    childAspectRatio: 3 / 2,
+                    children: [
+                      Card(
+                        surfaceTintColor: Colors.white,
+                        elevation: 20,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: DataTable2(
+                              headingTextStyle: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                              columnSpacing: 12,
+                              headingRowColor:
+                                  const WidgetStatePropertyAll(Colors.pink),
+                              horizontalMargin: 12,
+                              minWidth: 2600,
+                              dividerThickness: 3,
+                              isHorizontalScrollBarVisible: true,
+                              columns: const [
+                                DataColumn2(
+                                  label: Text('SL'),
+                                ),
+                                DataColumn2(
+                                  label: Text('Student ID'),
+                                ),
+                                DataColumn2(
+                                  label: Text('Payment Status'),
+                                ),
+                                DataColumn2(
+                                  label: Text('Due Amount'),
+                                ),
+                                DataColumn(
+                                  label: Text('Student Name'),
+                                ),
+                                DataColumn(
+                                  label: Text('Phone No'),
+                                ),
+                                // DataColumn2(
+                                //   label: Text('Institution Name'),
+                                //   size: ColumnSize.L,
+                                // ),
+                                DataColumn2(
+                                    label: Text('Father Phone No'),
+                                    fixedWidth: 170),
+                                DataColumn(
+                                  label: Text('Pay'),
+                                  // numeric: true,
+                                ),
+                                DataColumn(
+                                  label: Text('Send SMS'),
+                                  // numeric: true,
+                                ),
+                                DataColumn(
+                                  label: Text('Exam Result'),
+                                  // numeric: true,
+                                ),
+                                DataColumn(
+                                  label: Text('Academy Name'),
+                                  // numeric: true,
+                                ),
+                                DataColumn(
+                                  label: Text('Status'),
+                                  // numeric: true,
+                                ),
+                                DataColumn(
+                                  label: Text('Edit'),
+                                  // numeric: true,
+                                ),
 
-                          DataColumn(
-                            label: Text('Details'),
-                            // numeric: true,
-                          ),
+                                DataColumn(
+                                  label: Text('Details'),
+                                  // numeric: true,
+                                ),
 
-                          DataColumn(
-                            label: Text('Attendance'),
-                            // numeric: true,
-                          ),
+                                DataColumn(
+                                  label: Text('Attendance'),
+                                  // numeric: true,
+                                ),
 
-                          DataColumn(
-                            label: Text('All Fee'),
-                            // numeric: true,
-                          ),
-                        ],
-                        rows: List<DataRow>.generate(
-                            AllStudentInfo.length,
-                            (index) => DataRow(cells: [
-                                  DataCell(Text('${index + 1}')),
+                                DataColumn(
+                                  label: Text('All Fee'),
+                                  // numeric: true,
+                                ),
+                              ],
+                              rows: List<DataRow>.generate(
+                                  AllStudentInfo.length,
+                                  (index) => DataRow(cells: [
+                                        DataCell(Text('${index + 1}')),
 
-                                  DataCell(Text(AllStudentInfo[index]["SIDNo"]
-                                      .toString()
-                                      .toUpperCase())),
+                                        DataCell(Text(AllStudentInfo[index]
+                                                ["SIDNo"]
+                                            .toString()
+                                            .toUpperCase())),
 
-                                  DataCell((int.parse(AllStudentInfo[index]
-                                                  ["Due"]
-                                              .toString())) >
-                                          0
-                                      ? Text(
-                                          "DUE".toString().toUpperCase(),
-                                          style: const TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.bold),
-                                        )
-                                      : Text(
-                                          "PAID".toString().toUpperCase(),
-                                          style: const TextStyle(
-                                              color: Colors.green,
-                                              fontWeight: FontWeight.bold),
-                                        )),
+                                        DataCell((int.parse(
+                                                    AllStudentInfo[index]["Due"]
+                                                        .toString())) >
+                                                0
+                                            ? Text(
+                                                "DUE".toString().toUpperCase(),
+                                                style: const TextStyle(
+                                                    color: Colors.red,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )
+                                            : Text(
+                                                "PAID".toString().toUpperCase(),
+                                                style: const TextStyle(
+                                                    color: Colors.green,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )),
 
-                                  DataCell((int.parse(AllStudentInfo[index]
-                                                  ["Due"]
-                                              .toString())) >
-                                          0
-                                      ? Text(
-                                          "${AllStudentInfo[index]["Due"].toString().toUpperCase()}৳",
-                                          style: const TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 22),
-                                        )
-                                      : Text(
-                                          "${AllStudentInfo[index]["Due"].toString().toUpperCase()}৳",
-                                          style: const TextStyle(
-                                              color: Colors.green,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 22),
-                                        )),
+                                        DataCell((int.parse(
+                                                    AllStudentInfo[index]["Due"]
+                                                        .toString())) >
+                                                0
+                                            ? Text(
+                                                "${AllStudentInfo[index]["Due"].toString().toUpperCase()}৳",
+                                                style: const TextStyle(
+                                                    color: Colors.red,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 22),
+                                              )
+                                            : Text(
+                                                "${AllStudentInfo[index]["Due"].toString().toUpperCase()}৳",
+                                                style: const TextStyle(
+                                                    color: Colors.green,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 22),
+                                              )),
 
-                                  DataCell(Text(AllStudentInfo[index]
-                                          ["StudentName"]
-                                      .toString()
-                                      .toUpperCase())),
-                                  DataCell(Text(AllStudentInfo[index]
-                                          ["StudentPhoneNumber"]
-                                      .toString()
-                                      .toUpperCase())),
+                                        DataCell(Text(AllStudentInfo[index]
+                                                ["StudentName"]
+                                            .toString()
+                                            .toUpperCase())),
+                                        DataCell(Text(AllStudentInfo[index]
+                                                ["StudentPhoneNumber"]
+                                            .toString()
+                                            .toUpperCase())),
 
-                                  // DataCell(Text(
-                                  //     "${AllStudentInfo[index]["InstitutionName"].toString().toUpperCase()}")),
+                                        // DataCell(Text(
+                                        //     "${AllStudentInfo[index]["InstitutionName"].toString().toUpperCase()}")),
 
-                                  DataCell(Text(AllStudentInfo[index]
-                                          ["FatherPhoneNo"]
-                                      .toString()
-                                      .toUpperCase())),
+                                        DataCell(Text(AllStudentInfo[index]
+                                                ["FatherPhoneNo"]
+                                            .toString()
+                                            .toUpperCase())),
 
-                                  DataCell(
-                                      AllStudentInfo[index]["Status"] == "Close"
-                                          ? Text("")
-                                          : ElevatedButton(
-                                              onPressed: () {
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    String Title =
-                                                        "Payment যুক্ত করুন";
+                                        DataCell(
+                                            AllStudentInfo[index]["Status"] ==
+                                                    "Close"
+                                                ? Text("")
+                                                : ElevatedButton(
+                                                    onPressed: () {
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (context) {
+                                                          String Title =
+                                                              "Payment যুক্ত করুন";
 
-                                                    bool loading = false;
-                                                    bool DiscountAvailable =
-                                                        false;
+                                                          bool loading = false;
+                                                          bool
+                                                              DiscountAvailable =
+                                                              false;
 
-                                                    // String LabelText ="আয়ের খাত লিখবেন";
+                                                          // String LabelText ="আয়ের খাত লিখবেন";
 
-                                                    return StatefulBuilder(
-                                                      builder:
-                                                          (context, setState) {
-                                                        return AlertDialog(
-                                                          title: Column(
-                                                            children: [
-                                                              Center(
-                                                                child: Text(
-                                                                  Title,
-                                                                  style: const TextStyle(
-                                                                      fontFamily:
-                                                                          "Josefin Sans",
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold),
+                                                          return StatefulBuilder(
+                                                            builder: (context,
+                                                                setState) {
+                                                              return AlertDialog(
+                                                                title: Column(
+                                                                  children: [
+                                                                    Center(
+                                                                      child:
+                                                                          Text(
+                                                                        Title,
+                                                                        style: const TextStyle(
+                                                                            fontFamily:
+                                                                                "Josefin Sans",
+                                                                            fontWeight:
+                                                                                FontWeight.bold),
+                                                                      ),
+                                                                    ),
+                                                                  ],
                                                                 ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          content: loading
-                                                              ? const Center(
-                                                                  child:
-                                                                      CircularProgressIndicator(),
-                                                                )
-                                                              : SingleChildScrollView(
-                                                                  child: Column(
-                                                                    children: <Widget>[
-                                                                      const SizedBox(
-                                                                          height:
-                                                                              10),
-                                                                      SizedBox(
-                                                                        width:
-                                                                            300,
+                                                                content: loading
+                                                                    ? const Center(
                                                                         child:
-                                                                            TextField(
-                                                                          readOnly:
-                                                                              true,
-                                                                          onChanged:
-                                                                              (value) {},
-                                                                          keyboardType:
-                                                                              TextInputType.text,
-                                                                          decoration:
-                                                                              InputDecoration(
-                                                                            border:
-                                                                                OutlineInputBorder(),
-                                                                            labelText:
-                                                                                'SID: ${AllStudentInfo[index]["SIDNo"].toString().toUpperCase()}',
-
-                                                                            hintText:
-                                                                                'SID: ${AllStudentInfo[index]["SIDNo"].toString().toUpperCase()}',
-
-                                                                            //  enabledBorder: OutlineInputBorder(
-                                                                            //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                                            //     ),
-                                                                            focusedBorder:
-                                                                                OutlineInputBorder(
-                                                                              borderSide: BorderSide(width: 3, color: Theme.of(context).primaryColor),
-                                                                            ),
-                                                                            errorBorder:
-                                                                                const OutlineInputBorder(
-                                                                              borderSide: BorderSide(width: 3, color: Color.fromARGB(255, 66, 125, 145)),
-                                                                            ),
-                                                                          ),
-                                                                          controller:
-                                                                              StudentIDController,
-                                                                        ),
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        height:
-                                                                            20,
-                                                                      ),
-                                                                      SizedBox(
-                                                                        width:
-                                                                            300,
+                                                                            CircularProgressIndicator(),
+                                                                      )
+                                                                    : SingleChildScrollView(
                                                                         child:
-                                                                            TextField(
-                                                                          readOnly:
-                                                                              true,
-                                                                          onChanged:
-                                                                              (value) {},
-                                                                          keyboardType:
-                                                                              TextInputType.text,
-                                                                          decoration:
-                                                                              InputDecoration(
-                                                                            border:
-                                                                                OutlineInputBorder(),
-                                                                            labelText:
-                                                                                'Name: ${AllStudentInfo[index]["StudentName"].toString().toUpperCase()}',
-
-                                                                            hintText:
-                                                                                'Name: ${AllStudentInfo[index]["StudentName"].toString().toUpperCase()}',
-
-                                                                            //  enabledBorder: OutlineInputBorder(
-                                                                            //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                                            //     ),
-                                                                            focusedBorder:
-                                                                                OutlineInputBorder(
-                                                                              borderSide: BorderSide(width: 3, color: Theme.of(context).primaryColor),
-                                                                            ),
-                                                                            errorBorder:
-                                                                                const OutlineInputBorder(
-                                                                              borderSide: BorderSide(width: 3, color: Color.fromARGB(255, 66, 125, 145)),
-                                                                            ),
-                                                                          ),
-                                                                          controller:
-                                                                              StudentNameController,
-                                                                        ),
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        height:
-                                                                            20,
-                                                                      ),
-                                                                      SizedBox(
-                                                                        width:
-                                                                            300,
-                                                                        child:
-                                                                            TextField(
-                                                                          readOnly:
-                                                                              true,
-                                                                          onChanged:
-                                                                              (value) {},
-                                                                          keyboardType:
-                                                                              TextInputType.text,
-                                                                          decoration:
-                                                                              InputDecoration(
-                                                                            border:
-                                                                                OutlineInputBorder(),
-                                                                            labelText:
-                                                                                'Due: ${AllStudentInfo[index]["Due"].toString().toUpperCase()}৳',
-
-                                                                            hintText:
-                                                                                'Due: ${AllStudentInfo[index]["Due"].toString().toUpperCase()}৳',
-
-                                                                            //  enabledBorder: OutlineInputBorder(
-                                                                            //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                                            //     ),
-                                                                            focusedBorder:
-                                                                                OutlineInputBorder(
-                                                                              borderSide: BorderSide(width: 3, color: Theme.of(context).primaryColor),
-                                                                            ),
-                                                                            errorBorder:
-                                                                                const OutlineInputBorder(
-                                                                              borderSide: BorderSide(width: 3, color: Color.fromARGB(255, 66, 125, 145)),
-                                                                            ),
-                                                                          ),
-                                                                          controller:
-                                                                              StudentNameController,
-                                                                        ),
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        height:
-                                                                            20,
-                                                                      ),
-                                                                      SizedBox(
-                                                                        width:
-                                                                            300,
-                                                                        child:
-                                                                            TextField(
-                                                                          onChanged:
-                                                                              (value) {},
-                                                                          keyboardType:
-                                                                              TextInputType.text,
-                                                                          decoration:
-                                                                              InputDecoration(
-                                                                            border:
-                                                                                OutlineInputBorder(),
-                                                                            labelText:
-                                                                                'Payment Amount',
-
-                                                                            hintText:
-                                                                                'Payment Amount',
-
-                                                                            //  enabledBorder: OutlineInputBorder(
-                                                                            //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                                            //     ),
-                                                                            focusedBorder:
-                                                                                OutlineInputBorder(
-                                                                              borderSide: BorderSide(width: 3, color: Theme.of(context).primaryColor),
-                                                                            ),
-                                                                            errorBorder:
-                                                                                const OutlineInputBorder(
-                                                                              borderSide: BorderSide(width: 3, color: Color.fromARGB(255, 66, 125, 145)),
-                                                                            ),
-                                                                          ),
-                                                                          controller:
-                                                                              PaymentAmountController,
-                                                                        ),
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        height:
-                                                                            20,
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        height:
-                                                                            20,
-                                                                      ),
-                                                                      CheckboxListTile(
-                                                                        title: const Text(
-                                                                            "Discount Available?",
-                                                                            style: TextStyle(
-                                                                                fontSize: 17,
-                                                                                fontWeight: FontWeight.bold,
-                                                                                fontFamily: "Josefin Sans")),
-                                                                        value:
-                                                                            DiscountAvailable,
-                                                                        onChanged:
-                                                                            (newValue) {
-                                                                          setState(
-                                                                              () {
-                                                                            DiscountAvailable =
-                                                                                newValue!;
-                                                                          });
-                                                                        },
-                                                                        controlAffinity:
-                                                                            ListTileControlAffinity.leading, //  <-- leading Checkbox
-                                                                      ),
-                                                                      const SizedBox(
-                                                                        height:
-                                                                            20,
-                                                                      ),
-                                                                      DiscountAvailable
-                                                                          ? SizedBox(
+                                                                            Column(
+                                                                          children: <Widget>[
+                                                                            const SizedBox(height: 10),
+                                                                            SizedBox(
                                                                               width: 300,
                                                                               child: TextField(
+                                                                                readOnly: true,
                                                                                 onChanged: (value) {},
                                                                                 keyboardType: TextInputType.text,
                                                                                 decoration: InputDecoration(
                                                                                   border: OutlineInputBorder(),
-                                                                                  labelText: 'Discount Amount',
+                                                                                  labelText: 'SID: ${AllStudentInfo[index]["SIDNo"].toString().toUpperCase()}',
 
-                                                                                  hintText: 'Discount Amount',
+                                                                                  hintText: 'SID: ${AllStudentInfo[index]["SIDNo"].toString().toUpperCase()}',
 
                                                                                   //  enabledBorder: OutlineInputBorder(
                                                                                   //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
@@ -3029,1038 +3076,1141 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                                     borderSide: BorderSide(width: 3, color: Color.fromARGB(255, 66, 125, 145)),
                                                                                   ),
                                                                                 ),
-                                                                                controller: DiscountAmountController,
+                                                                                controller: StudentIDController,
                                                                               ),
-                                                                            )
-                                                                          : const Text(
-                                                                              ""),
-                                                                    ],
+                                                                            ),
+                                                                            const SizedBox(
+                                                                              height: 20,
+                                                                            ),
+                                                                            SizedBox(
+                                                                              width: 300,
+                                                                              child: TextField(
+                                                                                readOnly: true,
+                                                                                onChanged: (value) {},
+                                                                                keyboardType: TextInputType.text,
+                                                                                decoration: InputDecoration(
+                                                                                  border: OutlineInputBorder(),
+                                                                                  labelText: 'Name: ${AllStudentInfo[index]["StudentName"].toString().toUpperCase()}',
+
+                                                                                  hintText: 'Name: ${AllStudentInfo[index]["StudentName"].toString().toUpperCase()}',
+
+                                                                                  //  enabledBorder: OutlineInputBorder(
+                                                                                  //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                                                  //     ),
+                                                                                  focusedBorder: OutlineInputBorder(
+                                                                                    borderSide: BorderSide(width: 3, color: Theme.of(context).primaryColor),
+                                                                                  ),
+                                                                                  errorBorder: const OutlineInputBorder(
+                                                                                    borderSide: BorderSide(width: 3, color: Color.fromARGB(255, 66, 125, 145)),
+                                                                                  ),
+                                                                                ),
+                                                                                controller: StudentNameController,
+                                                                              ),
+                                                                            ),
+                                                                            const SizedBox(
+                                                                              height: 20,
+                                                                            ),
+                                                                            SizedBox(
+                                                                              width: 300,
+                                                                              child: TextField(
+                                                                                readOnly: true,
+                                                                                onChanged: (value) {},
+                                                                                keyboardType: TextInputType.text,
+                                                                                decoration: InputDecoration(
+                                                                                  border: OutlineInputBorder(),
+                                                                                  labelText: 'Due: ${AllStudentInfo[index]["Due"].toString().toUpperCase()}৳',
+
+                                                                                  hintText: 'Due: ${AllStudentInfo[index]["Due"].toString().toUpperCase()}৳',
+
+                                                                                  //  enabledBorder: OutlineInputBorder(
+                                                                                  //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                                                  //     ),
+                                                                                  focusedBorder: OutlineInputBorder(
+                                                                                    borderSide: BorderSide(width: 3, color: Theme.of(context).primaryColor),
+                                                                                  ),
+                                                                                  errorBorder: const OutlineInputBorder(
+                                                                                    borderSide: BorderSide(width: 3, color: Color.fromARGB(255, 66, 125, 145)),
+                                                                                  ),
+                                                                                ),
+                                                                                controller: StudentNameController,
+                                                                              ),
+                                                                            ),
+                                                                            const SizedBox(
+                                                                              height: 20,
+                                                                            ),
+                                                                            SizedBox(
+                                                                              width: 300,
+                                                                              child: TextField(
+                                                                                onChanged: (value) {},
+                                                                                keyboardType: TextInputType.text,
+                                                                                decoration: InputDecoration(
+                                                                                  border: OutlineInputBorder(),
+                                                                                  labelText: 'Payment Amount',
+
+                                                                                  hintText: 'Payment Amount',
+
+                                                                                  //  enabledBorder: OutlineInputBorder(
+                                                                                  //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                                                  //     ),
+                                                                                  focusedBorder: OutlineInputBorder(
+                                                                                    borderSide: BorderSide(width: 3, color: Theme.of(context).primaryColor),
+                                                                                  ),
+                                                                                  errorBorder: const OutlineInputBorder(
+                                                                                    borderSide: BorderSide(width: 3, color: Color.fromARGB(255, 66, 125, 145)),
+                                                                                  ),
+                                                                                ),
+                                                                                controller: PaymentAmountController,
+                                                                              ),
+                                                                            ),
+                                                                            const SizedBox(
+                                                                              height: 20,
+                                                                            ),
+                                                                            const SizedBox(
+                                                                              height: 20,
+                                                                            ),
+                                                                            CheckboxListTile(
+                                                                              title: const Text("Discount Available?", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, fontFamily: "Josefin Sans")),
+                                                                              value: DiscountAvailable,
+                                                                              onChanged: (newValue) {
+                                                                                setState(() {
+                                                                                  DiscountAvailable = newValue!;
+                                                                                });
+                                                                              },
+                                                                              controlAffinity: ListTileControlAffinity.leading, //  <-- leading Checkbox
+                                                                            ),
+                                                                            const SizedBox(
+                                                                              height: 20,
+                                                                            ),
+                                                                            DiscountAvailable
+                                                                                ? SizedBox(
+                                                                                    width: 300,
+                                                                                    child: TextField(
+                                                                                      onChanged: (value) {},
+                                                                                      keyboardType: TextInputType.text,
+                                                                                      decoration: InputDecoration(
+                                                                                        border: OutlineInputBorder(),
+                                                                                        labelText: 'Discount Amount',
+
+                                                                                        hintText: 'Discount Amount',
+
+                                                                                        //  enabledBorder: OutlineInputBorder(
+                                                                                        //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                                                        //     ),
+                                                                                        focusedBorder: OutlineInputBorder(
+                                                                                          borderSide: BorderSide(width: 3, color: Theme.of(context).primaryColor),
+                                                                                        ),
+                                                                                        errorBorder: const OutlineInputBorder(
+                                                                                          borderSide: BorderSide(width: 3, color: Color.fromARGB(255, 66, 125, 145)),
+                                                                                        ),
+                                                                                      ),
+                                                                                      controller: DiscountAmountController,
+                                                                                    ),
+                                                                                  )
+                                                                                : const Text(""),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                actions: <Widget>[
+                                                                  TextButton(
+                                                                    onPressed: () =>
+                                                                        Navigator.pop(
+                                                                            context),
+                                                                    child: const Text(
+                                                                        "Cancel"),
                                                                   ),
-                                                                ),
-                                                          actions: <Widget>[
-                                                            TextButton(
-                                                              onPressed: () =>
-                                                                  Navigator.pop(
-                                                                      context),
-                                                              child: const Text(
-                                                                  "Cancel"),
-                                                            ),
-                                                            ElevatedButton(
-                                                              onPressed:
-                                                                  () async {
-                                                                setState(() {
-                                                                  loading =
-                                                                      true;
-                                                                });
+                                                                  ElevatedButton(
+                                                                    onPressed:
+                                                                        () async {
+                                                                      setState(
+                                                                          () {
+                                                                        loading =
+                                                                            true;
+                                                                      });
 
-                                                                var PaymentData =
-                                                                    {
-                                                                  "PaymentAmount":
-                                                                      PaymentAmountController
-                                                                          .text
-                                                                          .trim(),
-                                                                  "SIDNo": AllStudentInfo[
-                                                                          index]
-                                                                      ["SIDNo"],
-                                                                  "DiscountAmount": DiscountAvailable
-                                                                      ? DiscountAmountController
-                                                                          .text
-                                                                          .trim()
-                                                                      : "",
-                                                                  "StudentName": AllStudentInfo[
-                                                                              index]
-                                                                          [
-                                                                          "StudentName"]
-                                                                      .toString()
-                                                                      .toUpperCase(),
-                                                                  "TeacherAcademyName":
-                                                                      AllStudentInfo[
-                                                                              index]
-                                                                          [
-                                                                          "TeacherAcademyName"],
-                                                                  "BatchName":
-                                                                      AllStudentInfo[
-                                                                              index]
-                                                                          [
-                                                                          "BatchName"],
-                                                                  "year":
-                                                                      "${DateTime.now().year}",
-                                                                  "month":
-                                                                      "${DateTime.now().month}/${DateTime.now().year}",
-                                                                  "Date":
-                                                                      "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
-                                                                  "DateTime": DateTime
-                                                                          .now()
-                                                                      .toIso8601String(),
-                                                                  "Due": DiscountAvailable
-                                                                      ? ((int.parse(AllStudentInfo[index]["Due"])) - (int.parse((PaymentAmountController.text.trim().toString()))) + (int.parse(DiscountAmountController.text.trim().toString())))
-                                                                          .toString()
-                                                                      : ((int.parse(AllStudentInfo[index]["Due"])) -
-                                                                              (int.parse((PaymentAmountController.text.trim().toString()))))
-                                                                          .toString(),
-                                                                };
+                                                                      var PaymentData =
+                                                                          {
+                                                                        "PaymentAmount": PaymentAmountController
+                                                                            .text
+                                                                            .trim(),
+                                                                        "SIDNo":
+                                                                            AllStudentInfo[index]["SIDNo"],
+                                                                        "DiscountAmount": DiscountAvailable
+                                                                            ? DiscountAmountController.text.trim()
+                                                                            : "",
+                                                                        "StudentName": AllStudentInfo[index]["StudentName"]
+                                                                            .toString()
+                                                                            .toUpperCase(),
+                                                                        "TeacherAcademyName":
+                                                                            AllStudentInfo[index]["TeacherAcademyName"],
+                                                                        "BatchName":
+                                                                            AllStudentInfo[index]["BatchName"],
+                                                                        "year":
+                                                                            "${DateTime.now().year}",
+                                                                        "month":
+                                                                            "${DateTime.now().month}/${DateTime.now().year}",
+                                                                        "Date":
+                                                                            "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
+                                                                        "DateTime":
+                                                                            DateTime.now().toIso8601String(),
+                                                                        "Due": DiscountAvailable
+                                                                            ? ((int.parse(AllStudentInfo[index]["Due"])) - (int.parse((PaymentAmountController.text.trim().toString()))) + (int.parse(DiscountAmountController.text.trim().toString()))).toString()
+                                                                            : ((int.parse(AllStudentInfo[index]["Due"])) - (int.parse((PaymentAmountController.text.trim().toString())))).toString(),
+                                                                      };
 
-                                                                final PerTeacherStudentPayment = FirebaseFirestore
-                                                                    .instance
-                                                                    .collection(
-                                                                        'PerTeacherStudentPayment')
-                                                                    .doc(
-                                                                        UniqueID);
+                                                                      final PerTeacherStudentPayment = FirebaseFirestore
+                                                                          .instance
+                                                                          .collection(
+                                                                              'PerTeacherStudentPayment')
+                                                                          .doc(
+                                                                              UniqueID);
 
-                                                                PerTeacherStudentPayment
-                                                                        .set(
-                                                                            PaymentData)
-                                                                    .then((value) =>
-                                                                        setState(
-                                                                            () async {
-                                                                          var PaymentDataUpdate =
-                                                                              {
-                                                                            "Due": DiscountAvailable
-                                                                                ? ((int.parse(AllStudentInfo[index]["Due"])) - (int.parse((PaymentAmountController.text.trim().toString()))) + (int.parse(DiscountAmountController.text.trim().toString()))).toString()
-                                                                                : ((int.parse(AllStudentInfo[index]["Due"])) - (int.parse((PaymentAmountController.text.trim().toString())))).toString(),
-                                                                            "Totalpay":
-                                                                                (int.parse(AllStudentInfo[index]["Totalpay"]) + int.parse(PaymentAmountController.text.trim().toString())).toString(),
-                                                                          };
+                                                                      PerTeacherStudentPayment.set(
+                                                                              PaymentData)
+                                                                          .then((value) =>
+                                                                              setState(
+                                                                                  () async {
+                                                                                var PaymentDataUpdate = {
+                                                                                  "Due": DiscountAvailable ? ((int.parse(AllStudentInfo[index]["Due"])) - (int.parse((PaymentAmountController.text.trim().toString()))) + (int.parse(DiscountAmountController.text.trim().toString()))).toString() : ((int.parse(AllStudentInfo[index]["Due"])) - (int.parse((PaymentAmountController.text.trim().toString())))).toString(),
+                                                                                  "Totalpay": (int.parse(AllStudentInfo[index]["Totalpay"]) + int.parse(PaymentAmountController.text.trim().toString())).toString(),
+                                                                                };
 
-                                                                          print(
-                                                                              PaymentDataUpdate);
+                                                                                print(PaymentDataUpdate);
 
-                                                                          print(
-                                                                              PaymentData);
+                                                                                print(PaymentData);
 
-                                                                          final PerTeacherStudentPayment = FirebaseFirestore
-                                                                              .instance
-                                                                              .collection('PerTeacherStudentInfo')
-                                                                              .doc(AllStudentInfo[index]["id"]);
+                                                                                final PerTeacherStudentPayment = FirebaseFirestore.instance.collection('PerTeacherStudentInfo').doc(AllStudentInfo[index]["id"]);
 
-                                                                          PerTeacherStudentPayment.update(PaymentDataUpdate)
-                                                                              .then((value) => setState(() async {
-                                                                                    Navigator.pop(context);
+                                                                                PerTeacherStudentPayment.update(PaymentDataUpdate)
+                                                                                    .then((value) => setState(() async {
+                                                                                          Navigator.pop(context);
 
-                                                                                    // try {
-                                                                                    //   var AdminMsg = "Hello ${AllStudentInfo[index]["StudentName"]} you pay ${PaymentAmountController.text.trim()}৳/${AllStudentInfo[index]["Due"]} ${AllStudentInfo[index]["TeacherAcademyName"]}";
+                                                                                          // try {
+                                                                                          //   var AdminMsg = "Hello ${AllStudentInfo[index]["StudentName"]} you pay ${PaymentAmountController.text.trim()}৳/${AllStudentInfo[index]["Due"]} ${AllStudentInfo[index]["TeacherAcademyName"]}";
 
-                                                                                    //   final response =
-                                                                                    //       await http
-                                                                                    //           .get(Uri.parse('https://api.greenweb.com.bd/api.php?token=1024519252916991043295858a1b3ac3cb09ae52385b1489dff95&to=${AllStudentInfo[index]["FatherPhoneNo"]}&message=$AdminMsg'));
+                                                                                          //   final response =
+                                                                                          //       await http
+                                                                                          //           .get(Uri.parse('https://api.greenweb.com.bd/api.php?token=1024519252916991043295858a1b3ac3cb09ae52385b1489dff95&to=${AllStudentInfo[index]["FatherPhoneNo"]}&message=$AdminMsg'));
 
-                                                                                    //   if (response
-                                                                                    //           .statusCode ==
-                                                                                    //       200) {
-                                                                                    //     // If the server did return a 200 OK response,
-                                                                                    //     // then parse the JSON.
-                                                                                    //     print(jsonDecode(
-                                                                                    //         response
-                                                                                    //             .body));
-                                                                                    //   } else {
-                                                                                    //     // If the server did not return a 200 OK response,
-                                                                                    //     // then throw an exception.
-                                                                                    //     throw Exception(
-                                                                                    //         'Failed to load album');
-                                                                                    //   }
-                                                                                    // } catch (e) {}
+                                                                                          //   if (response
+                                                                                          //           .statusCode ==
+                                                                                          //       200) {
+                                                                                          //     // If the server did return a 200 OK response,
+                                                                                          //     // then parse the JSON.
+                                                                                          //     print(jsonDecode(
+                                                                                          //         response
+                                                                                          //             .body));
+                                                                                          //   } else {
+                                                                                          //     // If the server did not return a 200 OK response,
+                                                                                          //     // then throw an exception.
+                                                                                          //     throw Exception(
+                                                                                          //         'Failed to load album');
+                                                                                          //   }
+                                                                                          // } catch (e) {}
 
-                                                                                    // Navigator.pop(context);
+                                                                                          // Navigator.pop(context);
 
-                                                                                    getAllStudentInfo();
-                                                                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => MoneyReceiptPDF(SalesData: [PaymentData])));
+                                                                                          getAllStudentInfo();
+                                                                                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => MoneyReceiptPDF(SalesData: [PaymentData])));
 
-                                                                                    final snackBar = SnackBar(
-                                                                                      elevation: 0,
-                                                                                      behavior: SnackBarBehavior.floating,
-                                                                                      backgroundColor: Colors.transparent,
-                                                                                      content: AwesomeSnackbarContent(
-                                                                                        title: 'successfull',
-                                                                                        message: 'Hey Thank You. Good Job',
+                                                                                          final snackBar = SnackBar(
+                                                                                            elevation: 0,
+                                                                                            behavior: SnackBarBehavior.floating,
+                                                                                            backgroundColor: Colors.transparent,
+                                                                                            content: AwesomeSnackbarContent(
+                                                                                              title: 'successfull',
+                                                                                              message: 'Hey Thank You. Good Job',
 
-                                                                                        /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                                                        contentType: ContentType.success,
-                                                                                      ),
-                                                                                    );
+                                                                                              /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                                              contentType: ContentType.success,
+                                                                                            ),
+                                                                                          );
 
-                                                                                    ScaffoldMessenger.of(context)
-                                                                                      ..hideCurrentSnackBar()
-                                                                                      ..showSnackBar(snackBar);
+                                                                                          ScaffoldMessenger.of(context)
+                                                                                            ..hideCurrentSnackBar()
+                                                                                            ..showSnackBar(snackBar);
 
-                                                                                    setState(() {
-                                                                                      loading = false;
-                                                                                    });
-                                                                                  }))
-                                                                              .onError((error, stackTrace) => setState(() {
-                                                                                    final snackBar = SnackBar(
-                                                                                      /// need to set following properties for best effect of awesome_snackbar_content
-                                                                                      elevation: 0,
+                                                                                          setState(() {
+                                                                                            loading = false;
+                                                                                          });
+                                                                                        }))
+                                                                                    .onError((error, stackTrace) => setState(() {
+                                                                                          final snackBar = SnackBar(
+                                                                                            /// need to set following properties for best effect of awesome_snackbar_content
+                                                                                            elevation: 0,
 
-                                                                                      behavior: SnackBarBehavior.floating,
-                                                                                      backgroundColor: Colors.transparent,
-                                                                                      content: AwesomeSnackbarContent(
-                                                                                        title: 'Something Wrong!!!!',
-                                                                                        message: 'Try again later...',
+                                                                                            behavior: SnackBarBehavior.floating,
+                                                                                            backgroundColor: Colors.transparent,
+                                                                                            content: AwesomeSnackbarContent(
+                                                                                              title: 'Something Wrong!!!!',
+                                                                                              message: 'Try again later...',
 
-                                                                                        /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                                                        contentType: ContentType.failure,
-                                                                                      ),
-                                                                                    );
+                                                                                              /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                                              contentType: ContentType.failure,
+                                                                                            ),
+                                                                                          );
 
-                                                                                    ScaffoldMessenger.of(context)
-                                                                                      ..hideCurrentSnackBar()
-                                                                                      ..showSnackBar(snackBar);
+                                                                                          ScaffoldMessenger.of(context)
+                                                                                            ..hideCurrentSnackBar()
+                                                                                            ..showSnackBar(snackBar);
 
-                                                                                    setState(() {
-                                                                                      loading = false;
-                                                                                    });
-                                                                                  }));
+                                                                                          setState(() {
+                                                                                            loading = false;
+                                                                                          });
+                                                                                        }));
 
-                                                                          // Navigator.pop(
-                                                                          //     context);
+                                                                                // Navigator.pop(
+                                                                                //     context);
 
-                                                                          try {
-                                                                            var AdminMsg =
-                                                                                "Hello ${AllStudentInfo[index]["StudentName"]} you pay ${PaymentAmountController.text.trim()}৳/${AllStudentInfo[index]["Due"]} ${AllStudentInfo[index]["TeacherAcademyName"]}";
+                                                                                try {
+                                                                                  var AdminMsg = "Hello ${AllStudentInfo[index]["StudentName"]} you pay ${PaymentAmountController.text.trim()}৳/${AllStudentInfo[index]["Due"]} ${AllStudentInfo[index]["TeacherAcademyName"]}";
 
-                                                                            final response =
-                                                                                await http.get(Uri.parse('https://api.greenweb.com.bd/api.php?token=1024519252916991043295858a1b3ac3cb09ae52385b1489dff95&to=${AllStudentInfo[index]["FatherPhoneNo"]}&message=$AdminMsg'));
+                                                                                  final response = await http.get(Uri.parse('https://api.greenweb.com.bd/api.php?token=1024519252916991043295858a1b3ac3cb09ae52385b1489dff95&to=${AllStudentInfo[index]["FatherPhoneNo"]}&message=$AdminMsg'));
 
-                                                                            if (response.statusCode ==
-                                                                                200) {
-                                                                              // If the server did return a 200 OK response,
-                                                                              // then parse the JSON.
-                                                                              print(jsonDecode(response.body));
-                                                                            } else {
-                                                                              // If the server did not return a 200 OK response,
-                                                                              // then throw an exception.
-                                                                              throw Exception('Failed to load album');
-                                                                            }
-                                                                          } catch (e) {}
+                                                                                  if (response.statusCode == 200) {
+                                                                                    // If the server did return a 200 OK response,
+                                                                                    // then parse the JSON.
+                                                                                    print(jsonDecode(response.body));
+                                                                                  } else {
+                                                                                    // If the server did not return a 200 OK response,
+                                                                                    // then throw an exception.
+                                                                                    throw Exception('Failed to load album');
+                                                                                  }
+                                                                                } catch (e) {}
 
-                                                                          // Navigator.pop(context);
+                                                                                // Navigator.pop(context);
 
-                                                                          // getProductInfo();
+                                                                                // getProductInfo();
 
-                                                                          final snackBar =
-                                                                              SnackBar(
-                                                                            elevation:
-                                                                                0,
-                                                                            behavior:
-                                                                                SnackBarBehavior.floating,
-                                                                            backgroundColor:
-                                                                                Colors.transparent,
-                                                                            content:
-                                                                                AwesomeSnackbarContent(
-                                                                              title: 'successfull',
-                                                                              message: 'Hey Thank You. Good Job',
+                                                                                final snackBar = SnackBar(
+                                                                                  elevation: 0,
+                                                                                  behavior: SnackBarBehavior.floating,
+                                                                                  backgroundColor: Colors.transparent,
+                                                                                  content: AwesomeSnackbarContent(
+                                                                                    title: 'successfull',
+                                                                                    message: 'Hey Thank You. Good Job',
 
-                                                                              /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                                              contentType: ContentType.success,
-                                                                            ),
-                                                                          );
+                                                                                    /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                                    contentType: ContentType.success,
+                                                                                  ),
+                                                                                );
 
-                                                                          ScaffoldMessenger.of(
-                                                                              context)
-                                                                            ..hideCurrentSnackBar()
-                                                                            ..showSnackBar(snackBar);
+                                                                                ScaffoldMessenger.of(context)
+                                                                                  ..hideCurrentSnackBar()
+                                                                                  ..showSnackBar(snackBar);
 
-                                                                          setState(
-                                                                              () {
-                                                                            loading =
-                                                                                false;
-                                                                          });
-                                                                        }))
-                                                                    .onError((error,
-                                                                            stackTrace) =>
-                                                                        setState(
-                                                                            () {
-                                                                          final snackBar =
-                                                                              SnackBar(
-                                                                            /// need to set following properties for best effect of awesome_snackbar_content
-                                                                            elevation:
-                                                                                0,
+                                                                                setState(() {
+                                                                                  loading = false;
+                                                                                });
+                                                                              }))
+                                                                          .onError((error, stackTrace) =>
+                                                                              setState(() {
+                                                                                final snackBar = SnackBar(
+                                                                                  /// need to set following properties for best effect of awesome_snackbar_content
+                                                                                  elevation: 0,
 
-                                                                            behavior:
-                                                                                SnackBarBehavior.floating,
-                                                                            backgroundColor:
-                                                                                Colors.transparent,
-                                                                            content:
-                                                                                AwesomeSnackbarContent(
-                                                                              title: 'Something Wrong!!!!',
-                                                                              message: 'Try again later...',
+                                                                                  behavior: SnackBarBehavior.floating,
+                                                                                  backgroundColor: Colors.transparent,
+                                                                                  content: AwesomeSnackbarContent(
+                                                                                    title: 'Something Wrong!!!!',
+                                                                                    message: 'Try again later...',
 
-                                                                              /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                                              contentType: ContentType.failure,
-                                                                            ),
-                                                                          );
+                                                                                    /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                                    contentType: ContentType.failure,
+                                                                                  ),
+                                                                                );
 
-                                                                          ScaffoldMessenger.of(
-                                                                              context)
-                                                                            ..hideCurrentSnackBar()
-                                                                            ..showSnackBar(snackBar);
+                                                                                ScaffoldMessenger.of(context)
+                                                                                  ..hideCurrentSnackBar()
+                                                                                  ..showSnackBar(snackBar);
 
-                                                                          setState(
-                                                                              () {
-                                                                            loading =
-                                                                                false;
-                                                                          });
-                                                                        }));
-                                                              },
-                                                              child: const Text(
-                                                                  "Pay Now"),
+                                                                                setState(() {
+                                                                                  loading = false;
+                                                                                });
+                                                                              }));
+                                                                    },
+                                                                    child: const Text(
+                                                                        "Pay Now"),
+                                                                  ),
+                                                                ],
+                                                              );
+                                                            },
+                                                          );
+                                                        },
+                                                      );
+                                                    },
+                                                    child: Text("Pay"))),
+
+                                        DataCell(ElevatedButton(
+                                            onPressed: () {
+                                              //start
+
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  String Title =
+                                                      "নিচে Class বন্ধের বার্তা লিখুন";
+
+                                                  bool loading = false;
+
+                                                  // String LabelText ="আয়ের খাত লিখবেন";
+
+                                                  return StatefulBuilder(
+                                                    builder:
+                                                        (context, setState) {
+                                                      return AlertDialog(
+                                                        title: Column(
+                                                          children: [
+                                                            Center(
+                                                              child: Text(
+                                                                Title,
+                                                                style: const TextStyle(
+                                                                    fontFamily:
+                                                                        "Josefin Sans",
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
                                                             ),
                                                           ],
-                                                        );
-                                                      },
-                                                    );
-                                                  },
-                                                );
-                                              },
-                                              child: Text("Pay"))),
-
-                                  DataCell(ElevatedButton(
-                                      onPressed: () {
-                                        //start
-
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            String Title =
-                                                "নিচে Class বন্ধের বার্তা লিখুন";
-
-                                            bool loading = false;
-
-                                            // String LabelText ="আয়ের খাত লিখবেন";
-
-                                            return StatefulBuilder(
-                                              builder: (context, setState) {
-                                                return AlertDialog(
-                                                  title: Column(
-                                                    children: [
-                                                      Center(
-                                                        child: Text(
-                                                          Title,
-                                                          style: const TextStyle(
-                                                              fontFamily:
-                                                                  "Josefin Sans",
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  content: loading
-                                                      ? const Center(
-                                                          child:
-                                                              CircularProgressIndicator(),
-                                                        )
-                                                      : SingleChildScrollView(
-                                                          child: Column(
-                                                            children: [
-                                                              SizedBox(
-                                                                  height: 10),
-                                                              Container(
-                                                                width: 300,
+                                                        content: loading
+                                                            ? const Center(
                                                                 child:
-                                                                    TextField(
-                                                                  maxLines: 10,
-                                                                  onChanged:
-                                                                      (value) {},
-                                                                  keyboardType:
-                                                                      TextInputType
-                                                                          .text,
-                                                                  decoration:
-                                                                      InputDecoration(
-                                                                    border:
-                                                                        OutlineInputBorder(),
-                                                                    labelText:
-                                                                        'Class Off Msg',
+                                                                    CircularProgressIndicator(),
+                                                              )
+                                                            : SingleChildScrollView(
+                                                                child: Column(
+                                                                  children: [
+                                                                    SizedBox(
+                                                                        height:
+                                                                            10),
+                                                                    Container(
+                                                                      width:
+                                                                          300,
+                                                                      child:
+                                                                          TextField(
+                                                                        maxLines:
+                                                                            10,
+                                                                        onChanged:
+                                                                            (value) {},
+                                                                        keyboardType:
+                                                                            TextInputType.text,
+                                                                        decoration:
+                                                                            InputDecoration(
+                                                                          border:
+                                                                              OutlineInputBorder(),
+                                                                          labelText:
+                                                                              'Class Off Msg',
 
-                                                                    hintText:
-                                                                        'Class Off Msg',
+                                                                          hintText:
+                                                                              'Class Off Msg',
 
-                                                                    //  enabledBorder: OutlineInputBorder(
-                                                                    //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                                                                    //     ),
-                                                                    focusedBorder:
-                                                                        OutlineInputBorder(
-                                                                      borderSide: BorderSide(
-                                                                          width:
-                                                                              3,
-                                                                          color:
-                                                                              Theme.of(context).primaryColor),
+                                                                          //  enabledBorder: OutlineInputBorder(
+                                                                          //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                                                                          //     ),
+                                                                          focusedBorder:
+                                                                              OutlineInputBorder(
+                                                                            borderSide:
+                                                                                BorderSide(width: 3, color: Theme.of(context).primaryColor),
+                                                                          ),
+                                                                          errorBorder:
+                                                                              const OutlineInputBorder(
+                                                                            borderSide:
+                                                                                BorderSide(width: 3, color: Color.fromARGB(255, 66, 125, 145)),
+                                                                          ),
+                                                                        ),
+                                                                        controller:
+                                                                            ClassOfMsgController,
+                                                                      ),
                                                                     ),
-                                                                    errorBorder:
-                                                                        const OutlineInputBorder(
-                                                                      borderSide: BorderSide(
-                                                                          width:
-                                                                              3,
-                                                                          color: Color.fromARGB(
-                                                                              255,
-                                                                              66,
-                                                                              125,
-                                                                              145)),
+                                                                    const SizedBox(
+                                                                      height:
+                                                                          20,
                                                                     ),
-                                                                  ),
-                                                                  controller:
-                                                                      ClassOfMsgController,
+                                                                  ],
                                                                 ),
                                                               ),
-                                                              const SizedBox(
-                                                                height: 20,
+                                                        actions: <Widget>[
+                                                          TextButton(
+                                                            onPressed: () =>
+                                                                Navigator.pop(
+                                                                    context),
+                                                            child:
+                                                                Text("Cancel"),
+                                                          ),
+                                                          ElevatedButton(
+                                                            onPressed:
+                                                                () async {
+                                                              setState(() {
+                                                                loading = true;
+                                                              });
+
+                                                              var MsgData = {
+                                                                "year":
+                                                                    "${DateTime.now().year}",
+                                                                "month":
+                                                                    "${DateTime.now().month}/${DateTime.now().year}",
+                                                                "Date":
+                                                                    "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
+                                                                "DateTime": DateTime
+                                                                        .now()
+                                                                    .toIso8601String(),
+                                                                "msg":
+                                                                    ClassOfMsgController
+                                                                        .text
+                                                                        .trim()
+                                                              };
+
+                                                              final ClassOffSMS =
+                                                                  FirebaseFirestore
+                                                                      .instance
+                                                                      .collection(
+                                                                          'ClassOffSMS')
+                                                                      .doc(
+                                                                          UniqueID);
+
+                                                              ClassOffSMS.set(
+                                                                      MsgData)
+                                                                  .then((value) =>
+                                                                      setState(
+                                                                          () async {
+                                                                        Navigator.pop(
+                                                                            context);
+
+                                                                        try {
+                                                                          var AdminMsg = ClassOfMsgController
+                                                                              .text
+                                                                              .trim();
+
+                                                                          final response =
+                                                                              await http.get(Uri.parse('https://api.greenweb.com.bd/api.php?token=1024519252916991043295858a1b3ac3cb09ae52385b1489dff95&to=${AllStudentInfo[index]["PhoneNo"].trim()}&message=$AdminMsg'));
+
+                                                                          if (response.statusCode ==
+                                                                              200) {
+                                                                            // If the server did return a 200 OK response,
+                                                                            // then parse the JSON.
+                                                                            print(jsonDecode(response.body));
+                                                                          } else {
+                                                                            // If the server did not return a 200 OK response,
+                                                                            // then throw an exception.
+                                                                            throw Exception('Failed to load album');
+                                                                          }
+                                                                        } catch (e) {}
+
+                                                                        // Navigator.pop(context);
+
+                                                                        // getProductInfo();
+
+                                                                        final snackBar =
+                                                                            SnackBar(
+                                                                          elevation:
+                                                                              0,
+                                                                          behavior:
+                                                                              SnackBarBehavior.floating,
+                                                                          backgroundColor:
+                                                                              Colors.transparent,
+                                                                          content:
+                                                                              AwesomeSnackbarContent(
+                                                                            title:
+                                                                                'successfull',
+                                                                            message:
+                                                                                'Hey Thank You. Good Job',
+
+                                                                            /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                            contentType:
+                                                                                ContentType.success,
+                                                                          ),
+                                                                        );
+
+                                                                        ScaffoldMessenger.of(
+                                                                            context)
+                                                                          ..hideCurrentSnackBar()
+                                                                          ..showSnackBar(
+                                                                              snackBar);
+
+                                                                        setState(
+                                                                            () {
+                                                                          loading =
+                                                                              false;
+                                                                        });
+                                                                      }))
+                                                                  .onError((error,
+                                                                          stackTrace) =>
+                                                                      setState(
+                                                                          () {
+                                                                        final snackBar =
+                                                                            SnackBar(
+                                                                          /// need to set following properties for best effect of awesome_snackbar_content
+                                                                          elevation:
+                                                                              0,
+
+                                                                          behavior:
+                                                                              SnackBarBehavior.floating,
+                                                                          backgroundColor:
+                                                                              Colors.transparent,
+                                                                          content:
+                                                                              AwesomeSnackbarContent(
+                                                                            title:
+                                                                                'Something Wrong!!!!',
+                                                                            message:
+                                                                                'Try again later...',
+
+                                                                            /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                            contentType:
+                                                                                ContentType.failure,
+                                                                          ),
+                                                                        );
+
+                                                                        ScaffoldMessenger.of(
+                                                                            context)
+                                                                          ..hideCurrentSnackBar()
+                                                                          ..showSnackBar(
+                                                                              snackBar);
+
+                                                                        setState(
+                                                                            () {
+                                                                          loading =
+                                                                              false;
+                                                                        });
+                                                                      }));
+                                                            },
+                                                            child: const Text(
+                                                                "Send"),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                              );
+
+                                              // End
+                                            },
+                                            child: Text("Send"))),
+
+                                        DataCell(ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          StudentProfile(
+                                                              SIDNo:
+                                                                  AllStudentInfo[
+                                                                          index]
+                                                                      [
+                                                                      "SIDNo"])));
+
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return StatefulBuilder(
+                                                        builder: (context,
+                                                            setState) {
+                                                      final List<String>
+                                                          TeachersAcademy = [
+                                                        'Rezuan Math Care',
+                                                        'Sazzad ICT',
+                                                        'MediCrack',
+                                                        'Protick Physics',
+                                                      ];
+                                                      String?
+                                                          selectedTeachersAcademyValue;
+                                                      return AlertDialog(
+                                                        title: Text(
+                                                            'Exam Info ${AllStudentInfo[index]["SIDNo"].toString().toUpperCase()}'),
+                                                        content:
+                                                            SingleChildScrollView(
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Card(
+                                                                elevation: 20,
+                                                                child:
+                                                                    Container(
+                                                                  width: 200,
+                                                                  child:
+                                                                      DropdownButtonHideUnderline(
+                                                                    child: DropdownButton2<
+                                                                        String>(
+                                                                      isExpanded:
+                                                                          true,
+                                                                      hint:
+                                                                          Text(
+                                                                        'Select Academy Name',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontSize:
+                                                                              14,
+                                                                          color:
+                                                                              Theme.of(context).hintColor,
+                                                                        ),
+                                                                      ),
+                                                                      items: TeachersAcademy.map((String
+                                                                              item) =>
+                                                                          DropdownMenuItem<
+                                                                              String>(
+                                                                            value:
+                                                                                item,
+                                                                            child:
+                                                                                Text(
+                                                                              item,
+                                                                              style: const TextStyle(
+                                                                                fontSize: 14,
+                                                                              ),
+                                                                            ),
+                                                                          )).toList(),
+                                                                      value:
+                                                                          selectedTeachersAcademyValue,
+                                                                      onChanged:
+                                                                          (String?
+                                                                              value) {
+                                                                        setState(
+                                                                            () {
+                                                                          selectedTeachersAcademyValue =
+                                                                              value;
+
+                                                                          Navigator
+                                                                              .push(
+                                                                            context,
+                                                                            MaterialPageRoute(builder: (context) => Showperstudentexamresult(TeacherAcademyName: value, SIDNo: AllStudentInfo[index]["SIDNo"])),
+                                                                          );
+                                                                        });
+                                                                      },
+                                                                      buttonStyleData:
+                                                                          const ButtonStyleData(
+                                                                        padding:
+                                                                            EdgeInsets.symmetric(horizontal: 16),
+                                                                        height:
+                                                                            40,
+                                                                        width:
+                                                                            140,
+                                                                      ),
+                                                                      menuItemStyleData:
+                                                                          const MenuItemStyleData(
+                                                                        height:
+                                                                            40,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
                                                               ),
                                                             ],
                                                           ),
                                                         ),
-                                                  actions: <Widget>[
-                                                    TextButton(
-                                                      onPressed: () =>
-                                                          Navigator.pop(
-                                                              context),
-                                                      child: Text("Cancel"),
-                                                    ),
-                                                    ElevatedButton(
-                                                      onPressed: () async {
-                                                        setState(() {
-                                                          loading = true;
-                                                        });
-
-                                                        var MsgData = {
-                                                          "year":
-                                                              "${DateTime.now().year}",
-                                                          "month":
-                                                              "${DateTime.now().month}/${DateTime.now().year}",
-                                                          "Date":
-                                                              "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
-                                                          "DateTime": DateTime
-                                                                  .now()
-                                                              .toIso8601String(),
-                                                          "msg":
-                                                              ClassOfMsgController
-                                                                  .text
-                                                                  .trim()
-                                                        };
-
-                                                        final ClassOffSMS =
-                                                            FirebaseFirestore
-                                                                .instance
-                                                                .collection(
-                                                                    'ClassOffSMS')
-                                                                .doc(UniqueID);
-
-                                                        ClassOffSMS.set(MsgData)
-                                                            .then((value) =>
-                                                                setState(
-                                                                    () async {
-                                                                  Navigator.pop(
-                                                                      context);
-
-                                                                  try {
-                                                                    var AdminMsg =
-                                                                        ClassOfMsgController
-                                                                            .text
-                                                                            .trim();
-
-                                                                    final response =
-                                                                        await http
-                                                                            .get(Uri.parse('https://api.greenweb.com.bd/api.php?token=1024519252916991043295858a1b3ac3cb09ae52385b1489dff95&to=${AllStudentInfo[index]["PhoneNo"].trim()}&message=$AdminMsg'));
-
-                                                                    if (response
-                                                                            .statusCode ==
-                                                                        200) {
-                                                                      // If the server did return a 200 OK response,
-                                                                      // then parse the JSON.
-                                                                      print(jsonDecode(
-                                                                          response
-                                                                              .body));
-                                                                    } else {
-                                                                      // If the server did not return a 200 OK response,
-                                                                      // then throw an exception.
-                                                                      throw Exception(
-                                                                          'Failed to load album');
-                                                                    }
-                                                                  } catch (e) {}
-
-                                                                  // Navigator.pop(context);
-
-                                                                  // getProductInfo();
-
-                                                                  final snackBar =
-                                                                      SnackBar(
-                                                                    elevation:
-                                                                        0,
-                                                                    behavior:
-                                                                        SnackBarBehavior
-                                                                            .floating,
-                                                                    backgroundColor:
-                                                                        Colors
-                                                                            .transparent,
-                                                                    content:
-                                                                        AwesomeSnackbarContent(
-                                                                      title:
-                                                                          'successfull',
-                                                                      message:
-                                                                          'Hey Thank You. Good Job',
-
-                                                                      /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                                      contentType:
-                                                                          ContentType
-                                                                              .success,
-                                                                    ),
-                                                                  );
-
-                                                                  ScaffoldMessenger
-                                                                      .of(
-                                                                          context)
-                                                                    ..hideCurrentSnackBar()
-                                                                    ..showSnackBar(
-                                                                        snackBar);
-
-                                                                  setState(() {
-                                                                    loading =
-                                                                        false;
-                                                                  });
-                                                                }))
-                                                            .onError((error,
-                                                                    stackTrace) =>
-                                                                setState(() {
-                                                                  final snackBar =
-                                                                      SnackBar(
-                                                                    /// need to set following properties for best effect of awesome_snackbar_content
-                                                                    elevation:
-                                                                        0,
-
-                                                                    behavior:
-                                                                        SnackBarBehavior
-                                                                            .floating,
-                                                                    backgroundColor:
-                                                                        Colors
-                                                                            .transparent,
-                                                                    content:
-                                                                        AwesomeSnackbarContent(
-                                                                      title:
-                                                                          'Something Wrong!!!!',
-                                                                      message:
-                                                                          'Try again later...',
-
-                                                                      /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                                      contentType:
-                                                                          ContentType
-                                                                              .failure,
-                                                                    ),
-                                                                  );
-
-                                                                  ScaffoldMessenger
-                                                                      .of(
-                                                                          context)
-                                                                    ..hideCurrentSnackBar()
-                                                                    ..showSnackBar(
-                                                                        snackBar);
-
-                                                                  setState(() {
-                                                                    loading =
-                                                                        false;
-                                                                  });
-                                                                }));
-                                                      },
-                                                      child: const Text("Send"),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          },
-                                        );
-
-                                        // End
-                                      },
-                                      child: Text("Send"))),
-
-                                  DataCell(ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    StudentProfile(
-                                                        SIDNo: AllStudentInfo[
-                                                            index]["SIDNo"])));
-
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return StatefulBuilder(
-                                                  builder: (context, setState) {
-                                                final List<String>
-                                                    TeachersAcademy = [
-                                                  'Rezuan Math Care',
-                                                  'Sazzad ICT',
-                                                  'MediCrack',
-                                                  'Protick Physics',
-                                                ];
-                                                String?
-                                                    selectedTeachersAcademyValue;
-                                                return AlertDialog(
-                                                  title: Text(
-                                                      'Exam Info ${AllStudentInfo[index]["SIDNo"].toString().toUpperCase()}'),
-                                                  content:
-                                                      SingleChildScrollView(
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Card(
-                                                          elevation: 20,
-                                                          child: Container(
-                                                            width: 200,
+                                                        actions: [
+                                                          ElevatedButton(
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
                                                             child:
-                                                                DropdownButtonHideUnderline(
-                                                              child:
-                                                                  DropdownButton2<
-                                                                      String>(
-                                                                isExpanded:
-                                                                    true,
-                                                                hint: Text(
-                                                                  'Select Academy Name',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    color: Theme.of(
-                                                                            context)
-                                                                        .hintColor,
+                                                                Text('CANCEL'),
+                                                          ),
+                                                          ElevatedButton(
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            child:
+                                                                Text('ACCEPT'),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    });
+                                                  });
+                                            },
+                                            child: Text("Exam Marks"))),
+
+                                        DataCell(Text(
+                                            "${AllStudentInfo[index]["TeacherAcademyName"]}")),
+
+                                        DataCell(AllStudentInfo[index]
+                                                    ["Status"] ==
+                                                "Open"
+                                            ? ElevatedButton(
+                                                onPressed: () async {
+                                                  var MsgData = {
+                                                    "Status": "Close"
+                                                  };
+
+                                                  final ClassOffSMS =
+                                                      FirebaseFirestore.instance
+                                                          .collection(
+                                                              'PerTeacherStudentInfo')
+                                                          .doc(AllStudentInfo[
+                                                              index]["id"]);
+
+                                                  ClassOffSMS.update(MsgData)
+                                                      .then((value) =>
+                                                          setState(() async {
+                                                            // Navigator.pop(
+                                                            //     context);
+
+                                                            getAllStudentInfo();
+
+                                                            final snackBar =
+                                                                SnackBar(
+                                                              elevation: 0,
+                                                              behavior:
+                                                                  SnackBarBehavior
+                                                                      .floating,
+                                                              backgroundColor:
+                                                                  Colors
+                                                                      .transparent,
+                                                              content:
+                                                                  AwesomeSnackbarContent(
+                                                                title:
+                                                                    'successfull',
+                                                                message:
+                                                                    'Hey Thank You. Good Job',
+
+                                                                /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                contentType:
+                                                                    ContentType
+                                                                        .success,
+                                                              ),
+                                                            );
+
+                                                            ScaffoldMessenger
+                                                                .of(context)
+                                                              ..hideCurrentSnackBar()
+                                                              ..showSnackBar(
+                                                                  snackBar);
+
+                                                            // setState(() {
+                                                            //   loading =
+                                                            //       false;
+                                                            // });
+                                                          }))
+                                                      .onError(
+                                                          (error, stackTrace) =>
+                                                              setState(() {
+                                                                final snackBar =
+                                                                    SnackBar(
+                                                                  /// need to set following properties for best effect of awesome_snackbar_content
+                                                                  elevation: 0,
+
+                                                                  behavior:
+                                                                      SnackBarBehavior
+                                                                          .floating,
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .transparent,
+                                                                  content:
+                                                                      AwesomeSnackbarContent(
+                                                                    title:
+                                                                        'Something Wrong!!!!',
+                                                                    message:
+                                                                        'Try again later...',
+
+                                                                    /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                    contentType:
+                                                                        ContentType
+                                                                            .failure,
                                                                   ),
-                                                                ),
-                                                                items: TeachersAcademy.map((String
-                                                                        item) =>
-                                                                    DropdownMenuItem<
+                                                                );
+
+                                                                ScaffoldMessenger
+                                                                    .of(context)
+                                                                  ..hideCurrentSnackBar()
+                                                                  ..showSnackBar(
+                                                                      snackBar);
+
+                                                                // setState(() {
+                                                                //   loading =
+                                                                //       false;
+                                                                // });
+                                                              }));
+                                                },
+                                                child: const Text(
+                                                  "Close",
+                                                  style: TextStyle(
+                                                      color: Colors.red),
+                                                ))
+                                            : ElevatedButton(
+                                                onPressed: () async {
+                                                  var MsgData = {
+                                                    "Status": "Open"
+                                                  };
+
+                                                  final ClassOffSMS =
+                                                      FirebaseFirestore.instance
+                                                          .collection(
+                                                              'PerTeacherStudentInfo')
+                                                          .doc(AllStudentInfo[
+                                                              index]["id"]);
+
+                                                  ClassOffSMS.update(MsgData)
+                                                      .then((value) =>
+                                                          setState(() async {
+                                                            // Navigator.pop(
+                                                            //     context);
+
+                                                            getAllStudentInfo();
+
+                                                            final snackBar =
+                                                                SnackBar(
+                                                              elevation: 0,
+                                                              behavior:
+                                                                  SnackBarBehavior
+                                                                      .floating,
+                                                              backgroundColor:
+                                                                  Colors
+                                                                      .transparent,
+                                                              content:
+                                                                  AwesomeSnackbarContent(
+                                                                title:
+                                                                    'successfull',
+                                                                message:
+                                                                    'Hey Thank You. Good Job',
+
+                                                                /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                contentType:
+                                                                    ContentType
+                                                                        .success,
+                                                              ),
+                                                            );
+
+                                                            ScaffoldMessenger
+                                                                .of(context)
+                                                              ..hideCurrentSnackBar()
+                                                              ..showSnackBar(
+                                                                  snackBar);
+
+                                                            // setState(() {
+                                                            //   loading =
+                                                            //       false;
+                                                            // });
+                                                          }))
+                                                      .onError(
+                                                          (error, stackTrace) =>
+                                                              setState(() {
+                                                                final snackBar =
+                                                                    SnackBar(
+                                                                  /// need to set following properties for best effect of awesome_snackbar_content
+                                                                  elevation: 0,
+
+                                                                  behavior:
+                                                                      SnackBarBehavior
+                                                                          .floating,
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .transparent,
+                                                                  content:
+                                                                      AwesomeSnackbarContent(
+                                                                    title:
+                                                                        'Something Wrong!!!!',
+                                                                    message:
+                                                                        'Try again later...',
+
+                                                                    /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                                                    contentType:
+                                                                        ContentType
+                                                                            .failure,
+                                                                  ),
+                                                                );
+
+                                                                ScaffoldMessenger
+                                                                    .of(context)
+                                                                  ..hideCurrentSnackBar()
+                                                                  ..showSnackBar(
+                                                                      snackBar);
+
+                                                                // setState(() {
+                                                                //   loading =
+                                                                //       false;
+                                                                // });
+                                                              }));
+                                                },
+                                                child: Text(
+                                                  "Open",
+                                                  style: TextStyle(
+                                                      color: Colors.green),
+                                                ))),
+
+                                        DataCell(ElevatedButton(
+                                            onPressed: () {},
+                                            child: Text("Edit"))),
+
+                                        DataCell(ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          StudentProfile(
+                                                              SIDNo:
+                                                                  AllStudentInfo[
+                                                                          index]
+                                                                      [
+                                                                      "SIDNo"])));
+                                            },
+                                            child: Text("Detail"))),
+
+                                        DataCell(ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ShowStudentAttendance(
+                                                              SIDNo:
+                                                                  AllStudentInfo[
+                                                                          index]
+                                                                      ["SIDNo"],
+                                                              TeacherAcademyName:
+                                                                  AllStudentInfo[
+                                                                          index]
+                                                                      [
+                                                                      "TeacherAcademyName"])));
+                                            },
+                                            child: Text("Attendance"))),
+
+                                        DataCell(ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          StudentProfile(
+                                                              SIDNo:
+                                                                  AllStudentInfo[
+                                                                          index]
+                                                                      [
+                                                                      "SIDNo"])));
+
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return StatefulBuilder(
+                                                        builder: (context,
+                                                            setState) {
+                                                      final List<String>
+                                                          TeachersAcademy = [
+                                                        'Rezuan Math Care',
+                                                        'Sazzad ICT',
+                                                        'MediCrack',
+                                                        'Protick Physics',
+                                                      ];
+                                                      String?
+                                                          selectedTeachersAcademyValue;
+                                                      return AlertDialog(
+                                                        title: Text(
+                                                            'Payment Info ${AllStudentInfo[index]["SIDNo"].toString().toUpperCase()}'),
+                                                        content:
+                                                            SingleChildScrollView(
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Card(
+                                                                elevation: 20,
+                                                                child:
+                                                                    Container(
+                                                                  width: 200,
+                                                                  child:
+                                                                      DropdownButtonHideUnderline(
+                                                                    child: DropdownButton2<
                                                                         String>(
-                                                                      value:
-                                                                          item,
-                                                                      child:
+                                                                      isExpanded:
+                                                                          true,
+                                                                      hint:
                                                                           Text(
-                                                                        item,
+                                                                        'Select Academy Name',
                                                                         style:
-                                                                            const TextStyle(
+                                                                            TextStyle(
                                                                           fontSize:
                                                                               14,
+                                                                          color:
+                                                                              Theme.of(context).hintColor,
                                                                         ),
                                                                       ),
-                                                                    )).toList(),
-                                                                value:
-                                                                    selectedTeachersAcademyValue,
-                                                                onChanged:
-                                                                    (String?
-                                                                        value) {
-                                                                  setState(() {
-                                                                    selectedTeachersAcademyValue =
-                                                                        value;
+                                                                      items: TeachersAcademy.map((String
+                                                                              item) =>
+                                                                          DropdownMenuItem<
+                                                                              String>(
+                                                                            value:
+                                                                                item,
+                                                                            child:
+                                                                                Text(
+                                                                              item,
+                                                                              style: const TextStyle(
+                                                                                fontSize: 14,
+                                                                              ),
+                                                                            ),
+                                                                          )).toList(),
+                                                                      value:
+                                                                          selectedTeachersAcademyValue,
+                                                                      onChanged:
+                                                                          (String?
+                                                                              value) {
+                                                                        setState(
+                                                                            () {
+                                                                          selectedTeachersAcademyValue =
+                                                                              value;
 
-                                                                    Navigator
-                                                                        .push(
-                                                                      context,
-                                                                      MaterialPageRoute(
-                                                                          builder: (context) => Showperstudentexamresult(
-                                                                              TeacherAcademyName: value,
-                                                                              SIDNo: AllStudentInfo[index]["SIDNo"])),
-                                                                    );
-                                                                  });
-                                                                },
-                                                                buttonStyleData:
-                                                                    const ButtonStyleData(
-                                                                  padding: EdgeInsets
-                                                                      .symmetric(
-                                                                          horizontal:
-                                                                              16),
-                                                                  height: 40,
-                                                                  width: 140,
-                                                                ),
-                                                                menuItemStyleData:
-                                                                    const MenuItemStyleData(
-                                                                  height: 40,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  actions: [
-                                                    ElevatedButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Text('CANCEL'),
-                                                    ),
-                                                    ElevatedButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Text('ACCEPT'),
-                                                    ),
-                                                  ],
-                                                );
-                                              });
-                                            });
-                                      },
-                                      child: Text("Exam Marks"))),
-
-                                  DataCell(Text(
-                                      "${AllStudentInfo[index]["TeacherAcademyName"]}")),
-
-                                  DataCell(AllStudentInfo[index]["Status"] ==
-                                          "Open"
-                                      ? ElevatedButton(
-                                          onPressed: () async {
-                                            var MsgData = {"Status": "Close"};
-
-                                            final ClassOffSMS =
-                                                FirebaseFirestore.instance
-                                                    .collection(
-                                                        'PerTeacherStudentInfo')
-                                                    .doc(AllStudentInfo[index]
-                                                        ["id"]);
-
-                                            ClassOffSMS.update(MsgData)
-                                                .then((value) =>
-                                                    setState(() async {
-                                                      // Navigator.pop(
-                                                      //     context);
-
-                                                      getAllStudentInfo();
-
-                                                      final snackBar = SnackBar(
-                                                        elevation: 0,
-                                                        behavior:
-                                                            SnackBarBehavior
-                                                                .floating,
-                                                        backgroundColor:
-                                                            Colors.transparent,
-                                                        content:
-                                                            AwesomeSnackbarContent(
-                                                          title: 'successfull',
-                                                          message:
-                                                              'Hey Thank You. Good Job',
-
-                                                          /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                          contentType:
-                                                              ContentType
-                                                                  .success,
-                                                        ),
-                                                      );
-
-                                                      ScaffoldMessenger.of(
-                                                          context)
-                                                        ..hideCurrentSnackBar()
-                                                        ..showSnackBar(
-                                                            snackBar);
-
-                                                      // setState(() {
-                                                      //   loading =
-                                                      //       false;
-                                                      // });
-                                                    }))
-                                                .onError((error, stackTrace) =>
-                                                    setState(() {
-                                                      final snackBar = SnackBar(
-                                                        /// need to set following properties for best effect of awesome_snackbar_content
-                                                        elevation: 0,
-
-                                                        behavior:
-                                                            SnackBarBehavior
-                                                                .floating,
-                                                        backgroundColor:
-                                                            Colors.transparent,
-                                                        content:
-                                                            AwesomeSnackbarContent(
-                                                          title:
-                                                              'Something Wrong!!!!',
-                                                          message:
-                                                              'Try again later...',
-
-                                                          /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                          contentType:
-                                                              ContentType
-                                                                  .failure,
-                                                        ),
-                                                      );
-
-                                                      ScaffoldMessenger.of(
-                                                          context)
-                                                        ..hideCurrentSnackBar()
-                                                        ..showSnackBar(
-                                                            snackBar);
-
-                                                      // setState(() {
-                                                      //   loading =
-                                                      //       false;
-                                                      // });
-                                                    }));
-                                          },
-                                          child: const Text(
-                                            "Close",
-                                            style: TextStyle(color: Colors.red),
-                                          ))
-                                      : ElevatedButton(
-                                          onPressed: () async {
-                                            var MsgData = {"Status": "Open"};
-
-                                            final ClassOffSMS =
-                                                FirebaseFirestore.instance
-                                                    .collection(
-                                                        'PerTeacherStudentInfo')
-                                                    .doc(AllStudentInfo[index]
-                                                        ["id"]);
-
-                                            ClassOffSMS.update(MsgData)
-                                                .then((value) =>
-                                                    setState(() async {
-                                                      // Navigator.pop(
-                                                      //     context);
-
-                                                      getAllStudentInfo();
-
-                                                      final snackBar = SnackBar(
-                                                        elevation: 0,
-                                                        behavior:
-                                                            SnackBarBehavior
-                                                                .floating,
-                                                        backgroundColor:
-                                                            Colors.transparent,
-                                                        content:
-                                                            AwesomeSnackbarContent(
-                                                          title: 'successfull',
-                                                          message:
-                                                              'Hey Thank You. Good Job',
-
-                                                          /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                          contentType:
-                                                              ContentType
-                                                                  .success,
-                                                        ),
-                                                      );
-
-                                                      ScaffoldMessenger.of(
-                                                          context)
-                                                        ..hideCurrentSnackBar()
-                                                        ..showSnackBar(
-                                                            snackBar);
-
-                                                      // setState(() {
-                                                      //   loading =
-                                                      //       false;
-                                                      // });
-                                                    }))
-                                                .onError((error, stackTrace) =>
-                                                    setState(() {
-                                                      final snackBar = SnackBar(
-                                                        /// need to set following properties for best effect of awesome_snackbar_content
-                                                        elevation: 0,
-
-                                                        behavior:
-                                                            SnackBarBehavior
-                                                                .floating,
-                                                        backgroundColor:
-                                                            Colors.transparent,
-                                                        content:
-                                                            AwesomeSnackbarContent(
-                                                          title:
-                                                              'Something Wrong!!!!',
-                                                          message:
-                                                              'Try again later...',
-
-                                                          /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                                          contentType:
-                                                              ContentType
-                                                                  .failure,
-                                                        ),
-                                                      );
-
-                                                      ScaffoldMessenger.of(
-                                                          context)
-                                                        ..hideCurrentSnackBar()
-                                                        ..showSnackBar(
-                                                            snackBar);
-
-                                                      // setState(() {
-                                                      //   loading =
-                                                      //       false;
-                                                      // });
-                                                    }));
-                                          },
-                                          child: Text(
-                                            "Open",
-                                            style:
-                                                TextStyle(color: Colors.green),
-                                          ))),
-
-                                  DataCell(ElevatedButton(
-                                      onPressed: () {}, child: Text("Edit"))),
-
-                                  DataCell(ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    StudentProfile(
-                                                        SIDNo: AllStudentInfo[
-                                                            index]["SIDNo"])));
-                                      },
-                                      child: Text("Detail"))),
-
-                                  DataCell(ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ShowStudentAttendance(
-                                                        SIDNo: AllStudentInfo[
-                                                            index]["SIDNo"],
-                                                        TeacherAcademyName:
-                                                            AllStudentInfo[
-                                                                    index][
-                                                                "TeacherAcademyName"])));
-                                      },
-                                      child: Text("Attendance"))),
-
-                                  DataCell(ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    StudentProfile(
-                                                        SIDNo: AllStudentInfo[
-                                                            index]["SIDNo"])));
-
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return StatefulBuilder(
-                                                  builder: (context, setState) {
-                                                final List<String>
-                                                    TeachersAcademy = [
-                                                  'Rezuan Math Care',
-                                                  'Sazzad ICT',
-                                                  'MediCrack',
-                                                  'Protick Physics',
-                                                ];
-                                                String?
-                                                    selectedTeachersAcademyValue;
-                                                return AlertDialog(
-                                                  title: Text(
-                                                      'Payment Info ${AllStudentInfo[index]["SIDNo"].toString().toUpperCase()}'),
-                                                  content:
-                                                      SingleChildScrollView(
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Card(
-                                                          elevation: 20,
-                                                          child: Container(
-                                                            width: 200,
-                                                            child:
-                                                                DropdownButtonHideUnderline(
-                                                              child:
-                                                                  DropdownButton2<
-                                                                      String>(
-                                                                isExpanded:
-                                                                    true,
-                                                                hint: Text(
-                                                                  'Select Academy Name',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    color: Theme.of(
-                                                                            context)
-                                                                        .hintColor,
+                                                                          Navigator
+                                                                              .push(
+                                                                            context,
+                                                                            MaterialPageRoute(builder: (context) => StudentAllPayment(TeacherAcademyName: value, SIDNo: AllStudentInfo[index]["SIDNo"])),
+                                                                          );
+                                                                        });
+                                                                      },
+                                                                      buttonStyleData:
+                                                                          const ButtonStyleData(
+                                                                        padding:
+                                                                            EdgeInsets.symmetric(horizontal: 16),
+                                                                        height:
+                                                                            40,
+                                                                        width:
+                                                                            140,
+                                                                      ),
+                                                                      menuItemStyleData:
+                                                                          const MenuItemStyleData(
+                                                                        height:
+                                                                            40,
+                                                                      ),
+                                                                    ),
                                                                   ),
                                                                 ),
-                                                                items: TeachersAcademy.map((String
-                                                                        item) =>
-                                                                    DropdownMenuItem<
-                                                                        String>(
-                                                                      value:
-                                                                          item,
-                                                                      child:
-                                                                          Text(
-                                                                        item,
-                                                                        style:
-                                                                            const TextStyle(
-                                                                          fontSize:
-                                                                              14,
-                                                                        ),
-                                                                      ),
-                                                                    )).toList(),
-                                                                value:
-                                                                    selectedTeachersAcademyValue,
-                                                                onChanged:
-                                                                    (String?
-                                                                        value) {
-                                                                  setState(() {
-                                                                    selectedTeachersAcademyValue =
-                                                                        value;
-
-                                                                    Navigator
-                                                                        .push(
-                                                                      context,
-                                                                      MaterialPageRoute(
-                                                                          builder: (context) => StudentAllPayment(
-                                                                              TeacherAcademyName: value,
-                                                                              SIDNo: AllStudentInfo[index]["SIDNo"])),
-                                                                    );
-                                                                  });
-                                                                },
-                                                                buttonStyleData:
-                                                                    const ButtonStyleData(
-                                                                  padding: EdgeInsets
-                                                                      .symmetric(
-                                                                          horizontal:
-                                                                              16),
-                                                                  height: 40,
-                                                                  width: 140,
-                                                                ),
-                                                                menuItemStyleData:
-                                                                    const MenuItemStyleData(
-                                                                  height: 40,
-                                                                ),
                                                               ),
-                                                            ),
+                                                            ],
                                                           ),
                                                         ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  actions: [
-                                                    ElevatedButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Text('CANCEL'),
-                                                    ),
-                                                    ElevatedButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Text('ACCEPT'),
-                                                    ),
-                                                  ],
-                                                );
-                                              });
-                                            });
-                                      },
-                                      child: Text("All Fee")))
-                                ]))),
+                                                        actions: [
+                                                          ElevatedButton(
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            child:
+                                                                Text('CANCEL'),
+                                                          ),
+                                                          ElevatedButton(
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            child:
+                                                                Text('ACCEPT'),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    });
+                                                  });
+                                            },
+                                            child: Text("All Fee")))
+                                      ]))),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
           ),
         ),
       ],

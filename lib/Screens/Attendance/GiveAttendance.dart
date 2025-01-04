@@ -1,6 +1,9 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:confidence/Screens/Attendance/ChangeAttendance.dart';
+import 'package:confidence/Screens/Attendance/ShowStudentAttendance.dart';
 import 'package:confidence/Screens/PDF/MoneyReceipt.dart';
 import 'package:confidence/Screens/important.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -136,7 +139,11 @@ class _GiveAttendanceState extends State<GiveAttendance> {
             queryDueSnapshot.docs.map((doc) => doc.data()).toList();
         loading = false;
 
-         Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChangeAttendance(id:todayAttendanceData[0]["id"], AttendanceType: todayAttendanceData[0]["type"] , AttendanceID: todayAttendanceData[0]["AttendanceID"])));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => ChangeAttendance(
+                id: todayAttendanceData[0]["id"],
+                AttendanceType: todayAttendanceData[0]["type"],
+                AttendanceID: todayAttendanceData[0]["AttendanceID"])));
       });
     }
 
@@ -185,6 +192,8 @@ class _GiveAttendanceState extends State<GiveAttendance> {
       // positionData.sort();
 
       setState(() {
+    //     selectedBatchNameValue = widget.BatchName;
+    // selectedTeachersAcademyValue = widget.TeacherAcademyName;
         // moneyAdd = moneyAdd + moneyInt;
         // AllData = querySnapshot.docs.map((doc) => doc.data()).toList();
         loading = false;
@@ -197,7 +206,8 @@ class _GiveAttendanceState extends State<GiveAttendance> {
   @override
   void initState() {
     // TODO: implement initState
-    // getData(widget.ExamDate);
+    getSearchData(widget.BatchName, widget.TeacherAcademyName);
+
     super.initState();
   }
 
@@ -215,8 +225,8 @@ class _GiveAttendanceState extends State<GiveAttendance> {
   Widget build(BuildContext context) {
     var AttendanceID = uuid.v4();
 
-    selectedBatchNameValue = widget.BatchName;
-    selectedTeachersAcademyValue = widget.TeacherAcademyName;
+    // selectedBatchNameValue = widget.BatchName;
+    // selectedTeachersAcademyValue = widget.TeacherAcademyName;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -458,6 +468,14 @@ class _GiveAttendanceState extends State<GiveAttendance> {
                                       "Phone Number:${AllData[index]["StudentPhoneNumber"]}"),
                                   Text(
                                       "Father Phone No: ${AllData[index]["FatherPhoneNo"]}"),
+                                  ElevatedButton(onPressed: () async{
+
+                                                                                    Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ShowStudentAttendance(SIDNo: AllData[index]["SIDNo"], TeacherAcademyName: AllData[index]["TeacherAcademyName"])));
+
+                                  }, child: Text("Show Attendance"))
                                 ],
                               ),
                             ),
@@ -501,7 +519,7 @@ class _GiveAttendanceState extends State<GiveAttendance> {
                                                               ["StudentName"],
                                                       "SIDNo": AllData[index]
                                                           ["SIDNo"],
-                                                      "id":AllData[index]
+                                                      "id": AllData[index]
                                                           ["id"],
                                                       "StudentPhoneNumber":
                                                           AllData[index][
@@ -522,11 +540,41 @@ class _GiveAttendanceState extends State<GiveAttendance> {
                                                         .set(jsonData)
                                                         .then((value) =>
                                                             setState(() async {
+
+                                                          
+                                                                        try {
+                                                                                      var AdminMsg = "Name:${AllData[index]["StudentName"]}  Your child is absent from class today, ${AllData[index]["TeacherAcademyName"]}";
+
+                                                                                      final response =
+                                                                                          await http
+                                                                                              .get(Uri.parse('https://api.greenweb.com.bd/api.php?token=1024519252916991043295858a1b3ac3cb09ae52385b1489dff95&to=${AllData[index]["FatherPhoneNo"]}&message=$AdminMsg'));
+
+                                                                                      if (response
+                                                                                              .statusCode ==
+                                                                                          200) {
+                                                                                        // If the server did return a 200 OK response,
+                                                                                        // then parse the JSON.
+                                                                                        print(jsonDecode(
+                                                                                            response
+                                                                                                .body));
+                                                                                      } else {
+                                                                                        // If the server did not return a 200 OK response,
+                                                                                        // then throw an exception.
+                                                                                        throw Exception(
+                                                                                            'Failed to load album');
+                                                                                      }
+                                                                                    } catch (e) {}
+
+
+
+
                                                               getSearchData(
                                                                   widget
                                                                       .BatchName,
                                                                   widget
                                                                       .TeacherAcademyName);
+
+                                                                  
 
                                                               setState(() {
                                                                 loading = false;
@@ -666,7 +714,7 @@ class _GiveAttendanceState extends State<GiveAttendance> {
                                                               ["StudentName"],
                                                       "SIDNo": AllData[index]
                                                           ["SIDNo"],
-                                                      "id":AllData[index]
+                                                      "id": AllData[index]
                                                           ["id"],
                                                       "StudentPhoneNumber":
                                                           AllData[index][

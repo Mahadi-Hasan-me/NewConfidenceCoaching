@@ -1,3 +1,4 @@
+import 'package:confidence/Screens/CommonScreen/LogIn.dart';
 import 'package:confidence/Screens/HomeScreen.dart';
 import 'package:confidence/Screens/PDF/RegistrationFormPDF.dart';
 import 'package:confidence/Screens/StaffWork/StaffWork.dart';
@@ -20,6 +21,8 @@ void main() async{
     options: FirebaseOptions(apiKey: "AIzaSyBh41WO1Jh3qnP_PMzqx3lVSMv6DY0mQr4", appId: "1:81202476667:android:908327d3874b75745714de", messagingSenderId: "81202476667", projectId: "newconfidence")
     
   );
+
+  // mahadi
 
 
   // NotificationService().initNotification();
@@ -58,7 +61,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: HomeScreen(),
+      home: HomeScreen(UserEmail: "", UserName: "",)
     );
   }
 }

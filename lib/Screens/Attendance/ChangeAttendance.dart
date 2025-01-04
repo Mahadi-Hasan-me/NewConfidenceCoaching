@@ -112,7 +112,7 @@ class _ChangeAttendanceState extends State<ChangeAttendance> {
 
 
 
-            final docUser =  FirebaseFirestore.instance.collection("Attendance");
+            final docUser =  FirebaseFirestore.instance.collection("StudentAttendance");
 
                       final jsonData ={
 

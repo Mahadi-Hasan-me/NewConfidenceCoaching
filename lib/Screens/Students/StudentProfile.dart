@@ -228,7 +228,7 @@ void dispose() {
                     if (user == null) {
                       print('User is currently signed out!');
                     } else {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen()));
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen(UserName: user.displayName, UserEmail: user.email,)));
                     }
                   });
 
