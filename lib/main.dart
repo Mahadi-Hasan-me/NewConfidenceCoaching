@@ -10,39 +10,26 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-void main() async{
-
-
-
-    
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
+      options: FirebaseOptions(
+          apiKey: "AIzaSyBh41WO1Jh3qnP_PMzqx3lVSMv6DY0mQr4",
+          appId: "1:81202476667:android:908327d3874b75745714de",
+          messagingSenderId: "81202476667",
+          projectId: "newconfidence"));
 
-    options: FirebaseOptions(apiKey: "AIzaSyBh41WO1Jh3qnP_PMzqx3lVSMv6DY0mQr4", appId: "1:81202476667:android:908327d3874b75745714de", messagingSenderId: "81202476667", projectId: "newconfidence")
-    
-  );
-
-  // mahadi
-
+  // hasan
 
   // NotificationService().initNotification();
   // tz.initializeTimeZones();
-
 
   // await Future.delayed(const Duration(seconds: 3));
 
   // FlutterNativeSplash.remove();
 
-
   await Hive.initFlutter();
   var box = await Hive.openBox('ConfidenceBox');
-
-
-
-
-
-
-
 
   runApp(const MyApp());
 }
@@ -54,20 +41,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Confidence',
-      theme: ThemeData(
-
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: HomeScreen(UserEmail: "", UserName: "",)
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'Confidence',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: HomeScreen(
+          UserEmail: "",
+          UserName: "",
+        ));
   }
 }
-
-
-
 
 // RegistrationFormPDF(SalesData: [{
 //                                                 "StudentName": "Mahadi Hasan",
@@ -97,7 +82,7 @@ class MyApp extends StatelessWidget {
 //                                             "01281239423",
 //                                         "SSCBatchYear":"2024",
 //                                         "HSCBatchYear":"2026",
-                                 
+
 //                                         "Sex":"Male",
 //                                         "SIDNo": "2342525235",
 //                                         "SSCBoard":"Rajshahi",
